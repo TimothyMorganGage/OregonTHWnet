@@ -1,0 +1,14 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "Vztn1nf6NJheErl-PZ-90"
+uri = "file://artifacts/thw-platform/assets/images/icon.png"
+type = "image"
+title = "thw app icon"
+
+[[generated]]
+id = "EN5E6z_kMZjns76eZsH0R"
+uri = "file://artifacts/thw-platform/assets/images/hedis-bg.png"
+type = "image"
+title = "hedis dashboard bg"
