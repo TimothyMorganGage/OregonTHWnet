@@ -18,6 +18,7 @@ export interface CPTCode {
   hedisCategory?: string;
   avgReimbursement: number;
   denialRisk: "low" | "medium" | "high";
+  billingModel?: "ffs" | "ilos" | "both";
 }
 
 export interface ZCode {
@@ -44,6 +45,7 @@ export interface Claim {
   appealNotes?: string;
   notes: string;
   hedisCategories: string[];
+  billingModel?: "ffs" | "ilos";
 }
 
 export interface InsurancePlan {
@@ -59,6 +61,7 @@ export interface InsurancePlan {
   notes: string;
   contactPhone?: string;
   contactEmail?: string;
+  supportsILOS?: boolean;
 }
 
 export interface HEDISMeasure {
@@ -75,6 +78,19 @@ export interface HEDISMeasure {
   relatedCPTCodes: string[];
 }
 
+export interface ILOSMapping {
+  id: string;
+  thwService: string;
+  thwCPTCode: string;
+  thwCostPerVisit: number;
+  replacedService: string;
+  replacedCostPerVisit: number;
+  annualUtilizationPerTHW: number;
+  outcomeEquivalence: "superior" | "equivalent" | "comparable";
+  outcomeNotes: string;
+  hedisCategory: string;
+}
+
 export interface ForecastPoint {
   year: number;
   denialRate: number;
@@ -82,6 +98,21 @@ export interface ForecastPoint {
   approvalRate: number;
   thwRecognitionCount: number;
   projectedRevenue: number;
+
+  ffsRevenue: number;
+  ffsCostBasis: number;
+  ffsROI: number;
+  ffsVisitCount: number;
+  ffsAvgReimbursement: number;
+
+  ilosAvoidedCost: number;
+  ilosCostBasis: number;
+  ilosROI: number;
+  ilosVisitCount: number;
+  ilosAvgAvoidance: number;
+
+  combinedROI: number;
+  combinedNetBenefit: number;
 }
 
 export interface DenialRecord {

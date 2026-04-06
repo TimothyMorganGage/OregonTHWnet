@@ -1,4 +1,4 @@
-import { Claim, InsurancePlan, HEDISMeasure, ForecastPoint, DenialRecord } from "@/types";
+import { Claim, InsurancePlan, HEDISMeasure, ForecastPoint, DenialRecord, ILOSMapping } from "@/types";
 
 export const SAMPLE_CLAIMS: Claim[] = [
   {
@@ -16,6 +16,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     paidAmount: 128,
     notes: "Initial CHW engagement, housing instability identified",
     hedisCategories: ["Preventive Care", "Care Coordination"],
+    billingModel: "ilos",
   },
   {
     id: "c002",
@@ -31,6 +32,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     billedAmount: 170,
     notes: "Chronic disease management, food insecurity flagged",
     hedisCategories: ["Care Coordination", "Chronic Disease Management"],
+    billingModel: "ffs",
   },
   {
     id: "c003",
@@ -47,6 +49,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     denialReason: "Service not covered under current benefit plan",
     notes: "Mental health behavioral assessment, family conflict",
     hedisCategories: ["Behavioral Health"],
+    billingModel: "ffs",
   },
   {
     id: "c004",
@@ -62,6 +65,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     billedAmount: 130,
     notes: "Preventive counseling, unemployment support services",
     hedisCategories: ["Preventive Care"],
+    billingModel: "ffs",
   },
   {
     id: "c005",
@@ -79,6 +83,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     appealNotes: "Submitted documentation of SDOH factors and THW certification",
     notes: "Clinic visit, post-incarceration reintegration support",
     hedisCategories: ["Access to Care", "Care Coordination"],
+    billingModel: "ilos",
   },
   {
     id: "c006",
@@ -95,6 +100,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     paidAmount: 196,
     notes: "Comprehensive CHW assessment with care coordination",
     hedisCategories: ["Preventive Care", "Care Coordination"],
+    billingModel: "ilos",
   },
 ];
 
@@ -109,9 +115,10 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     approvedCPTCodes: ["G0019", "G0023", "T1015", "T1016", "T1017", "99401", "99402"],
     denialRate: 4,
     avgProcessingDays: 14,
-    notes: "Full THW coverage under Oregon CCO model. Early adopter.",
+    notes: "Full THW coverage under Oregon CCO model. Early adopter. ILOS contracts active.",
     contactPhone: "503-555-0101",
     contactEmail: "providers@columbiacco.org",
+    supportsILOS: true,
   },
   {
     id: "ip002",
@@ -123,8 +130,9 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     approvedCPTCodes: ["G0019", "G0023", "T1016", "T1017", "99401"],
     denialRate: 6,
     avgProcessingDays: 18,
-    notes: "Full coverage. Requires pre-authorization for chronic disease codes.",
+    notes: "Full coverage. Requires pre-authorization for chronic disease codes. ILOS available for ED diversion.",
     contactPhone: "541-555-0202",
+    supportsILOS: true,
   },
   {
     id: "ip003",
@@ -136,8 +144,9 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     approvedCPTCodes: ["G0019", "T1016", "99401", "99402"],
     denialRate: 18,
     avgProcessingDays: 28,
-    notes: "Partial coverage. CHW services covered under preventive care benefit.",
+    notes: "Partial coverage. FFS only — ILOS policy under development.",
     contactPhone: "503-555-0303",
+    supportsILOS: false,
   },
   {
     id: "ip004",
@@ -149,8 +158,9 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     approvedCPTCodes: ["99401", "99402", "99490"],
     denialRate: 27,
     avgProcessingDays: 35,
-    notes: "Limited THW coverage. Behavioral health codes frequently denied.",
+    notes: "Limited THW coverage. FFS only. Behavioral health codes frequently denied.",
     contactPhone: "503-555-0404",
+    supportsILOS: false,
   },
   {
     id: "ip005",
@@ -162,7 +172,8 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     approvedCPTCodes: ["G0019", "G0023", "99401"],
     denialRate: 15,
     avgProcessingDays: 21,
-    notes: "Covers foundational CHW codes. Expanding coverage in 2026.",
+    notes: "Covers foundational CHW codes. ILOS pilot program launching Q3 2026.",
+    supportsILOS: false,
   },
   {
     id: "ip006",
@@ -174,7 +185,8 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     approvedCPTCodes: ["G0019", "99401", "99402"],
     denialRate: 22,
     avgProcessingDays: 30,
-    notes: "Early stage THW coverage. Advocacy ongoing for expanded codes.",
+    notes: "Early stage THW coverage. Advocacy ongoing for expanded codes and ILOS contracts.",
+    supportsILOS: false,
   },
   {
     id: "ip007",
@@ -186,6 +198,7 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     denialRate: 38,
     avgProcessingDays: 45,
     notes: "THW coverage policy under review. Expected decision Q3 2026.",
+    supportsILOS: false,
   },
   {
     id: "ip008",
@@ -197,7 +210,8 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     approvedCPTCodes: ["G0019", "G0023", "T1016"],
     denialRate: 21,
     avgProcessingDays: 32,
-    notes: "Covers core CHW codes in select markets. Oregon-specific contract pending.",
+    notes: "Covers core CHW codes in select markets. Oregon-specific ILOS contract pending.",
+    supportsILOS: false,
   },
   {
     id: "ip009",
@@ -209,6 +223,7 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     denialRate: 52,
     avgProcessingDays: 40,
     notes: "No current THW coverage policy. Advocacy contact established.",
+    supportsILOS: false,
   },
   {
     id: "ip010",
@@ -219,7 +234,8 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     approvedCPTCodes: [],
     denialRate: 31,
     avgProcessingDays: 38,
-    notes: "National policy development underway. State plan variation expected.",
+    notes: "National policy development underway. ILOS framework being evaluated.",
+    supportsILOS: false,
   },
 ];
 
@@ -330,14 +346,278 @@ export const HEDIS_MEASURES: HEDISMeasure[] = [
   },
 ];
 
+// ILOS service-substitution mappings
+// Each entry documents the traditional/costly service a THW visit replaces,
+// and the resulting cost avoidance per encounter.
+export const ILOS_MAPPINGS: ILOSMapping[] = [
+  {
+    id: "ilos001",
+    thwService: "CHW Health Risk Assessment (G0019)",
+    thwCPTCode: "G0019",
+    thwCostPerVisit: 85,
+    replacedService: "Emergency Department Visit (low-acuity)",
+    replacedCostPerVisit: 1920,
+    annualUtilizationPerTHW: 80,
+    outcomeEquivalence: "superior",
+    outcomeNotes: "THW visits prevent avoidable ED use by addressing SDOH earlier; HEDIS CBP & HBD improve",
+    hedisCategory: "Chronic Disease Management",
+  },
+  {
+    id: "ilos002",
+    thwService: "Care Coordination per 20 min (G0023)",
+    thwCPTCode: "G0023",
+    thwCostPerVisit: 65,
+    replacedService: "Primary Care Care-Coordination Visit",
+    replacedCostPerVisit: 285,
+    annualUtilizationPerTHW: 120,
+    outcomeEquivalence: "equivalent",
+    outcomeNotes: "THW maintains care plan adherence at lower cost; discharge follow-up HEDIS (FUH) improves",
+    hedisCategory: "Care Coordination",
+  },
+  {
+    id: "ilos003",
+    thwService: "Chronic Care Management (99490)",
+    thwCPTCode: "99490",
+    thwCostPerVisit: 105,
+    replacedService: "Inpatient Hospitalization (preventable admission)",
+    replacedCostPerVisit: 14200,
+    annualUtilizationPerTHW: 18,
+    outcomeEquivalence: "superior",
+    outcomeNotes: "Consistent THW chronic disease support reduces preventable inpatient admissions by ~22%",
+    hedisCategory: "Chronic Disease Management",
+  },
+  {
+    id: "ilos004",
+    thwService: "Peer Support Services (H0038)",
+    thwCPTCode: "H0038",
+    thwCostPerVisit: 40,
+    replacedService: "Outpatient Mental Health Visit (licensed clinician)",
+    replacedCostPerVisit: 195,
+    annualUtilizationPerTHW: 150,
+    outcomeEquivalence: "comparable",
+    outcomeNotes: "Peer/THW support addresses mild-moderate MH needs; frees clinician capacity for higher acuity",
+    hedisCategory: "Behavioral Health",
+  },
+  {
+    id: "ilos005",
+    thwService: "Preventive Counseling 30 min (99402)",
+    thwCPTCode: "99402",
+    thwCostPerVisit: 75,
+    replacedService: "Specialist Referral Visit",
+    replacedCostPerVisit: 380,
+    annualUtilizationPerTHW: 60,
+    outcomeEquivalence: "equivalent",
+    outcomeNotes: "Culturally-grounded THW counseling reduces unnecessary specialist referrals; improves SDOH screening",
+    hedisCategory: "Preventive Care",
+  },
+  {
+    id: "ilos006",
+    thwService: "Case Management per 15 min (T1016)",
+    thwCPTCode: "T1016",
+    thwCostPerVisit: 50,
+    replacedService: "Social Worker Case Management Visit",
+    replacedCostPerVisit: 165,
+    annualUtilizationPerTHW: 200,
+    outcomeEquivalence: "superior",
+    outcomeNotes: "THW navigators outperform traditional SW in community trust and SDOH linkage for underserved populations",
+    hedisCategory: "Care Coordination",
+  },
+  {
+    id: "ilos007",
+    thwService: "Behavioral Health Prevention (H0025)",
+    thwCPTCode: "H0025",
+    thwCostPerVisit: 60,
+    replacedService: "Substance Use Disorder Inpatient Detox (per-day share)",
+    replacedCostPerVisit: 1850,
+    annualUtilizationPerTHW: 22,
+    outcomeEquivalence: "comparable",
+    outcomeNotes: "Early THW SUD intervention prevents progression to inpatient detox; HEDIS IET rates increase",
+    hedisCategory: "Substance Use",
+  },
+  {
+    id: "ilos008",
+    thwService: "Targeted Case Management (T1017)",
+    thwCPTCode: "T1017",
+    thwCostPerVisit: 50,
+    replacedService: "Skilled Nursing Facility Day (transitional care)",
+    replacedCostPerVisit: 680,
+    annualUtilizationPerTHW: 35,
+    outcomeEquivalence: "equivalent",
+    outcomeNotes: "THW transitional support reduces SNF stays post-discharge while maintaining outcomes",
+    hedisCategory: "Care Coordination",
+  },
+];
+
+// Econometric forecast with full FFS and ILOS ROI breakdown.
+// Assumptions:
+//   - FFS ROI = Direct billing revenue / THW program cost basis
+//   - ILOS ROI = Avoided traditional-service costs / THW program cost basis
+//   - Combined ROI = (FFS revenue + ILOS avoidance) / cost basis
+//   - As plan recognition grows, ILOS-authorized visits and FFS approval both increase
+//   - FFS reimbursement per visit rises as denial rates fall and code mix improves
+//   - ILOS avoidance per visit rises as plans expand ILOS contract scope
 export const FORECAST_DATA: ForecastPoint[] = [
-  { year: 2024, denialRate: 41.2, claimVolume: 8420, approvalRate: 58.8, thwRecognitionCount: 18, projectedRevenue: 742000 },
-  { year: 2025, denialRate: 34.7, claimVolume: 11380, approvalRate: 65.3, thwRecognitionCount: 24, projectedRevenue: 1124000 },
-  { year: 2026, denialRate: 27.1, claimVolume: 15200, approvalRate: 72.9, thwRecognitionCount: 31, projectedRevenue: 1680000 },
-  { year: 2027, denialRate: 19.8, claimVolume: 19600, approvalRate: 80.2, thwRecognitionCount: 39, projectedRevenue: 2380000 },
-  { year: 2028, denialRate: 12.4, claimVolume: 25100, approvalRate: 87.6, thwRecognitionCount: 48, projectedRevenue: 3290000 },
-  { year: 2029, denialRate: 5.9, claimVolume: 31500, approvalRate: 94.1, thwRecognitionCount: 58, projectedRevenue: 4450000 },
-  { year: 2030, denialRate: 0.8, claimVolume: 38000, approvalRate: 99.2, thwRecognitionCount: 68, projectedRevenue: 5650000 },
+  {
+    year: 2024,
+    denialRate: 41.2,
+    claimVolume: 8420,
+    approvalRate: 58.8,
+    thwRecognitionCount: 18,
+    projectedRevenue: 742000,
+
+    ffsRevenue: 436000,
+    ffsCostBasis: 1450000,
+    ffsROI: 0.30,
+    ffsVisitCount: 4952,
+    ffsAvgReimbursement: 88,
+
+    ilosAvoidedCost: 4640000,
+    ilosCostBasis: 1450000,
+    ilosROI: 3.20,
+    ilosVisitCount: 3468,
+    ilosAvgAvoidance: 1338,
+
+    combinedROI: 3.50,
+    combinedNetBenefit: 5076000,
+  },
+  {
+    year: 2025,
+    denialRate: 34.7,
+    claimVolume: 11380,
+    approvalRate: 65.3,
+    thwRecognitionCount: 24,
+    projectedRevenue: 1124000,
+
+    ffsRevenue: 742000,
+    ffsCostBasis: 1850000,
+    ffsROI: 0.40,
+    ffsVisitCount: 7430,
+    ffsAvgReimbursement: 99,
+
+    ilosAvoidedCost: 8880000,
+    ilosCostBasis: 1850000,
+    ilosROI: 4.80,
+    ilosVisitCount: 5950,
+    ilosAvgAvoidance: 1493,
+
+    combinedROI: 5.20,
+    combinedNetBenefit: 9622000,
+  },
+  {
+    year: 2026,
+    denialRate: 27.1,
+    claimVolume: 15200,
+    approvalRate: 72.9,
+    thwRecognitionCount: 31,
+    projectedRevenue: 1680000,
+
+    ffsRevenue: 1224000,
+    ffsCostBasis: 2040000,
+    ffsROI: 0.60,
+    ffsVisitCount: 11086,
+    ffsAvgReimbursement: 110,
+
+    ilosAvoidedCost: 13056000,
+    ilosCostBasis: 2040000,
+    ilosROI: 6.40,
+    ilosVisitCount: 9114,
+    ilosAvgAvoidance: 1433,
+
+    combinedROI: 7.00,
+    combinedNetBenefit: 14280000,
+  },
+  {
+    year: 2027,
+    denialRate: 19.8,
+    claimVolume: 19600,
+    approvalRate: 80.2,
+    thwRecognitionCount: 39,
+    projectedRevenue: 2380000,
+
+    ffsRevenue: 2142000,
+    ffsCostBasis: 2380000,
+    ffsROI: 0.90,
+    ffsVisitCount: 15710,
+    ffsAvgReimbursement: 136,
+
+    ilosAvoidedCost: 19278000,
+    ilosCostBasis: 2380000,
+    ilosROI: 8.10,
+    ilosVisitCount: 11890,
+    ilosAvgAvoidance: 1621,
+
+    combinedROI: 9.00,
+    combinedNetBenefit: 21420000,
+  },
+  {
+    year: 2028,
+    denialRate: 12.4,
+    claimVolume: 25100,
+    approvalRate: 87.6,
+    thwRecognitionCount: 48,
+    projectedRevenue: 3290000,
+
+    ffsRevenue: 4277000,
+    ffsCostBasis: 3290000,
+    ffsROI: 1.30,
+    ffsVisitCount: 21988,
+    ffsAvgReimbursement: 195,
+
+    ilosAvoidedCost: 33558000,
+    ilosCostBasis: 3290000,
+    ilosROI: 10.20,
+    ilosVisitCount: 16565,
+    ilosAvgAvoidance: 2026,
+
+    combinedROI: 11.50,
+    combinedNetBenefit: 37835000,
+  },
+  {
+    year: 2029,
+    denialRate: 5.9,
+    claimVolume: 31500,
+    approvalRate: 94.1,
+    thwRecognitionCount: 58,
+    projectedRevenue: 4450000,
+
+    ffsRevenue: 8010000,
+    ffsCostBasis: 4450000,
+    ffsROI: 1.80,
+    ffsVisitCount: 29655,
+    ffsAvgReimbursement: 270,
+
+    ilosAvoidedCost: 56960000,
+    ilosCostBasis: 4450000,
+    ilosROI: 12.80,
+    ilosVisitCount: 21945,
+    ilosAvgAvoidance: 2595,
+
+    combinedROI: 14.60,
+    combinedNetBenefit: 64970000,
+  },
+  {
+    year: 2030,
+    denialRate: 0.8,
+    claimVolume: 38000,
+    approvalRate: 99.2,
+    thwRecognitionCount: 68,
+    projectedRevenue: 5650000,
+
+    ffsRevenue: 13560000,
+    ffsCostBasis: 5650000,
+    ffsROI: 2.40,
+    ffsVisitCount: 37670,
+    ffsAvgReimbursement: 360,
+
+    ilosAvoidedCost: 82490000,
+    ilosCostBasis: 5650000,
+    ilosROI: 14.60,
+    ilosVisitCount: 28330,
+    ilosAvgAvoidance: 2912,
+
+    combinedROI: 17.00,
+    combinedNetBenefit: 96050000,
+  },
 ];
 
 export const DENIAL_RECORDS: DenialRecord[] = [
