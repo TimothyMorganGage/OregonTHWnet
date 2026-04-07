@@ -1,5 +1,5 @@
 kind = "web"
-previewPath = "/thw-web/"
+previewPath = "/oregon-thw-network/"
 title = "THW Accounting Platform — Web"
 version = "1.0.0"
 id = "artifacts/thw-web"
@@ -11,7 +11,7 @@ version = "1.0.0"
 
 [[services]]
 name = "web"
-paths = [ "/thw-web/" ]
+paths = [ "/oregon-thw-network/" ]
 localPort = 25448
 
 [services.development]
@@ -28,4 +28,4 @@ to = "/index.html"
 
 [services.env]
 PORT = "25448"
-BASE_PATH = "/thw-web/"
+BASE_PATH = "/oregon-thw-network/"
