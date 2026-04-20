@@ -1,5 +1,19 @@
 export type ClaimStatus = "draft" | "submitted" | "approved" | "denied" | "appealed";
 
+export type THWWorkerType =
+  | "community_health_worker"
+  | "peer_support_specialist"
+  | "certified_recovery_mentor"
+  | "family_support_specialist"
+  | "youth_support_specialist"
+  | "birth_doula"
+  | "postpartum_doula"
+  | "abortion_doula"
+  | "end_of_life_doula"
+  | "personal_health_navigator"
+  | "peer_wellness_specialist"
+  | "tribal_traditional_health_worker";
+
 export type ServiceCategory =
   | "community_health"
   | "care_coordination"
@@ -8,7 +22,13 @@ export type ServiceCategory =
   | "mental_health"
   | "substance_use"
   | "chronic_disease"
-  | "maternal_child";
+  | "maternal_child"
+  | "youth_support"
+  | "family_support"
+  | "birth_support"
+  | "recovery_support"
+  | "navigation"
+  | "tribal_health";
 
 export interface CPTCode {
   code: string;
@@ -46,6 +66,7 @@ export interface Claim {
   notes: string;
   hedisCategories: string[];
   billingModel?: "ffs" | "ilos";
+  thwWorkerType?: THWWorkerType;
 }
 
 export interface InsurancePlan {

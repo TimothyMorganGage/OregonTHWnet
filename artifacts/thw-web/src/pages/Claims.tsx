@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Search, Filter } from "lucide-react";
 import { SAMPLE_CLAIMS } from "../data/sampleData";
+import { THW_WORKER_TYPES, THW_WORKER_TYPE_LABELS } from "../data/thwWorkerTypes";
 import { Claim, ClaimStatus } from "../types/index";
 
 const STATUS_OPTIONS: { value: ClaimStatus | "all"; label: string }[] = [
@@ -16,6 +17,11 @@ const MODEL_OPTIONS = [
   { value: "all", label: "All Models" },
   { value: "ffs", label: "Fee For Service" },
   { value: "ilos", label: "In Lieu of Services" },
+];
+
+const THW_TYPE_OPTIONS = [
+  { value: "all", label: "All THW Types" },
+  ...THW_WORKER_TYPES.map(t => ({ value: t.id, label: t.title })),
 ];
 
 const STATUS_COLORS: Record<string, string> = {
@@ -39,13 +45,23 @@ function ClaimDetail({ claim, onClose }: { claim: Claim; onClose: () => void }) 
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground text-xl font-bold px-2">&times;</button>
         </div>
         <div className="p-5 space-y-5">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between flex-wrap gap-2">
             <span className={`text-sm px-3 py-1 rounded-full font-semibold border ${STATUS_COLORS[claim.status]}`}>
               {claim.status.toUpperCase()}
             </span>
-            <span className="text-xs bg-secondary text-primary px-2 py-1 rounded-full font-medium">
-              {claim.billingModel?.toUpperCase() ?? "FFS"}
-            </span>
+            <div className="flex items-center gap-2">
+              {claim.thwWorkerType && (() => {
+                const wt = THW_WORKER_TYPES.find(t => t.id === claim.thwWorkerType);
+                return wt ? (
+                  <span className="text-xs text-white px-2.5 py-1 rounded-full font-semibold" style={{ backgroundColor: wt.color }}>
+                    {wt.abbreviation} · {wt.title}
+                  </span>
+                ) : null;
+              })()}
+              <span className="text-xs bg-secondary text-primary px-2 py-1 rounded-full font-medium">
+                {claim.billingModel?.toUpperCase() ?? "FFS"}
+              </span>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -131,6 +147,7 @@ export default function Claims() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [modelFilter, setModelFilter] = useState<string>("all");
+  const [thwTypeFilter, setThwTypeFilter] = useState<string>("all");
   const [selected, setSelected] = useState<Claim | null>(null);
 
   const filtered = SAMPLE_CLAIMS.filter(c => {
@@ -139,7 +156,8 @@ export default function Claims() {
       c.cptCodes.some(code => code.toLowerCase().includes(search.toLowerCase()));
     const matchStatus = statusFilter === "all" || c.status === statusFilter;
     const matchModel = modelFilter === "all" || c.billingModel === modelFilter;
-    return matchSearch && matchStatus && matchModel;
+    const matchType = thwTypeFilter === "all" || c.thwWorkerType === thwTypeFilter;
+    return matchSearch && matchStatus && matchModel && matchType;
   });
 
   return (
@@ -176,6 +194,13 @@ export default function Claims() {
         >
           {MODEL_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
+        <select
+          value={thwTypeFilter}
+          onChange={e => setThwTypeFilter(e.target.value)}
+          className="px-3 py-2.5 bg-card border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+        >
+          {THW_TYPE_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+        </select>
       </div>
 
       {/* Claims table */}
@@ -184,6 +209,7 @@ export default function Claims() {
           <thead>
             <tr className="border-b border-border bg-muted/50">
               <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Client</th>
+              <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide hidden xl:table-cell">THW Type</th>
               <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide hidden md:table-cell">Plan</th>
               <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide hidden lg:table-cell">CPT Codes</th>
               <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Model</th>
@@ -201,6 +227,24 @@ export default function Claims() {
                 <td className="px-5 py-4">
                   <p className="font-medium text-foreground">{claim.clientName}</p>
                   <p className="text-xs text-muted-foreground mt-0.5">{claim.dateOfService}</p>
+                </td>
+                <td className="px-5 py-4 hidden xl:table-cell">
+                  {claim.thwWorkerType ? (() => {
+                    const wt = THW_WORKER_TYPES.find(t => t.id === claim.thwWorkerType);
+                    return wt ? (
+                      <span
+                        className="text-xs px-2 py-0.5 rounded font-medium text-white whitespace-nowrap"
+                        style={{ backgroundColor: wt.color }}
+                      >
+                        {wt.abbreviation}
+                      </span>
+                    ) : null;
+                  })() : <span className="text-muted-foreground text-xs">—</span>}
+                  {claim.thwWorkerType && (
+                    <p className="text-xs text-muted-foreground mt-0.5 max-w-32 truncate">
+                      {THW_WORKER_TYPE_LABELS[claim.thwWorkerType]}
+                    </p>
+                  )}
                 </td>
                 <td className="px-5 py-4 text-muted-foreground hidden md:table-cell">
                   <p className="truncate max-w-40">{claim.insurancePlan}</p>

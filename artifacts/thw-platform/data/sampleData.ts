@@ -17,6 +17,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     notes: "Initial CHW engagement, housing instability identified",
     hedisCategories: ["Preventive Care", "Care Coordination"],
     billingModel: "ilos",
+    thwWorkerType: "community_health_worker",
   },
   {
     id: "c002",

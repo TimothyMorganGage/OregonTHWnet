@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "@/components/Layout";
 import NotFound from "@/pages/not-found";
 import Dashboard from "@/pages/Dashboard";
+import Workforce from "@/pages/Workforce";
 import Claims from "@/pages/Claims";
 import HEDISPage from "@/pages/HEDIS";
 import Forecast from "@/pages/Forecast";
@@ -19,6 +20,7 @@ function Router() {
     <Layout>
       <Switch>
         <Route path="/" component={Dashboard} />
+        <Route path="/workforce" component={Workforce} />
         <Route path="/claims" component={Claims} />
         <Route path="/hedis" component={HEDISPage} />
         <Route path="/forecast" component={Forecast} />

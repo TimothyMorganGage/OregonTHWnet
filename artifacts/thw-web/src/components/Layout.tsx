@@ -7,6 +7,7 @@ import {
   BarChart3,
   Shield,
   AlertTriangle,
+  Users,
   Menu,
   X,
 } from "lucide-react";
@@ -15,6 +16,7 @@ import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/workforce", label: "THW Workforce", icon: Users },
   { to: "/claims", label: "Claims", icon: FileText },
   { to: "/hedis", label: "HEDIS Measures", icon: Activity },
   { to: "/forecast", label: "Forecast", icon: TrendingUp },
@@ -44,7 +46,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </div>
             <div>
               <p className="text-white font-bold text-sm leading-tight">Oregon THW</p>
-              <p className="text-white/60 text-xs leading-tight">Accounting Platform</p>
+              <p className="text-white/60 text-xs leading-tight">Alliance Platform</p>
             </div>
           </div>
         </div>
@@ -100,7 +102,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
-          <span className="text-white font-semibold text-sm">Oregon THW Platform</span>
+          <span className="text-white font-semibold text-sm">Oregon THW Alliance</span>
         </header>
 
         <main className="flex-1 overflow-auto">{children}</main>
