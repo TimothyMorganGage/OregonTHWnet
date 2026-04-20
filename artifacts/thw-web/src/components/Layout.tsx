@@ -8,6 +8,7 @@ import {
   Shield,
   AlertTriangle,
   Users,
+  HeartHandshake,
   Menu,
   X,
 } from "lucide-react";
@@ -23,6 +24,7 @@ const NAV_ITEMS = [
   { to: "/roi", label: "ROI Analysis", icon: BarChart3 },
   { to: "/insurance", label: "Insurance Plans", icon: Shield },
   { to: "/denials", label: "Denial Management", icon: AlertTriangle },
+  { to: "/join", label: "Join the Co-op", icon: HeartHandshake },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {

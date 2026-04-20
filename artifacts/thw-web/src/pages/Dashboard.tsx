@@ -1,6 +1,7 @@
 import { Link } from "wouter";
-import { TrendingDown, TrendingUp, CheckCircle, AlertTriangle, DollarSign, FileText, ArrowRight, Activity } from "lucide-react";
+import { TrendingDown, TrendingUp, CheckCircle, AlertTriangle, DollarSign, FileText, ArrowRight, Activity, HeartHandshake } from "lucide-react";
 import { SAMPLE_CLAIMS, FORECAST_DATA, HEDIS_MEASURES, DENIAL_RECORDS } from "../data/sampleData";
+import { useMembers } from "../hooks/useMembers";
 
 const current = FORECAST_DATA.find(f => f.year === 2026)!;
 const target = FORECAST_DATA.find(f => f.year === 2030)!;
@@ -36,6 +37,8 @@ export default function Dashboard() {
   const approvalRate = Math.round((approved / totalClaims) * 100);
 
   const topHedis = HEDIS_MEASURES.filter(h => h.trending === "up").slice(0, 3);
+  const { members } = useMembers();
+  const sharingMembers = members.filter(m => m.consentDataSharing).length;
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
@@ -81,6 +84,30 @@ export default function Dashboard() {
         </div>
         <p className="text-white/60 text-xs mt-2">{current.approvalRate}% approval rate achieved — {target.approvalRate}% target by 2030</p>
       </div>
+
+      {/* Cooperative invite */}
+      <Link
+        href="/join"
+        className="block bg-card border border-border rounded-xl p-5 hover:border-primary/40 transition-colors"
+      >
+        <div className="flex items-center gap-4">
+          <div className="w-11 h-11 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0">
+            <HeartHandshake className="w-5 h-5 text-primary" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-semibold text-foreground text-sm">
+              Cooperative — {members.length} member{members.length === 1 ? "" : "s"}, {sharingMembers} sharing data
+            </p>
+            <p className="text-muted-foreground text-xs mt-0.5">
+              Prospective and certified THWs: join the worker-led cooperative measuring our own quality and ROI.
+            </p>
+          </div>
+          <span className="text-xs text-primary font-semibold flex items-center gap-1 flex-shrink-0">
+            Join the co-op
+            <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </div>
+      </Link>
 
       {/* Stats grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">

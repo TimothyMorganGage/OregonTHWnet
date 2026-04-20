@@ -12,6 +12,7 @@ import Forecast from "@/pages/Forecast";
 import ROI from "@/pages/ROI";
 import Insurance from "@/pages/Insurance";
 import Denials from "@/pages/Denials";
+import Join from "@/pages/Join";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ function Router() {
         <Route path="/roi" component={ROI} />
         <Route path="/insurance" component={Insurance} />
         <Route path="/denials" component={Denials} />
+        <Route path="/join" component={Join} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
