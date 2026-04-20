@@ -13,6 +13,7 @@ import ROI from "@/pages/ROI";
 import Insurance from "@/pages/Insurance";
 import Denials from "@/pages/Denials";
 import Join from "@/pages/Join";
+import Admin from "@/pages/Admin";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ function Router() {
         <Route path="/insurance" component={Insurance} />
         <Route path="/denials" component={Denials} />
         <Route path="/join" component={Join} />
+        <Route path="/admin" component={Admin} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
