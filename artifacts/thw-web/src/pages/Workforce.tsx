@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, XCircle, Users, BookOpen, Stethoscope } from "lucide-react";
+import { CheckCircle, Users, BookOpen, FileText, ExternalLink } from "lucide-react";
 import { THW_WORKER_TYPES, THWWorkerTypeInfo } from "../data/thwWorkerTypes";
 
 const CATEGORY_FILTERS = [
@@ -11,9 +11,9 @@ const CATEGORY_FILTERS = [
 ];
 
 function categoryGroup(w: THWWorkerTypeInfo): string {
-  if (w.id === "tribal_traditional_health_worker") return "Tribal";
-  if (w.id.includes("doula")) return "Doulas";
-  if (["peer_support_specialist", "certified_recovery_mentor", "peer_wellness_specialist"].includes(w.id)) return "Peer & Recovery";
+  if (w.id === "tribal_thw") return "Tribal";
+  if (w.id === "birth_doula") return "Doulas";
+  if (["peer_support_specialist", "peer_wellness_specialist", "family_support_specialist", "youth_support_specialist"].includes(w.id)) return "Peer & Recovery";
   return "Community & Navigation";
 }
 
@@ -34,10 +34,9 @@ function WorkerCard({ worker, onClick }: { worker: THWWorkerTypeInfo; onClick: (
           <h3 className="font-bold text-foreground text-sm leading-snug group-hover:text-primary transition-colors">
             {worker.title}
           </h3>
-          <div className="flex items-center gap-1.5 mt-1 flex-wrap">
-            {worker.oregonRecognized && (
-              <span className="text-xs bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded font-medium">OR Recognized</span>
-            )}
+          <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{worker.subtitle}</p>
+          <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
+            <span className="text-xs bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded font-medium">ORS 414.025</span>
             {worker.ilosEligible && (
               <span className="text-xs bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded font-medium">ILOS Eligible</span>
             )}
@@ -48,11 +47,11 @@ function WorkerCard({ worker, onClick }: { worker: THWWorkerTypeInfo; onClick: (
       <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3 mb-3">{worker.description}</p>
 
       <div className="flex flex-wrap gap-1">
-        {worker.primaryCPTCodes.slice(0, 3).map(c => (
+        {worker.cptCodes.slice(0, 3).map(c => (
           <span key={c} className="text-xs bg-secondary text-primary px-1.5 py-0.5 rounded font-mono border border-border">{c}</span>
         ))}
-        {worker.primaryCPTCodes.length > 3 && (
-          <span className="text-xs text-muted-foreground">+{worker.primaryCPTCodes.length - 3} more</span>
+        {worker.cptCodes.length > 3 && (
+          <span className="text-xs text-muted-foreground">+{worker.cptCodes.length - 3} more</span>
         )}
       </div>
     </button>
@@ -64,7 +63,6 @@ function WorkerDetail({ worker, onClose }: { worker: THWWorkerTypeInfo; onClose:
     <div className="fixed inset-0 z-50 flex justify-end">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
       <div className="relative bg-card w-full max-w-lg h-full overflow-y-auto shadow-xl border-l border-border">
-        {/* Header */}
         <div className="sticky top-0 bg-card border-b border-border px-6 py-4 flex items-start gap-3 z-10">
           <div
             className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-white font-bold text-sm"
@@ -74,67 +72,57 @@ function WorkerDetail({ worker, onClose }: { worker: THWWorkerTypeInfo; onClose:
           </div>
           <div className="flex-1 min-w-0">
             <h2 className="font-bold text-foreground text-lg leading-tight">{worker.title}</h2>
-            <p className="text-muted-foreground text-xs mt-0.5">{worker.certifyingBody}</p>
+            <p className="text-muted-foreground text-xs mt-0.5">{worker.subtitle}</p>
           </div>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground text-xl font-bold px-1 flex-shrink-0">&times;</button>
         </div>
 
         <div className="p-6 space-y-6">
-          {/* Status badges */}
           <div className="flex flex-wrap gap-2">
-            <span className={`flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg font-semibold border ${worker.oregonRecognized ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-gray-50 text-gray-500 border-gray-200"}`}>
-              {worker.oregonRecognized ? <CheckCircle className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
-              {worker.oregonRecognized ? "Oregon Recognized" : "Not Yet Recognized in OR"}
+            <span className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg font-semibold border bg-emerald-50 text-emerald-700 border-emerald-200">
+              <CheckCircle className="w-3.5 h-3.5" />
+              Oregon Recognized — ORS 414.025
             </span>
             <span className={`flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg font-semibold border ${worker.ilosEligible ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-gray-50 text-gray-500 border-gray-200"}`}>
-              {worker.ilosEligible ? <CheckCircle className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
-              {worker.ilosEligible ? "ILOS Eligible" : "ILOS Not Yet Established"}
+              {worker.ilosEligible ? "ILOS Eligible" : "ILOS Not Established"}
             </span>
           </div>
 
-          {/* Description */}
-          <p className="text-sm text-foreground leading-relaxed">{worker.description}</p>
-
-          {/* Key services */}
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <Stethoscope className="w-4 h-4 text-primary" />
-              <h3 className="font-semibold text-foreground text-sm">Key Services</h3>
-            </div>
-            <ul className="space-y-1.5">
-              {worker.keyServices.map((s, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <div className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: worker.color }} />
-                  {s}
-                </li>
-              ))}
-            </ul>
+          <div className="bg-secondary/50 border border-border rounded-lg px-4 py-3">
+            <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wide mb-1">Legal Authority</p>
+            <p className="text-sm font-mono text-foreground">{worker.legalBasis}</p>
           </div>
 
-          {/* CPT Codes */}
+          {worker.subtype && (
+            <div className="bg-secondary/50 border border-border rounded-lg px-4 py-3">
+              <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wide mb-1">OHA-Recognized Subtypes</p>
+              <p className="text-sm text-foreground">{worker.subtype}</p>
+            </div>
+          )}
+
+          <p className="text-sm text-foreground leading-relaxed">{worker.description}</p>
+
           <div>
             <div className="flex items-center gap-2 mb-3">
               <BookOpen className="w-4 h-4 text-primary" />
-              <h3 className="font-semibold text-foreground text-sm">Primary CPT Codes</h3>
+              <h3 className="font-semibold text-foreground text-sm">Billing Codes (CPT)</h3>
             </div>
             <div className="flex flex-wrap gap-2">
-              {worker.primaryCPTCodes.map(c => (
+              {worker.cptCodes.map(c => (
                 <span key={c} className="text-sm bg-secondary text-primary px-3 py-1.5 rounded-lg font-mono font-semibold border border-border">{c}</span>
               ))}
             </div>
           </div>
 
-          {/* Supporting Z Codes */}
           <div>
-            <h3 className="font-semibold text-foreground text-sm mb-3">Common SDOH Z Codes</h3>
+            <h3 className="font-semibold text-foreground text-sm mb-3">SDOH Z Codes</h3>
             <div className="flex flex-wrap gap-2">
-              {worker.supportingZCodes.map(c => (
+              {worker.zCodes.map(c => (
                 <span key={c} className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded font-mono border border-border">{c}</span>
               ))}
             </div>
           </div>
 
-          {/* HEDIS categories */}
           <div>
             <h3 className="font-semibold text-foreground text-sm mb-3">HEDIS Measure Domains</h3>
             <div className="flex flex-wrap gap-2">
@@ -146,7 +134,6 @@ function WorkerDetail({ worker, onClose }: { worker: THWWorkerTypeInfo; onClose:
             </div>
           </div>
 
-          {/* Populations served */}
           <div>
             <div className="flex items-center gap-2 mb-3">
               <Users className="w-4 h-4 text-primary" />
@@ -159,7 +146,6 @@ function WorkerDetail({ worker, onClose }: { worker: THWWorkerTypeInfo; onClose:
             </div>
           </div>
 
-          {/* SDOH focus */}
           <div>
             <h3 className="font-semibold text-foreground text-sm mb-3">SDOH Focus Areas</h3>
             <div className="flex flex-wrap gap-2">
@@ -169,11 +155,21 @@ function WorkerDetail({ worker, onClose }: { worker: THWWorkerTypeInfo; onClose:
             </div>
           </div>
 
-          {/* Certifying body */}
           <div className="bg-secondary rounded-xl p-4">
             <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wide mb-1">Certifying / Overseeing Body</p>
             <p className="text-sm font-medium text-foreground">{worker.certifyingBody}</p>
           </div>
+
+          <a
+            href={worker.registryUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-sm text-primary hover:underline font-medium"
+          >
+            <FileText className="w-4 h-4" />
+            Search OHA THW Registry
+            <ExternalLink className="w-3 h-3" />
+          </a>
         </div>
       </div>
     </div>
@@ -192,28 +188,25 @@ export default function Workforce() {
   });
 
   const ilosCount = THW_WORKER_TYPES.filter(w => w.ilosEligible).length;
-  const orRecognizedCount = THW_WORKER_TYPES.filter(w => w.oregonRecognized).length;
-  const totalCodes = [...new Set(THW_WORKER_TYPES.flatMap(w => w.primaryCPTCodes))].length;
+  const totalCodes = [...new Set(THW_WORKER_TYPES.flatMap(w => w.cptCodes))].length;
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
-      {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-foreground">THW Workforce Directory</h1>
         <p className="text-muted-foreground text-sm mt-0.5">
-          All Traditional Health Worker types recognized by Oregon's THW Alliance — {THW_WORKER_TYPES.length} specialist roles
+          All {THW_WORKER_TYPES.length} Traditional Health Worker types recognized under Oregon law — ORS 414.025 &amp; OAR 410-180
         </p>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-primary rounded-xl p-5 text-white">
           <p className="text-4xl font-bold">{THW_WORKER_TYPES.length}</p>
-          <p className="text-white/70 text-sm mt-0.5">THW Specialist Types</p>
+          <p className="text-white/70 text-sm mt-0.5">ORS-Recognized Types</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-5">
-          <p className="text-4xl font-bold text-emerald-600">{orRecognizedCount}</p>
-          <p className="text-muted-foreground text-sm mt-0.5">OR State Recognized</p>
+          <p className="text-4xl font-bold text-emerald-600">{THW_WORKER_TYPES.length}</p>
+          <p className="text-muted-foreground text-sm mt-0.5">OHA Registry Listed</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-5">
           <p className="text-4xl font-bold text-amber-600">{ilosCount}</p>
@@ -225,15 +218,26 @@ export default function Workforce() {
         </div>
       </div>
 
-      {/* Definition banner */}
       <div className="bg-secondary border border-border rounded-xl p-5">
-        <h2 className="font-bold text-primary mb-2 text-sm uppercase tracking-wide">What is a Traditional Health Worker?</h2>
-        <p className="text-sm text-foreground leading-relaxed">
-          Traditional Health Workers (THWs) are community members who serve as bridges between health and social services and the community. Oregon law (ORS 414.025) defines THWs as a category that includes Community Health Workers, Peer Support Specialists, Certified Recovery Mentors, Family Support Specialists, Youth Support Specialists, Doulas, Personal Health Navigators, Peer Wellness Specialists, Tribal Traditional Health Workers, and others. THWs reduce health disparities by meeting community members where they are — culturally, geographically, and linguistically.
-        </p>
+        <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <h2 className="font-bold text-primary mb-2 text-sm uppercase tracking-wide">ORS 414.025 — Traditional Health Workers</h2>
+            <p className="text-sm text-foreground leading-relaxed max-w-3xl">
+              Oregon Revised Statute 414.025 and OAR 410-180 define eight Traditional Health Worker types: Community Health Workers, Peer Support Specialists (including Certified Recovery Mentors), Peer Wellness Specialists, Personal Health Navigators, Birth Doulas, Family Support Specialists, Youth Support Specialists, and Tribal Traditional Health Workers. All are eligible for certification through OHA and listing in the state THW Registry.
+            </p>
+          </div>
+          <a
+            href="https://traditionalhealthworkerregistry.oregon.gov"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-xs text-primary hover:underline font-medium whitespace-nowrap flex-shrink-0"
+          >
+            <ExternalLink className="w-3 h-3" />
+            OHA THW Registry
+          </a>
+        </div>
       </div>
 
-      {/* Filters */}
       <div className="flex flex-wrap gap-3 items-center">
         <div className="flex flex-wrap gap-2">
           {CATEGORY_FILTERS.map(cat => (
@@ -262,7 +266,6 @@ export default function Workforce() {
         </button>
       </div>
 
-      {/* Cards grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filtered.map(worker => (
           <WorkerCard
@@ -273,11 +276,16 @@ export default function Workforce() {
         ))}
       </div>
 
-      {/* ORS cite */}
-      <div className="text-center py-4 border-t border-border">
+      <div className="bg-muted/40 border border-border rounded-xl p-4 text-center space-y-1">
         <p className="text-xs text-muted-foreground">
-          THW types defined under <strong>Oregon Revised Statutes 414.025</strong> and the Oregon Health Authority THW Policy & Program.
-          Coverage recognition governed by OHA CCO contracts and insurance plan THW policies.
+          THW types defined under <strong>ORS 414.025</strong> and <strong>OAR 410-180-0305</strong>.
+          Find certified THWs at{" "}
+          <a href="https://traditionalhealthworkerregistry.oregon.gov" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+            traditionalhealthworkerregistry.oregon.gov
+          </a>
+        </p>
+        <p className="text-xs text-muted-foreground/60">
+          Claim data shown is for demonstration purposes only. Actual THW billing records are confidential.
         </p>
       </div>
 
