@@ -39,7 +39,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     notes: "Health home team session — chronic disease management, food insecurity flagged",
     hedisCategories: ["Care Coordination", "Behavioral Health Integration"],
     billingModel: "ffs",
-    thwWorkerType: "peer_wellness_specialist",
+    thwWorkerType: "pws_adult",
   },
   {
     id: "c003",
@@ -57,7 +57,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     notes: "PSS mental health support session — social isolation and family conflict documented",
     hedisCategories: ["Behavioral Health Integration"],
     billingModel: "ffs",
-    thwWorkerType: "peer_support_specialist",
+    thwWorkerType: "pss_adult_mh",
   },
   {
     id: "c004",
@@ -93,7 +93,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     notes: "PSS (Certified Recovery Mentor) session — post-incarceration reintegration support, recovery plan established",
     hedisCategories: ["Substance Use Disorder Treatment", "Transitions of Care"],
     billingModel: "ilos",
-    thwWorkerType: "peer_support_specialist",
+    thwWorkerType: "pss_crm",
   },
   {
     id: "c006",

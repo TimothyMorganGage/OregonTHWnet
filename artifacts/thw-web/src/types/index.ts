@@ -1,18 +1,30 @@
 export type ClaimStatus = "draft" | "submitted" | "approved" | "denied" | "appealed";
 
+// 14 OHA-recognized THW credentials per ORS 414.025 + OAR 410-180-0305,
+// plus 4 cooperative-advocacy roles (clearly labeled as not-yet-ORS-recognized).
 export type THWWorkerType =
+  // Standalone OHA-recognized (6)
   | "community_health_worker"
-  | "peer_support_specialist"
-  | "certified_recovery_mentor"
+  | "personal_health_navigator"
+  | "birth_doula"
   | "family_support_specialist"
   | "youth_support_specialist"
-  | "birth_doula"
+  | "tribal_thw"
+  // Peer Support Specialist OHA subtypes (5)
+  | "pss_adult_mh"
+  | "pss_adult_addictions"
+  | "pss_family"
+  | "pss_youth"
+  | "pss_crm"
+  // Peer Wellness Specialist OHA subtypes (3)
+  | "pws_adult"
+  | "pws_family"
+  | "pws_youth"
+  // Co-op advocacy roles (not yet ORS-recognized)
   | "postpartum_doula"
-  | "abortion_doula"
+  | "full_spectrum_doula"
   | "end_of_life_doula"
-  | "personal_health_navigator"
-  | "peer_wellness_specialist"
-  | "tribal_traditional_health_worker";
+  | "gender_doula";
 
 export type ServiceCategory =
   | "community_health"

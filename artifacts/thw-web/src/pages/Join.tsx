@@ -9,7 +9,7 @@ import {
   Sparkles,
   ArrowRight,
 } from "lucide-react";
-import { THW_WORKER_TYPES } from "../data/thwWorkerTypes";
+import { THW_WORKER_TYPES, ADVOCACY_EXPANSION_ROLES, groupedWorkerTypes } from "../data/thwWorkerTypes";
 import { useMembers, type CoopMember } from "../hooks/useMembers";
 
 const OREGON_COUNTIES = [
@@ -112,6 +112,10 @@ function Chip({
 
 function MemberCard({ member }: { member: CoopMember }) {
   const wt = THW_WORKER_TYPES.find((t) => t.id === member.thwType);
+  const advocacyRole = ADVOCACY_EXPANSION_ROLES.find((r) => r.id === member.thwType);
+  const roleLabel = wt?.title ?? advocacyRole?.title ?? member.thwType;
+  const roleColor = wt?.color ?? advocacyRole?.color;
+  const roleAbbrev = wt?.abbreviation ?? advocacyRole?.abbreviation;
   const statusLabel =
     member.certificationStatus === "certified"
       ? "OHA Certified"
@@ -128,12 +132,12 @@ function MemberCard({ member }: { member: CoopMember }) {
   return (
     <div className="bg-card border border-border rounded-xl p-4">
       <div className="flex items-start gap-3">
-        {wt ? (
+        {roleColor && roleAbbrev ? (
           <div
             className="w-10 h-10 rounded-lg flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-            style={{ backgroundColor: wt.color }}
+            style={{ backgroundColor: roleColor }}
           >
-            {wt.abbreviation}
+            {roleAbbrev}
           </div>
         ) : (
           <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0">
@@ -143,7 +147,7 @@ function MemberCard({ member }: { member: CoopMember }) {
         <div className="min-w-0 flex-1">
           <p className="font-semibold text-foreground text-sm truncate">{member.fullName}</p>
           <p className="text-muted-foreground text-xs">
-            {wt?.title ?? member.thwType} · {member.county} County
+            {roleLabel} · {member.county} County
           </p>
         </div>
       </div>
@@ -151,6 +155,11 @@ function MemberCard({ member }: { member: CoopMember }) {
         <span className={`text-[10px] uppercase font-semibold px-2 py-0.5 rounded ${statusColor}`}>
           {statusLabel}
         </span>
+        {advocacyRole && (
+          <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded bg-amber-100 text-amber-800">
+            Advocacy role
+          </span>
+        )}
         {member.consentDataSharing && (
           <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded bg-primary/10 text-primary">
             Sharing data
@@ -290,7 +299,7 @@ export default function Join() {
         <div className="bg-card border border-border rounded-xl p-5">
           <p className="text-muted-foreground text-xs uppercase tracking-wide font-semibold">THW Types</p>
           <p className="text-3xl font-bold mt-1 text-foreground">{stats.types}</p>
-          <p className="text-muted-foreground text-xs mt-1">Of 8 ORS 414.025 types</p>
+          <p className="text-muted-foreground text-xs mt-1">Of {THW_WORKER_TYPES.length} OHA-recognized credentials + {ADVOCACY_EXPANSION_ROLES.length} advocacy roles</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-5">
           <p className="text-muted-foreground text-xs uppercase tracking-wide font-semibold">Sharing Data</p>
@@ -398,12 +407,35 @@ export default function Join() {
                 className="w-full px-3 py-2 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
               >
                 <option value="">Select your role…</option>
-                {THW_WORKER_TYPES.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.title} ({t.abbreviation})
-                  </option>
+                <optgroup label="Standalone OHA-recognized credentials">
+                  {groupedWorkerTypes().standalone.map((t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.title} ({t.abbreviation})
+                    </option>
+                  ))}
+                </optgroup>
+                {Array.from(groupedWorkerTypes().groups.entries()).map(([parent, list]) => (
+                  <optgroup key={parent} label={`${parent} — OHA subtypes`}>
+                    {list.map((t) => (
+                      <option key={t.id} value={t.id}>
+                        {t.title} ({t.abbreviation})
+                      </option>
+                    ))}
+                  </optgroup>
                 ))}
+                <optgroup label="Co-op advocacy roles (not yet ORS-recognized)">
+                  {ADVOCACY_EXPANSION_ROLES.map((r) => (
+                    <option key={r.id} value={r.id}>
+                      {r.title} ({r.abbreviation}) — advocacy
+                    </option>
+                  ))}
+                </optgroup>
               </select>
+              <p className="text-[11px] text-muted-foreground mt-1">
+                {THW_WORKER_TYPES.length} OHA-recognized credentials + {ADVOCACY_EXPANSION_ROLES.length}{" "}
+                advocacy-priority roles. Advocacy roles join the cooperative for organizing power; only
+                ORS-recognized credentials are currently Medicaid-billable.
+              </p>
             </div>
             <div>
               <label className="block text-sm font-medium text-foreground mb-1.5">

@@ -17,7 +17,7 @@ export interface CoopMember {
   joinedAt: string;
 }
 
-const STORAGE_KEY = "oregon_thw_coop_members_v1";
+const STORAGE_KEY = "oregon_thw_coop_members_v2";
 
 const SEED_MEMBERS: CoopMember[] = [
   {
@@ -38,7 +38,7 @@ const SEED_MEMBERS: CoopMember[] = [
   {
     id: "m_seed_002",
     fullName: "Carlos Mendez",
-    thwType: "peer_support_specialist",
+    thwType: "pss_adult_addictions",
     certificationStatus: "certified",
     ohaRegistryNumber: "THW-PSS-02134",
     county: "Washington",
