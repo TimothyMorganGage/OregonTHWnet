@@ -256,7 +256,9 @@ export default function Join() {
     });
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  const [submitting, setSubmitting] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
 
@@ -264,8 +266,6 @@ export default function Join() {
     if (!form.thwType) return setError("Please select your THW type.");
     if (!form.county) return setError("Please select the county where you work.");
     if (!form.email.trim()) return setError("Please enter a contact email.");
-    // Languages and populations are optional for prospective members who may
-    // not yet be serving clients. Required for in-progress and certified THWs.
     if (form.certificationStatus !== "prospective") {
       if (form.languages.length === 0)
         return setError("Please select at least one language you use with clients.");
@@ -275,30 +275,35 @@ export default function Join() {
     if (!form.consentMembership)
       return setError("Please confirm cooperative membership consent to continue.");
 
-    const newMember = addMember({
-      fullName: form.fullName.trim(),
-      thwType: form.thwType,
-      certificationStatus: form.certificationStatus,
-      ohaRegistryNumber: form.ohaRegistryNumber.trim() || undefined,
-      county: form.county,
-      languages: form.languages,
-      populationsServed: form.populationsServed,
-      email: form.email.trim(),
-      phone: form.phone.trim() || undefined,
-      organization: form.organization.trim() || undefined,
-      consentDataSharing: form.consentDataSharing,
-      consentMembership: form.consentMembership,
-    });
+    setSubmitting(true);
+    try {
+      const newMember = await addMember({
+        fullName: form.fullName.trim(),
+        thwType: form.thwType,
+        certificationStatus: form.certificationStatus,
+        ohaRegistryNumber: form.ohaRegistryNumber.trim() || null,
+        county: form.county,
+        languages: form.languages,
+        populationsServed: form.populationsServed,
+        email: form.email.trim(),
+        phone: form.phone.trim() || null,
+        organization: form.organization.trim() || null,
+        consentDataSharing: form.consentDataSharing,
+        consentMembership: form.consentMembership,
+      });
 
-    setSubmittedName(newMember.fullName);
-    setForm(EMPTY_FORM);
-    if (typeof window !== "undefined") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      // Open the user's email client with a fully prefilled message to the
-      // co-op organizer so the application is also delivered via email.
-      const { subject, body } = buildApplicationEmail(newMember);
-      const mailto = `mailto:${COOP_ORGANIZER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailto;
+      setSubmittedName(newMember.fullName);
+      setForm(EMPTY_FORM);
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        const { subject, body } = buildApplicationEmail(newMember);
+        const mailto = `mailto:${COOP_ORGANIZER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = mailto;
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to submit application. Please try again or email the organizer directly.");
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -679,13 +684,15 @@ export default function Join() {
 
           <div className="flex items-center justify-between flex-wrap gap-3">
             <p className="text-xs text-muted-foreground">
-              This is a demonstration platform. No data leaves your browser.
+              Your application is saved to the cooperative database and a copy is emailed to the
+              organizer at {COOP_ORGANIZER_EMAIL}.
             </p>
             <button
               type="submit"
-              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors"
+              disabled={submitting}
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Submit membership application
+              {submitting ? "Submitting…" : "Submit membership application"}
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
