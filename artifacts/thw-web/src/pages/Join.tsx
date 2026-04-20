@@ -8,9 +8,53 @@ import {
   ExternalLink,
   Sparkles,
   ArrowRight,
+  Mail,
 } from "lucide-react";
 import { THW_WORKER_TYPES, ADVOCACY_EXPANSION_ROLES, groupedWorkerTypes } from "../data/thwWorkerTypes";
 import { useMembers, type CoopMember } from "../hooks/useMembers";
+
+const COOP_ORGANIZER_EMAIL = "tmgtyw@gmail.com";
+
+function buildApplicationEmail(member: CoopMember): { subject: string; body: string } {
+  const wt = THW_WORKER_TYPES.find((t) => t.id === member.thwType);
+  const advocacy = ADVOCACY_EXPANSION_ROLES.find((r) => r.id === member.thwType);
+  const roleLabel = wt?.title ?? advocacy?.title ?? member.thwType;
+  const roleKind = wt ? "OHA-recognized credential" : advocacy ? "Co-op advocacy role (not yet ORS-recognized)" : "Unspecified";
+  const statusLabel =
+    member.certificationStatus === "certified"
+      ? "OHA Certified"
+      : member.certificationStatus === "in_progress"
+      ? "Certification in progress"
+      : "Prospective THW";
+
+  const subject = `[Oregon THW Co-op Application] ${member.fullName} — ${roleLabel}`;
+  const body = [
+    "Oregon THW Cooperative — new membership application",
+    "",
+    `Name:                ${member.fullName}`,
+    `Email:               ${member.email}`,
+    `Phone:               ${member.phone ?? "(not provided)"}`,
+    `Organization:        ${member.organization ?? "(not provided)"}`,
+    `County:              ${member.county}`,
+    "",
+    `THW role:            ${roleLabel}`,
+    `Role kind:           ${roleKind}`,
+    `Certification:       ${statusLabel}`,
+    `OHA Registry #:      ${member.ohaRegistryNumber ?? "(not provided)"}`,
+    "",
+    `Languages:           ${member.languages.length ? member.languages.join(", ") : "(none listed)"}`,
+    `Populations served:  ${member.populationsServed.length ? member.populationsServed.join(", ") : "(none listed)"}`,
+    "",
+    `Cooperative consent: ${member.consentMembership ? "YES" : "NO"}`,
+    `Data-sharing consent:${member.consentDataSharing ? " YES (opted in)" : " no (opted out)"}`,
+    "",
+    `Submitted:           ${new Date(member.joinedAt).toLocaleString()}`,
+    "",
+    "— Sent from the Oregon THW Cooperative platform",
+  ].join("\n");
+
+  return { subject, body };
+}
 
 const OREGON_COUNTIES = [
   "Baker", "Benton", "Clackamas", "Clatsop", "Columbia", "Coos", "Crook",
@@ -250,6 +294,11 @@ export default function Join() {
     setForm(EMPTY_FORM);
     if (typeof window !== "undefined") {
       window.scrollTo({ top: 0, behavior: "smooth" });
+      // Open the user's email client with a fully prefilled message to the
+      // co-op organizer so the application is also delivered via email.
+      const { subject, body } = buildApplicationEmail(newMember);
+      const mailto = `mailto:${COOP_ORGANIZER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
     }
   }
 
@@ -272,17 +321,60 @@ export default function Join() {
       {submittedName && (
         <div className="bg-primary/10 border border-primary/30 rounded-xl p-5 flex items-start gap-3">
           <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
-          <div>
+          <div className="flex-1">
             <p className="font-semibold text-foreground">
               Welcome to the cooperative, {submittedName}.
             </p>
             <p className="text-sm text-muted-foreground mt-1">
-              Your membership is recorded locally on this device. In a production deployment, OHA
-              registry verification and CCO data-sharing agreements would be confirmed here.
+              Your application was added to the directory and your email client should have opened
+              with a copy addressed to the co-op organizer at{" "}
+              <a href={`mailto:${COOP_ORGANIZER_EMAIL}`} className="text-primary font-medium hover:underline">
+                {COOP_ORGANIZER_EMAIL}
+              </a>
+              . Please send that email to complete your application — the organizer reviews
+              applications within 5 business days and will reach out about OHA registry verification
+              and the cooperative onboarding call.
+            </p>
+            <p className="text-xs text-muted-foreground mt-2">
+              Didn't see your email client open?{" "}
+              <button
+                type="button"
+                onClick={() => {
+                  const stored = members.find((m) => m.fullName === submittedName);
+                  if (!stored) return;
+                  const { subject, body } = buildApplicationEmail(stored);
+                  window.location.href = `mailto:${COOP_ORGANIZER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                }}
+                className="text-primary font-medium hover:underline"
+              >
+                Click here to retry
+              </button>
+              .
             </p>
           </div>
         </div>
       )}
+
+      {/* Direct contact panel — for people who don't want to fill the form */}
+      <div className="bg-card border border-border rounded-xl p-4 flex items-start gap-3">
+        <Mail className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+        <div className="flex-1">
+          <p className="text-sm font-semibold text-foreground">
+            Prefer to reach out directly? Email the cooperative organizer.
+          </p>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Questions about membership, certification pathways, advocacy roles, or cooperative
+            governance — write to{" "}
+            <a
+              href={`mailto:${COOP_ORGANIZER_EMAIL}?subject=${encodeURIComponent("Oregon THW Co-op — inquiry")}`}
+              className="text-primary font-medium hover:underline"
+            >
+              {COOP_ORGANIZER_EMAIL}
+            </a>
+            . All applications submitted through the form below are also routed to this address.
+          </p>
+        </div>
+      </div>
 
       {/* Co-op stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
