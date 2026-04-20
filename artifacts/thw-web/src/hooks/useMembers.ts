@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 
+// Public directory entries omit email/phone (PII never returned to the public
+// listing endpoint). The applicant's own POST response includes them so the
+// just-submitted member can be used to build the prefilled organizer email.
 export interface CoopMember {
   id: string;
   fullName: string;
@@ -9,7 +12,7 @@ export interface CoopMember {
   county: string;
   languages: string[];
   populationsServed: string[];
-  email: string;
+  email?: string;
   phone?: string | null;
   organization?: string | null;
   consentDataSharing: boolean;
@@ -19,7 +22,7 @@ export interface CoopMember {
   joinedAt: string;
 }
 
-const API_BASE = `${import.meta.env.BASE_URL}api`;
+const API_BASE = "/api";
 
 async function fetchMembers(): Promise<CoopMember[]> {
   const res = await fetch(`${API_BASE}/members`);

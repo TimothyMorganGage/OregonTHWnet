@@ -1,4 +1,5 @@
 import { Router, type IRouter, type Request, type Response, type NextFunction } from "express";
+import { randomUUID } from "node:crypto";
 import { db, membersTable, memberApplicationSchema, memberReviewSchema } from "@workspace/db";
 import { desc, eq } from "drizzle-orm";
 import { logger } from "../lib/logger";
@@ -21,19 +22,30 @@ function requireAdmin(req: Request, res: Response, next: NextFunction) {
 }
 
 function newId(): string {
-  return `m_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+  return `m_${randomUUID()}`;
 }
 
+// Escape a CSV value AND defang spreadsheet formula injection by prefixing
+// any cell starting with =, +, -, @, tab, or CR with a single quote so Excel
+// and Google Sheets do not evaluate it as a formula.
 function csvEscape(value: unknown): string {
   if (value === null || value === undefined) return "";
-  const s = Array.isArray(value) ? value.join("; ") : String(value);
+  let s = Array.isArray(value) ? value.join("; ") : String(value);
+  if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`;
   if (/[",\n\r]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
   return s;
 }
 
 router.get("/members", async (_req, res) => {
   try {
-    const rows = await db.select().from(membersTable).orderBy(desc(membersTable.joinedAt));
+    // Public directory only includes APPROVED members. Pending and declined
+    // applications are visible only to the cooperative organizer via the admin
+    // endpoints below.
+    const rows = await db
+      .select()
+      .from(membersTable)
+      .where(eq(membersTable.reviewStatus, "approved"))
+      .orderBy(desc(membersTable.joinedAt));
     const publicRows = rows.map((r) => ({
       id: r.id,
       fullName: r.fullName,
@@ -136,10 +148,19 @@ router.patch("/admin/members/:id", requireAdmin, async (req, res) => {
     return;
   }
   try {
-    const updates: Record<string, unknown> = { reviewedAt: new Date() };
-    if (parsed.data.reviewStatus !== undefined) updates.reviewStatus = parsed.data.reviewStatus;
+    // reviewedAt should track when a decision was made, not when notes were
+    // last edited. Only stamp it when the review status itself changes.
+    const updates: Record<string, unknown> = {};
+    if (parsed.data.reviewStatus !== undefined) {
+      updates.reviewStatus = parsed.data.reviewStatus;
+      updates.reviewedAt = new Date();
+    }
     if (parsed.data.ohaVerified !== undefined) updates.ohaVerified = parsed.data.ohaVerified;
     if (parsed.data.reviewerNotes !== undefined) updates.reviewerNotes = parsed.data.reviewerNotes;
+    if (Object.keys(updates).length === 0) {
+      res.status(400).json({ error: "No fields to update" });
+      return;
+    }
     const [updated] = await db
       .update(membersTable)
       .set(updates)

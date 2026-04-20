@@ -28,6 +28,17 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 
 ## Artifacts
 
+### Cooperative member backend (`artifacts/api-server` + `lib/db`)
+- **Endpoints**:
+  - `POST /api/members` — public, accepts a membership application (saves to `coop_members` table, returns full record)
+  - `GET /api/members` — public, returns ONLY approved members with PII (email/phone/notes) stripped
+  - `GET /api/admin/members` — Bearer `ADMIN_TOKEN`, returns all members with full PII for review
+  - `PATCH /api/admin/members/:id` — Bearer `ADMIN_TOKEN`, accepts `{ reviewStatus?, ohaVerified?, reviewerNotes? }`. `reviewedAt` only updates when `reviewStatus` changes.
+  - `GET /api/admin/members.csv` — Bearer `ADMIN_TOKEN`, downloads roster CSV with formula-injection defang
+- **Auth**: single shared `ADMIN_TOKEN` env var (server-side check). Web admin page stores token in `sessionStorage` only.
+- **Web admin UI**: `/admin` route in `thw-web` — login-gated console with status filter cards, OHA-verified checkbox, notes textarea (saves on blur), approve/decline buttons, CSV export. Linked from nowhere — organizer must navigate directly.
+- **Email backup**: form submit also opens user's email client with prefilled application addressed to `tmgtyw@gmail.com` so the organizer gets a notification even if they don't open the admin console.
+
 ### THW Accounting Platform (`artifacts/thw-platform`)
 - **Type**: Expo mobile app
 - **Purpose**: Accounting platform for Traditional Health Workers (THWs) in Oregon

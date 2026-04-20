@@ -32,7 +32,7 @@ function buildApplicationEmail(member: CoopMember): { subject: string; body: str
     "Oregon THW Cooperative — new membership application",
     "",
     `Name:                ${member.fullName}`,
-    `Email:               ${member.email}`,
+    `Email:               ${member.email ?? "(not provided)"}`,
     `Phone:               ${member.phone ?? "(not provided)"}`,
     `Organization:        ${member.organization ?? "(not provided)"}`,
     `County:              ${member.county}`,
@@ -229,7 +229,7 @@ function MemberCard({ member }: { member: CoopMember }) {
 export default function Join() {
   const { members, addMember } = useMembers();
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
-  const [submittedName, setSubmittedName] = useState<string | null>(null);
+  const [submittedMember, setSubmittedMember] = useState<CoopMember | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const stats = useMemo(() => {
@@ -292,7 +292,7 @@ export default function Join() {
         consentMembership: form.consentMembership,
       });
 
-      setSubmittedName(newMember.fullName);
+      setSubmittedMember(newMember);
       setForm(EMPTY_FORM);
       if (typeof window !== "undefined") {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -323,16 +323,16 @@ export default function Join() {
       </div>
 
       {/* Confirmation banner */}
-      {submittedName && (
+      {submittedMember && (
         <div className="bg-primary/10 border border-primary/30 rounded-xl p-5 flex items-start gap-3">
           <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
           <div className="flex-1">
             <p className="font-semibold text-foreground">
-              Welcome to the cooperative, {submittedName}.
+              Welcome to the cooperative, {submittedMember.fullName}.
             </p>
             <p className="text-sm text-muted-foreground mt-1">
-              Your application was added to the directory and your email client should have opened
-              with a copy addressed to the co-op organizer at{" "}
+              Your application was saved to the cooperative database and your email client should
+              have opened with a copy addressed to the organizer at{" "}
               <a href={`mailto:${COOP_ORGANIZER_EMAIL}`} className="text-primary font-medium hover:underline">
                 {COOP_ORGANIZER_EMAIL}
               </a>
@@ -345,9 +345,7 @@ export default function Join() {
               <button
                 type="button"
                 onClick={() => {
-                  const stored = members.find((m) => m.fullName === submittedName);
-                  if (!stored) return;
-                  const { subject, body } = buildApplicationEmail(stored);
+                  const { subject, body } = buildApplicationEmail(submittedMember);
                   window.location.href = `mailto:${COOP_ORGANIZER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
                 }}
                 className="text-primary font-medium hover:underline"

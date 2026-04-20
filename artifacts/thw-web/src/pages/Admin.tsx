@@ -33,7 +33,7 @@ interface AdminMember {
   joinedAt: string;
 }
 
-const API_BASE = `${import.meta.env.BASE_URL}api`;
+const API_BASE = "/api";
 const TOKEN_KEY = "oregon_thw_admin_token";
 
 function roleLabel(thwType: string): { label: string; kind: "ohaRecognized" | "advocacy" | "unknown" } {
