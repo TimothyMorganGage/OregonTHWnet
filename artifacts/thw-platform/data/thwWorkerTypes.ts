@@ -1,18 +1,35 @@
+/**
+ * Oregon Traditional Health Worker Types
+ *
+ * Sources:
+ *   - ORS 414.025 (statutory definitions)
+ *   - OAR 410-180-0305 (administrative rules)
+ *   - OHA THW Registry: https://traditionalhealthworkerregistry.oregon.gov
+ *   - Oregon Traditional Health Workers Commission (ORS 413.600)
+ *
+ * Eight types are recognized under Oregon law. Peer Support Specialists and
+ * Peer Wellness Specialists each have OHA-recognized subtypes:
+ *   Adult Mental Health | Adult Addictions | Family Support | Youth Support
+ * Certified Recovery Mentor (CRM) is an OHA specialization within PSS.
+ */
+
 export interface THWWorkerTypeInfo {
   id: string;
   title: string;
   abbreviation: string;
+  subtitle: string;
   description: string;
-  keyServices: string[];
-  primaryCPTCodes: string[];
-  supportingZCodes: string[];
-  hedisCategories: string[];
-  certifyingBody: string;
-  oregonRecognized: boolean;
-  ilosEligible: boolean;
-  color: string;
+  legalBasis: string;
   populations: string[];
+  cptCodes: string[];
+  zCodes: string[];
+  hedisCategories: string[];
+  ilosEligible: boolean;
+  certifyingBody: string;
+  registryUrl: string;
+  color: string;
   sdohFocus: string[];
+  subtype?: string;
 }
 
 export const THW_WORKER_TYPES: THWWorkerTypeInfo[] = [
@@ -20,207 +37,150 @@ export const THW_WORKER_TYPES: THWWorkerTypeInfo[] = [
     id: "community_health_worker",
     title: "Community Health Worker",
     abbreviation: "CHW",
-    description: "Frontline public health workers who are trusted members of and/or have an unusually close understanding of the community they serve.",
-    keyServices: ["Health risk assessment", "SDOH screening", "Health education", "Outreach and enrollment", "Care plan navigation"],
-    primaryCPTCodes: ["G0019", "G0023", "T1015", "T1016", "T1017"],
-    supportingZCodes: ["Z59.0", "Z59.1", "Z59.4", "Z75.3"],
-    hedisCategories: ["Preventive Care", "Care Coordination", "Equity & Access"],
-    certifyingBody: "Oregon CHW Coalition / CHWORE",
-    oregonRecognized: true,
+    subtitle: "Frontline community health liaison",
+    description:
+      "A frontline public health worker who is a trusted member of and/or has an unusually close understanding of the community served. To the extent practicable, shares ethnicity, language, socioeconomic status, and life experiences with residents of the community. Provides culturally appropriate health education, assists community residents in receiving care, may give peer counseling and guidance on health behaviors, and may provide direct services such as first aid or blood pressure screening.",
+    legalBasis: "ORS 414.025(5); OAR 410-180-0305(4)",
+    populations: ["Medicaid members", "uninsured residents", "BIPOC communities", "rural Oregonians", "immigrants and refugees"],
+    cptCodes: ["G0019", "G0023", "T1016", "T1017", "G9012"],
+    zCodes: ["Z59.0", "Z59.4", "Z60.2", "Z63.0", "Z75.3"],
+    hedisCategories: ["Preventive Care", "Care Coordination", "Social Determinants of Health"],
     ilosEligible: true,
+    certifyingBody: "OHA-approved CHW training program (OAR 410-180-0400)",
+    registryUrl: "https://traditionalhealthworkerregistry.oregon.gov",
     color: "#1a7a5e",
-    populations: ["Medicaid members", "Uninsured", "Underserved rural communities", "BIPOC communities"],
-    sdohFocus: ["Housing", "Food security", "Healthcare access", "Transportation"],
+    sdohFocus: ["Housing instability", "Food insecurity", "Transportation", "Language access", "Immigration status"],
   },
   {
     id: "peer_support_specialist",
     title: "Peer Support Specialist",
     abbreviation: "PSS",
-    description: "Individuals with lived experience of mental health challenges who provide support, mentorship, and advocacy to others navigating similar experiences.",
-    keyServices: ["Peer-to-peer support", "Recovery coaching", "Mental health navigation", "Crisis support", "Wellness planning"],
-    primaryCPTCodes: ["H0038", "96152", "99484", "T1016"],
-    supportingZCodes: ["Z60.4", "Z63.0", "Z60.2"],
-    hedisCategories: ["Behavioral Health", "Access to Care"],
-    certifyingBody: "MHACBO",
-    oregonRecognized: true,
+    subtitle: "Lived-experience mental health & addiction recovery support",
+    description:
+      "An individual who provides supportive services to a current or former consumer of mental health or addiction treatment services. PSS workers draw on their own lived experience of recovery to offer hope, mentorship, and practical support. OHA subtypes: Adult Mental Health, Adult Addictions, Family Support, Youth Support. Certified Recovery Mentor (CRM) is an OHA-recognized specialization within this category for individuals in addiction recovery.",
+    legalBasis: "ORS 414.025(21); OAR 410-180-0305(11)",
+    populations: ["Adults with mental health diagnoses", "individuals in addiction recovery", "justice-involved individuals", "veterans"],
+    cptCodes: ["H0038", "H0025", "99484", "96152", "T1016"],
+    zCodes: ["Z81.1", "Z86.59", "Z87.891", "Z91.19"],
+    hedisCategories: ["Behavioral Health Integration", "Substance Use Disorder Treatment", "Transitions of Care"],
     ilosEligible: true,
+    certifyingBody: "Mental Health & Addiction Certification Board of Oregon (MHACBO)",
+    registryUrl: "https://traditionalhealthworkerregistry.oregon.gov",
     color: "#7c3aed",
-    populations: ["Adults with serious mental illness", "Youth in transition", "Justice-involved individuals"],
-    sdohFocus: ["Social isolation", "Housing instability", "Legal circumstances"],
-  },
-  {
-    id: "certified_recovery_mentor",
-    title: "Certified Recovery Mentor",
-    abbreviation: "CRM",
-    description: "Trained peer professionals in sustained recovery from substance use disorders who provide community-based support, mentorship, and accountability.",
-    keyServices: ["Recovery coaching", "SUD navigation", "12-step/SMART facilitation", "Relapse prevention", "Sober community linkage"],
-    primaryCPTCodes: ["H0038", "H0025", "T1016", "96152"],
-    supportingZCodes: ["Z65.1", "Z65.3", "Z59.0"],
-    hedisCategories: ["Substance Use", "Behavioral Health"],
-    certifyingBody: "MHACBO / Oregon Recovers",
-    oregonRecognized: true,
-    ilosEligible: true,
-    color: "#b45309",
-    populations: ["Adults in SUD recovery", "Justice-involved individuals", "Families affected by addiction"],
-    sdohFocus: ["Legal circumstances", "Housing", "Employment", "Family reunification"],
-  },
-  {
-    id: "family_support_specialist",
-    title: "Family Support Specialist",
-    abbreviation: "FSS",
-    description: "Professionals with lived experience navigating child welfare, parenting challenges, or family systems who support families involved with or at risk of involvement with DHS.",
-    keyServices: ["Parenting support", "DHS system navigation", "Family reunification support", "Crisis intervention", "Benefits enrollment"],
-    primaryCPTCodes: ["T1016", "T1017", "99401", "99402", "G0019"],
-    supportingZCodes: ["Z62.0", "Z63.0", "Z63.4", "Z59.0"],
-    hedisCategories: ["Care Coordination", "Preventive Care"],
-    certifyingBody: "Oregon DHS / Family Support Network of Oregon",
-    oregonRecognized: true,
-    ilosEligible: true,
-    color: "#0369a1",
-    populations: ["Families involved with child welfare", "Foster and kinship families", "Teen parents"],
-    sdohFocus: ["Family stability", "Housing", "Parenting", "Domestic violence"],
-  },
-  {
-    id: "youth_support_specialist",
-    title: "Youth Support Specialist",
-    abbreviation: "YSS",
-    description: "Peer professionals with lived experience as youth who have navigated foster care, homelessness, mental health systems, or juvenile justice.",
-    keyServices: ["Independent living skills", "School re-engagement", "Housing navigation", "Youth foster care transition", "Employment readiness"],
-    primaryCPTCodes: ["T1016", "H0038", "99401", "T1015"],
-    supportingZCodes: ["Z59.0", "Z55.3", "Z60.4", "Z65.1"],
-    hedisCategories: ["Access to Care", "Behavioral Health", "Care Coordination"],
-    certifyingBody: "Oregon Youth Authority",
-    oregonRecognized: true,
-    ilosEligible: true,
-    color: "#0891b2",
-    populations: ["Foster care youth", "Homeless youth", "Justice-involved youth", "LGBTQ+ youth"],
-    sdohFocus: ["Housing", "Education", "Employment", "Social connection"],
-  },
-  {
-    id: "birth_doula",
-    title: "Birth Doula",
-    abbreviation: "BD",
-    description: "Non-medical birth companions who provide continuous physical, emotional, and informational support throughout labor and delivery.",
-    keyServices: ["Labor support", "Prenatal education", "Birth plan development", "Partner coaching", "Immediate postpartum support"],
-    primaryCPTCodes: ["99401", "T1015", "G0019"],
-    supportingZCodes: ["Z34.00", "Z23", "Z64.0"],
-    hedisCategories: ["Maternal Health", "Preventive Care"],
-    certifyingBody: "DONA International / Oregon Doula Association",
-    oregonRecognized: true,
-    ilosEligible: true,
-    color: "#be185d",
-    populations: ["Pregnant people", "High-risk pregnancies", "Black and Indigenous birthing people"],
-    sdohFocus: ["Maternal mortality", "Birth equity", "Prenatal access"],
-  },
-  {
-    id: "postpartum_doula",
-    title: "Postpartum Doula",
-    abbreviation: "PPD",
-    description: "Specialists in the postpartum period who support new families with newborn care, infant feeding, emotional recovery, and parent well-being.",
-    keyServices: ["Newborn care education", "Breastfeeding support", "Postpartum mood screening", "Sibling adjustment support"],
-    primaryCPTCodes: ["99401", "99402", "T1015", "G0019"],
-    supportingZCodes: ["Z39.1", "Z39.2", "Z63.0"],
-    hedisCategories: ["Maternal Health", "Behavioral Health", "Preventive Care"],
-    certifyingBody: "DONA International / Postpartum Support International",
-    oregonRecognized: true,
-    ilosEligible: true,
-    color: "#9333ea",
-    populations: ["New parents", "Parents with postpartum mood disorders", "NICU families"],
-    sdohFocus: ["Mental health", "Infant feeding", "Family support"],
-  },
-  {
-    id: "abortion_doula",
-    title: "Abortion Doula",
-    abbreviation: "AD",
-    description: "Trained companions who provide non-judgmental emotional, informational, and practical support to individuals before, during, and after abortion care.",
-    keyServices: ["Emotional support during procedure", "Pre-procedure education", "Post-procedure check-in", "Reproductive healthcare navigation"],
-    primaryCPTCodes: ["99401", "T1015", "T1016"],
-    supportingZCodes: ["Z64.0", "Z65.3", "Z60.4"],
-    hedisCategories: ["Maternal Health", "Equity & Access"],
-    certifyingBody: "Doula Association of Oregon",
-    oregonRecognized: true,
-    ilosEligible: false,
-    color: "#dc2626",
-    populations: ["Individuals seeking abortion care", "Victims of reproductive coercion", "Rural patients traveling for care"],
-    sdohFocus: ["Reproductive autonomy", "Healthcare access", "Social support"],
-  },
-  {
-    id: "end_of_life_doula",
-    title: "End-of-Life Doula",
-    abbreviation: "EOLD",
-    description: "Non-medical companions who provide holistic support to dying individuals and their families, offering presence, planning guidance, legacy work, and grief support.",
-    keyServices: ["End-of-life planning support", "Legacy projects", "Vigil sitting", "Family and caregiver support", "Grief navigation"],
-    primaryCPTCodes: ["T1016", "99402", "T1017"],
-    supportingZCodes: ["Z63.4", "Z74.3", "Z76.89"],
-    hedisCategories: ["Care Coordination", "Equity & Access"],
-    certifyingBody: "NEDA / Oregon Hospice Alliance",
-    oregonRecognized: true,
-    ilosEligible: false,
-    color: "#64748b",
-    populations: ["Terminally ill individuals", "Hospice-eligible patients", "Families navigating death and dying"],
-    sdohFocus: ["Palliative care access", "Family grief", "Advance care planning"],
-  },
-  {
-    id: "personal_health_navigator",
-    title: "Personal Health Navigator",
-    abbreviation: "PHN",
-    description: "Skilled navigators who guide individuals through complex healthcare systems — from specialty referrals to insurance appeals to care transitions.",
-    keyServices: ["Insurance enrollment and appeals", "Specialty care coordination", "Medication adherence support", "Prior authorization navigation"],
-    primaryCPTCodes: ["G0019", "G0023", "T1016", "99490"],
-    supportingZCodes: ["Z75.3", "Z75.4", "Z59.7"],
-    hedisCategories: ["Care Coordination", "Chronic Disease Management", "Access to Care"],
-    certifyingBody: "Oregon Health Authority / Patient Advocate Certification Board",
-    oregonRecognized: true,
-    ilosEligible: true,
-    color: "#047857",
-    populations: ["Medicaid members with complex conditions", "Cancer patients", "Chronic disease populations"],
-    sdohFocus: ["Healthcare access", "Insurance navigation", "Financial barriers"],
+    sdohFocus: ["Recovery capital", "Stable housing", "Criminal legal involvement", "Social isolation", "Employment"],
+    subtype: "Adult Mental Health | Adult Addictions | Certified Recovery Mentor (CRM)",
   },
   {
     id: "peer_wellness_specialist",
     title: "Peer Wellness Specialist",
     abbreviation: "PWS",
-    description: "Lived-experience professionals who support chronic disease self-management, whole-person wellness, and healthy lifestyle change in culturally grounded ways.",
-    keyServices: ["Wellness coaching", "Chronic disease self-management", "Physical activity encouragement", "Nutrition and food security navigation"],
-    primaryCPTCodes: ["H0038", "99401", "96152", "G0019"],
-    supportingZCodes: ["Z72.3", "Z59.4", "Z60.2"],
-    hedisCategories: ["Chronic Disease Management", "Preventive Care", "Behavioral Health"],
-    certifyingBody: "MHACBO / Oregon Public Health Association",
-    oregonRecognized: true,
+    subtitle: "Integrated behavioral & primary care peer support",
+    description:
+      "An individual who has lived experience with a psychiatric condition plus intensive training. Works as part of a person-driven health home team, integrating behavioral health and primary care to assist and advocate for individuals in achieving whole-person well-being. Distinct from PSS in its focus on health homes and psychiatric conditions.",
+    legalBasis: "ORS 414.025(22); OAR 410-180-0305(12)",
+    populations: ["Adults with serious mental illness (SMI)", "health home enrollees", "dual-eligible Medicaid/Medicare members"],
+    cptCodes: ["G0023", "99490", "H0038", "99484"],
+    zCodes: ["Z81.8", "Z87.39", "Z91.89"],
+    hedisCategories: ["Behavioral Health Integration", "Care Coordination", "Antidepressant Medication Management"],
     ilosEligible: true,
-    color: "#0d9488",
-    populations: ["Adults with diabetes/hypertension", "Chronic pain patients", "Aging adults", "Rural communities"],
-    sdohFocus: ["Food security", "Physical activity", "Social connection", "Mental wellness"],
+    certifyingBody: "Mental Health & Addiction Certification Board of Oregon (MHACBO)",
+    registryUrl: "https://traditionalhealthworkerregistry.oregon.gov",
+    color: "#0369a1",
+    sdohFocus: ["Mental health stability", "Medication adherence", "Social connectedness", "Housing"],
+    subtype: "Adult Mental Health | Adult Addictions",
   },
   {
-    id: "tribal_traditional_health_worker",
+    id: "personal_health_navigator",
+    title: "Personal Health Navigator",
+    abbreviation: "PHN",
+    subtitle: "Health system navigation & care decision support",
+    description:
+      "An individual who provides information, assistance, tools, and support to enable a patient to make the best health care decisions. Navigates health systems, coordinates benefits, and advocates for members—particularly those managing complex conditions or transitioning between care settings.",
+    legalBasis: "ORS 414.025(17); OAR 410-180-0305(9)",
+    populations: ["Complex-care members", "high utilizers of ED services", "individuals with multiple chronic conditions", "post-hospitalization transitions"],
+    cptCodes: ["99401", "99402", "T1016", "G9012"],
+    zCodes: ["Z75.3", "Z74.2", "Z59.7"],
+    hedisCategories: ["Care Coordination", "Transitions of Care", "Follow-Up After Hospitalization"],
+    ilosEligible: false,
+    certifyingBody: "OHA-approved PHN training program (OAR 410-180-0400)",
+    registryUrl: "https://traditionalhealthworkerregistry.oregon.gov",
+    color: "#b45309",
+    sdohFocus: ["Benefit navigation", "Care transitions", "Health literacy", "Chronic disease management"],
+  },
+  {
+    id: "birth_doula",
+    title: "Birth Doula",
+    abbreviation: "BD",
+    subtitle: "Pregnancy, birth & postpartum support",
+    description:
+      "A birth companion who provides personal, nonmedical support to individuals and families throughout pregnancy, childbirth, and postpartum experience. Oregon Medicaid (OHP) covers doula services under OAR 410-130-0530, recognizing their proven impact in reducing C-section rates, preterm birth, and maternal morbidity—particularly for BIPOC birthing people who face disproportionate rates of maternal mortality.",
+    legalBasis: "ORS 414.025(3); OAR 410-130-0530; OAR 410-180-0305(3)",
+    populations: ["Pregnant OHP members", "BIPOC birthing people", "adolescent parents", "unhoused pregnant individuals"],
+    cptCodes: ["99401", "T1015", "S9088"],
+    zCodes: ["Z34.01", "Z34.31", "Z23", "Z76.81"],
+    hedisCategories: ["Prenatal Care", "Postpartum Care", "Maternal Health Equity"],
+    ilosEligible: true,
+    certifyingBody: "DONA International, CAPPA, Doulas of North America, or OHA-approved program",
+    registryUrl: "https://traditionalhealthworkerregistry.oregon.gov",
+    color: "#be185d",
+    sdohFocus: ["Maternal mortality equity", "Birth trauma prevention", "Infant health outcomes", "Family stability"],
+  },
+  {
+    id: "family_support_specialist",
+    title: "Family Support Specialist",
+    abbreviation: "FSS",
+    subtitle: "Caregiver peer support — children with MH/SUD history",
+    description:
+      "An individual who, based on similar life experiences, provides support services to and has experience parenting a child who is a current or former consumer of mental health or addiction treatment, or who faces difficulties accessing education, health, and wellness services due to behavioral health barriers. May be either a PSS or PWS meeting additional FSS qualification criteria.",
+    legalBasis: "ORS 414.025(10); ORS 414.665; OAR 410-180-0305(6)",
+    populations: ["Caregivers of children with MH/SUD history", "foster and adoptive families", "families involved with DHS/child welfare"],
+    cptCodes: ["H0038", "T1016", "99484"],
+    zCodes: ["Z63.8", "Z63.4", "Z81.8"],
+    hedisCategories: ["Behavioral Health Integration", "Care Coordination", "Child & Adolescent Well-Care"],
+    ilosEligible: true,
+    certifyingBody: "MHACBO (Family Support Specialist certification)",
+    registryUrl: "https://traditionalhealthworkerregistry.oregon.gov",
+    color: "#d97706",
+    sdohFocus: ["Caregiver stress", "Family systems stability", "Child welfare involvement", "School-based services"],
+  },
+  {
+    id: "youth_support_specialist",
+    title: "Youth Support Specialist",
+    abbreviation: "YSS",
+    subtitle: "Lived-experience peer support for youth",
+    description:
+      "An individual who, based on similar lived experience, provides supportive services to a youth facing or who has faced difficulties accessing education, health, and wellness services due to mental health or behavioral health barriers. Must themselves be a current or former consumer of those services. May be either a PSS or PWS meeting YSS qualification criteria.",
+    legalBasis: "ORS 414.025(31); ORS 414.665; OAR 410-180-0305(13)",
+    populations: ["Youth ages 14–25", "transition-age youth (TAY)", "justice-involved youth", "youth experiencing homelessness"],
+    cptCodes: ["H0038", "96152", "T1016"],
+    zCodes: ["Z62.820", "Z59.0", "Z55.9"],
+    hedisCategories: ["Adolescent Well-Care", "Behavioral Health Integration", "Follow-Up After Mental Health Hospitalization"],
+    ilosEligible: true,
+    certifyingBody: "MHACBO (Youth Support Specialist certification)",
+    registryUrl: "https://traditionalhealthworkerregistry.oregon.gov",
+    color: "#0891b2",
+    sdohFocus: ["Youth homelessness", "Education access", "Justice system involvement", "Substance use"],
+  },
+  {
+    id: "tribal_thw",
     title: "Tribal Traditional Health Worker",
     abbreviation: "TTHW",
-    description: "Community health workers from Tribal Nations who integrate traditional Indigenous healing practices with Western healthcare, honoring sovereignty, culture, and ancestral knowledge.",
-    keyServices: ["Traditional healing integration", "Tribal community outreach", "Cultural liaison with healthcare system", "Indigenous language interpretation", "Indian Health Service navigation"],
-    primaryCPTCodes: ["G0019", "G0023", "T1015", "T1016", "T1017"],
-    supportingZCodes: ["Z59.0", "Z75.3", "Z60.4", "Z56.0"],
-    hedisCategories: ["Equity & Access", "Preventive Care", "Care Coordination", "Chronic Disease Management"],
-    certifyingBody: "Oregon Tribal Nations / Northwest Portland Area Indian Health Board",
-    oregonRecognized: true,
+    subtitle: "Tribally-based, culturally grounded health support",
+    description:
+      "Oregon recognizes nine federally recognized tribal nations. TTHW certification pathways and scopes of practice are determined in partnership with individual tribal nations on a government-to-government basis. TTHWs integrate culturally grounded healing practices with health services, supporting enrolled tribal members and urban Native communities. OHA coordinates with tribes under Oregon's Tribal Government-to-Government Policy.",
+    legalBasis: "ORS 414.025(28); OAR 410-180; Oregon Tribal Government-to-Government Policy",
+    populations: ["Enrolled tribal members", "Native American and Alaska Native Oregonians", "Urban Indian Health patients", "rural reservation communities"],
+    cptCodes: ["G0019", "G0023", "T1016", "T1017"],
+    zCodes: ["Z60.3", "Z75.3", "Z59.0"],
+    hedisCategories: ["Preventive Care", "Care Coordination", "Social Determinants of Health"],
     ilosEligible: true,
+    certifyingBody: "Individual tribal nation + OHA coordination (government-to-government)",
+    registryUrl: "https://traditionalhealthworkerregistry.oregon.gov",
     color: "#92400e",
-    populations: ["American Indian / Alaska Native members", "Urban Indigenous community", "Tribal elders", "Two-Spirit & LGBTQ+ Indigenous community"],
-    sdohFocus: ["Cultural connection", "Historical trauma", "Healthcare sovereignty", "Language access"],
+    sdohFocus: ["Tribal sovereignty", "Cultural healing practices", "Historical trauma", "Language preservation", "Rural access"],
   },
 ];
 
-export const THW_WORKER_TYPE_LABELS: Record<string, string> = {
-  community_health_worker: "Community Health Worker",
-  peer_support_specialist: "Peer Support Specialist",
-  certified_recovery_mentor: "Certified Recovery Mentor",
-  family_support_specialist: "Family Support Specialist",
-  youth_support_specialist: "Youth Support Specialist",
-  birth_doula: "Birth Doula",
-  postpartum_doula: "Postpartum Doula",
-  abortion_doula: "Abortion Doula",
-  end_of_life_doula: "End-of-Life Doula",
-  personal_health_navigator: "Personal Health Navigator",
-  peer_wellness_specialist: "Peer Wellness Specialist",
-  tribal_traditional_health_worker: "Tribal Traditional Health Worker",
-};
+export const THW_WORKER_TYPE_LABELS: Record<string, string> = Object.fromEntries(
+  THW_WORKER_TYPES.map(t => [t.id, t.title])
+);
