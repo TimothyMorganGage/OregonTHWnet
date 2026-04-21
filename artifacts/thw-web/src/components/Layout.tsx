@@ -9,6 +9,7 @@ import {
   AlertTriangle,
   Users,
   HeartHandshake,
+  MessagesSquare,
   Menu,
   X,
 } from "lucide-react";
@@ -25,6 +26,7 @@ const NAV_ITEMS = [
   { to: "/insurance", label: "Insurance Plans", icon: Shield },
   { to: "/denials", label: "Denial Management", icon: AlertTriangle },
   { to: "/join", label: "Join the Co-op", icon: HeartHandshake },
+  { to: "/forum", label: "Member Forum", icon: MessagesSquare },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {

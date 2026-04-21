@@ -13,7 +13,11 @@ import ROI from "@/pages/ROI";
 import Insurance from "@/pages/Insurance";
 import Denials from "@/pages/Denials";
 import Join from "@/pages/Join";
-import Admin from "@/pages/Admin";
+import Forum from "@/pages/Forum";
+// Admin review console paused per organizer request — applications are now
+// surfaced to the organizer via the public forum + email routing instead.
+// Re-enable by re-adding the import and the <Route path="/admin" /> below.
+// import Admin from "@/pages/Admin";
 
 const queryClient = new QueryClient();
 
@@ -30,7 +34,7 @@ function Router() {
         <Route path="/insurance" component={Insurance} />
         <Route path="/denials" component={Denials} />
         <Route path="/join" component={Join} />
-        <Route path="/admin" component={Admin} />
+        <Route path="/forum" component={Forum} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
