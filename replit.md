@@ -51,6 +51,12 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
   - **Applications tab**: status filter cards, OHA-verified checkbox, notes textarea (saves on blur), approve/decline/reset buttons, CSV export
   - **Team & access tab**: invite-member form (generates one-time access code shown in a copy-once amber banner with copy-to-clipboard + "Done" dismiss); team list with rotate-code, revoke, reactivate buttons; founder + self are protected from revocation in both UI and API
 
+### Remix landing page (`/remix` in thw-web)
+- Pitches the platform to other states, tribal nations, and allied health authorities
+- Sections: hero with two CTAs, audience cards, "what's in the box" feature list, customization mapping table (Oregon → Your jurisdiction), 4-step remix guide, files-to-edit reference, collaboration callout
+- Two CTAs: a "Remix on Replit" button (link `REPLIT_PROJECT_URL` constant — currently a placeholder; update to the actual published Replit URL after first deploy) and a prefilled mailto to `tmgtyw@gmail.com` for direct collaboration requests
+- Linked from sidebar as "Remix for your state"
+
 ### Member Forum (`artifacts/api-server` /forum + `artifacts/thw-web` /forum) — public
 - **Endpoints**:
   - `POST /api/forum/posts` — public, accepts `{ authorName, authorEmail?, subject, message }`, returns the created post (with email)

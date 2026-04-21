@@ -10,6 +10,7 @@ import {
   Users,
   HeartHandshake,
   MessagesSquare,
+  Share2,
   Menu,
   X,
 } from "lucide-react";
@@ -27,6 +28,7 @@ const NAV_ITEMS = [
   { to: "/denials", label: "Denial Management", icon: AlertTriangle },
   { to: "/join", label: "Join the Co-op", icon: HeartHandshake },
   { to: "/forum", label: "Member Forum", icon: MessagesSquare },
+  { to: "/remix", label: "Remix for your state", icon: Share2 },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {

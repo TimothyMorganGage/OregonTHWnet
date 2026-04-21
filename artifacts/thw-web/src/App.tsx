@@ -14,6 +14,7 @@ import Insurance from "@/pages/Insurance";
 import Denials from "@/pages/Denials";
 import Join from "@/pages/Join";
 import Forum from "@/pages/Forum";
+import Remix from "@/pages/Remix";
 // Admin is intentionally unlinked from the sidebar — only people who know the
 // /admin URL find it. Access is gated to active team members (see Admin.tsx
 // and the api-server team_members table).
@@ -35,6 +36,7 @@ function Router() {
         <Route path="/denials" component={Denials} />
         <Route path="/join" component={Join} />
         <Route path="/forum" component={Forum} />
+        <Route path="/remix" component={Remix} />
         <Route path="/admin" component={Admin} />
         <Route component={NotFound} />
       </Switch>
