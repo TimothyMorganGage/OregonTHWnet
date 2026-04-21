@@ -1,25 +1,11 @@
-import { Router, type IRouter, type Request, type Response, type NextFunction } from "express";
+import { Router, type IRouter } from "express";
 import { randomUUID } from "node:crypto";
 import { db, membersTable, memberApplicationSchema, memberReviewSchema } from "@workspace/db";
 import { desc, eq } from "drizzle-orm";
 import { logger } from "../lib/logger";
+import { requireAdmin } from "../lib/auth";
 
 const router: IRouter = Router();
-
-function requireAdmin(req: Request, res: Response, next: NextFunction) {
-  const expected = process.env.ADMIN_TOKEN;
-  if (!expected) {
-    res.status(503).json({ error: "Admin endpoints disabled (ADMIN_TOKEN not configured)" });
-    return;
-  }
-  const header = req.headers.authorization ?? "";
-  const token = header.startsWith("Bearer ") ? header.slice(7) : "";
-  if (token !== expected) {
-    res.status(401).json({ error: "Unauthorized" });
-    return;
-  }
-  next();
-}
 
 function newId(): string {
   return `m_${randomUUID()}`;

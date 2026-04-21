@@ -29,16 +29,29 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 ## Artifacts
 
 ### Cooperative member backend (`artifacts/api-server` + `lib/db`)
-- **Endpoints**:
-  - `POST /api/members` — public, accepts a membership application (saves to `coop_members` table, returns full record)
-  - `GET /api/members` — public, returns ONLY approved members with PII (email/phone/notes) stripped
-  - `GET /api/admin/members` — Bearer `ADMIN_TOKEN`, returns all members with full PII for review
-  - `PATCH /api/admin/members/:id` — Bearer `ADMIN_TOKEN`, accepts `{ reviewStatus?, ohaVerified?, reviewerNotes? }`. `reviewedAt` only updates when `reviewStatus` changes.
-  - `GET /api/admin/members.csv` — Bearer `ADMIN_TOKEN`, downloads roster CSV with formula-injection defang
-- **Auth**: single shared `ADMIN_TOKEN` env var (server-side check). Web admin page stores token in `sessionStorage` only.
-- **Web admin UI** (PAUSED 2026-04-21): `/admin` route in `thw-web` was a login-gated console with status filter cards, OHA-verified checkbox, notes textarea (saves on blur), approve/decline buttons, CSV export. The route is currently disabled in `App.tsx`; the `Admin.tsx` page file is retained and can be re-enabled by uncommenting the import + `<Route>` line. The `ADMIN_TOKEN` secret and the `/api/admin/*` server endpoints remain available.
+- **Endpoints (public)**:
+  - `POST /api/members` — accepts a membership application (saves to `coop_members`)
+  - `GET /api/members` — returns ONLY approved members with PII (email/phone/notes) stripped
+- **Endpoints (admin, gated to active team members — see Team-member access)**:
+  - `GET /api/admin/me` — returns the signed-in team member's email/role
+  - `GET /api/admin/members` — full list with PII for review
+  - `PATCH /api/admin/members/:id` — `{ reviewStatus?, ohaVerified?, reviewerNotes? }`; `reviewedAt` stamps only when status changes
+  - `GET /api/admin/members.csv` — CSV export with formula-injection defang
+  - `GET /api/admin/team-members` — list of current team members (codes never returned)
+  - `POST /api/admin/team-members { email, notes? }` — adds new member, returns one-time `accessCode`
+  - `PATCH /api/admin/team-members/:email { active?, notes? }` — revoke/reactivate; founder + self cannot be revoked
+  - `POST /api/admin/team-members/:email/rotate` — generates a fresh code for an existing member, invalidates old
+- **Team-member access**:
+  - `team_members` table: email PK, accessCode (unique), role, active, addedBy, addedAt, lastUsedAt, notes
+  - On server startup, `seedFounderIfMissing()` inserts `tmgtyw@gmail.com` with `ADMIN_TOKEN` as their initial accessCode if no team rows exist — zero-downtime cutover from the old single-token model
+  - Auth middleware (`artifacts/api-server/src/lib/auth.ts`) looks up bearer token in `team_members` where `active = true`, attaches `req.teamMember`, and async-stamps `lastUsedAt`
+  - Access codes are 24 random bytes (hex). Stored plaintext in DB (same risk profile as the original ADMIN_TOKEN env var); rotate via the UI if compromised
+- **Web admin UI** (`/admin` in thw-web — unlinked from sidebar, organizer must navigate directly):
+  - Sign-in: "Team member sign-in" — accepts personal access code, persisted in `sessionStorage`
+  - **Applications tab**: status filter cards, OHA-verified checkbox, notes textarea (saves on blur), approve/decline/reset buttons, CSV export
+  - **Team & access tab**: invite-member form (generates one-time access code shown in a copy-once amber banner with copy-to-clipboard + "Done" dismiss); team list with rotate-code, revoke, reactivate buttons; founder + self are protected from revocation in both UI and API
 
-### Member Forum (`artifacts/api-server` /forum + `artifacts/thw-web` /forum)
+### Member Forum (`artifacts/api-server` /forum + `artifacts/thw-web` /forum) — public
 - **Endpoints**:
   - `POST /api/forum/posts` — public, accepts `{ authorName, authorEmail?, subject, message }`, returns the created post (with email)
   - `GET /api/forum/posts` — public, returns most-recent 200 posts. Author email is OMITTED from the public listing (organizer sees it via the routed email instead).

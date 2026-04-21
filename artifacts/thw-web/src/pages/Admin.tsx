@@ -9,6 +9,14 @@ import {
   ExternalLink,
   Lock,
   AlertTriangle,
+  Users,
+  UserPlus,
+  KeyRound,
+  Copy,
+  ClipboardCheck,
+  Mail,
+  ToggleLeft,
+  ToggleRight,
 } from "lucide-react";
 import { THW_WORKER_TYPES, ADVOCACY_EXPANSION_ROLES } from "../data/thwWorkerTypes";
 
@@ -31,6 +39,24 @@ interface AdminMember {
   reviewerNotes: string | null;
   reviewedAt: string | null;
   joinedAt: string;
+}
+
+interface TeamMember {
+  email: string;
+  role: string;
+  active: boolean;
+  addedBy: string | null;
+  addedAt: string;
+  lastUsedAt: string | null;
+  notes: string | null;
+}
+
+interface MeResponse {
+  email: string;
+  role: string;
+  active: boolean;
+  addedAt: string;
+  lastUsedAt: string | null;
 }
 
 const API_BASE = "/api";
@@ -59,48 +85,69 @@ function StatusBadge({ status }: { status: AdminMember["reviewStatus"] }) {
   );
 }
 
+type Tab = "applications" | "team";
+
 export default function Admin() {
   const [token, setToken] = useState<string>(() => {
     if (typeof window === "undefined") return "";
     return window.sessionStorage.getItem(TOKEN_KEY) ?? "";
   });
   const [tokenInput, setTokenInput] = useState("");
+  const [me, setMe] = useState<MeResponse | null>(null);
   const [members, setMembers] = useState<AdminMember[]>([]);
+  const [team, setTeam] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<"all" | "pending" | "approved" | "declined">("pending");
+  const [tab, setTab] = useState<Tab>("applications");
 
-  const refresh = useCallback(async (authToken: string) => {
-    if (!authToken) return;
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch(`${API_BASE}/admin/members`, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      });
-      if (res.status === 401) {
-        setError("Invalid admin token. Try again.");
-        setToken("");
-        window.sessionStorage.removeItem(TOKEN_KEY);
-        return;
+  const authHeaders = useCallback(
+    (extra?: HeadersInit): HeadersInit => ({
+      ...(extra ?? {}),
+      Authorization: `Bearer ${token}`,
+    }),
+    [token],
+  );
+
+  const refreshAll = useCallback(
+    async (authToken: string) => {
+      if (!authToken) return;
+      setLoading(true);
+      setError(null);
+      try {
+        const headers = { Authorization: `Bearer ${authToken}` };
+        const [meRes, membersRes, teamRes] = await Promise.all([
+          fetch(`${API_BASE}/admin/me`, { headers }),
+          fetch(`${API_BASE}/admin/members`, { headers }),
+          fetch(`${API_BASE}/admin/team-members`, { headers }),
+        ]);
+        if (meRes.status === 401) {
+          setError("Invalid or revoked access code. Ask the cooperative organizer to add you to the team.");
+          setToken("");
+          window.sessionStorage.removeItem(TOKEN_KEY);
+          return;
+        }
+        if (!meRes.ok || !membersRes.ok || !teamRes.ok) {
+          throw new Error(`Failed to load (${meRes.status}/${membersRes.status}/${teamRes.status})`);
+        }
+        const meJson = (await meRes.json()) as MeResponse;
+        const membersJson = (await membersRes.json()) as { members: AdminMember[] };
+        const teamJson = (await teamRes.json()) as { members: TeamMember[] };
+        setMe(meJson);
+        setMembers(membersJson.members);
+        setTeam(teamJson.members);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load");
+      } finally {
+        setLoading(false);
       }
-      if (res.status === 503) {
-        setError("Admin is not yet configured on the server. The site organizer needs to set the ADMIN_TOKEN secret.");
-        return;
-      }
-      if (!res.ok) throw new Error(`Failed to load (${res.status})`);
-      const json = (await res.json()) as { members: AdminMember[] };
-      setMembers(json.members);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load members");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    },
+    [],
+  );
 
   useEffect(() => {
-    if (token) refresh(token);
-  }, [token, refresh]);
+    if (token) refreshAll(token);
+  }, [token, refreshAll]);
 
   function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -114,14 +161,16 @@ export default function Admin() {
   function handleLogout() {
     window.sessionStorage.removeItem(TOKEN_KEY);
     setToken("");
+    setMe(null);
     setMembers([]);
+    setTeam([]);
   }
 
   async function patchMember(id: string, patch: Partial<Pick<AdminMember, "reviewStatus" | "ohaVerified" | "reviewerNotes">>) {
     try {
       const res = await fetch(`${API_BASE}/admin/members/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        headers: authHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify(patch),
       });
       if (!res.ok) throw new Error(`Update failed (${res.status})`);
@@ -134,9 +183,7 @@ export default function Admin() {
 
   async function downloadCsv() {
     try {
-      const res = await fetch(`${API_BASE}/admin/members.csv`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(`${API_BASE}/admin/members.csv`, { headers: authHeaders() });
       if (!res.ok) throw new Error(`Export failed (${res.status})`);
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
@@ -170,18 +217,21 @@ export default function Admin() {
         <div className="bg-card border border-border rounded-xl p-6 space-y-4">
           <div className="flex items-center gap-2">
             <Lock className="w-5 h-5 text-primary" />
-            <h1 className="text-xl font-bold text-foreground">Cooperative organizer login</h1>
+            <h1 className="text-xl font-bold text-foreground">Team member sign-in</h1>
           </div>
           <p className="text-sm text-muted-foreground">
-            Enter your admin token to review membership applications. The token was set as a server
-            secret — only the cooperative organizer should have access.
+            Enter your personal access code. Codes are issued only to team members invited by the
+            cooperative organizer. If you don't have one, contact{" "}
+            <a href="mailto:tmgtyw@gmail.com" className="text-primary hover:underline">
+              tmgtyw@gmail.com
+            </a>.
           </p>
           <form onSubmit={handleLogin} className="space-y-3">
             <input
               type="password"
               value={tokenInput}
               onChange={(e) => setTokenInput(e.target.value)}
-              placeholder="Admin token"
+              placeholder="Your access code"
               className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-background text-foreground"
               autoFocus
             />
@@ -210,15 +260,17 @@ export default function Admin() {
           <p className="text-muted-foreground text-sm font-medium uppercase tracking-wide">
             Organizer console
           </p>
-          <h1 className="text-3xl font-bold text-foreground mt-1">Membership applications</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Review prospective and current THW co-op members. Verify OHA registry status before
-            approving.
-          </p>
+          <h1 className="text-3xl font-bold text-foreground mt-1">Cooperative administration</h1>
+          {me && (
+            <p className="text-sm text-muted-foreground mt-1 inline-flex items-center gap-1.5">
+              <Mail className="w-3.5 h-3.5" />
+              Signed in as <span className="font-medium text-foreground">{me.email}</span>
+            </p>
+          )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <button
-            onClick={() => refresh(token)}
+            onClick={() => refreshAll(token)}
             className="inline-flex items-center gap-1.5 border border-border bg-card px-3 py-2 rounded-lg text-sm font-medium hover:bg-muted transition-colors"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
@@ -240,6 +292,18 @@ export default function Admin() {
         </div>
       </div>
 
+      {/* Tabs */}
+      <div className="border-b border-border flex gap-1">
+        <TabButton active={tab === "applications"} onClick={() => setTab("applications")} icon={Users}>
+          Applications
+          <span className="ml-1.5 text-xs text-muted-foreground">({counts.total})</span>
+        </TabButton>
+        <TabButton active={tab === "team"} onClick={() => setTab("team")} icon={Shield}>
+          Team & access
+          <span className="ml-1.5 text-xs text-muted-foreground">({team.length})</span>
+        </TabButton>
+      </div>
+
       {error && (
         <div className="bg-rose-50 border border-rose-200 rounded-lg p-3 flex items-start gap-2">
           <AlertTriangle className="w-4 h-4 text-rose-600 flex-shrink-0 mt-0.5" />
@@ -247,6 +311,76 @@ export default function Admin() {
         </div>
       )}
 
+      {tab === "applications" && (
+        <ApplicationsTab
+          counts={counts}
+          filter={filter}
+          setFilter={setFilter}
+          filtered={filtered}
+          loading={loading}
+          patchMember={patchMember}
+        />
+      )}
+
+      {tab === "team" && (
+        <TeamTab
+          team={team}
+          me={me}
+          authHeaders={authHeaders}
+          onChange={(updated) => setTeam(updated)}
+          onError={setError}
+        />
+      )}
+    </div>
+  );
+}
+
+function TabButton({
+  active,
+  onClick,
+  icon: Icon,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  icon: typeof Users;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-colors ${
+        active
+          ? "border-primary text-foreground"
+          : "border-transparent text-muted-foreground hover:text-foreground"
+      }`}
+    >
+      <Icon className="w-4 h-4" />
+      {children}
+    </button>
+  );
+}
+
+function ApplicationsTab({
+  counts,
+  filter,
+  setFilter,
+  filtered,
+  loading,
+  patchMember,
+}: {
+  counts: { total: number; pending: number; approved: number; declined: number };
+  filter: "all" | "pending" | "approved" | "declined";
+  setFilter: (f: "all" | "pending" | "approved" | "declined") => void;
+  filtered: AdminMember[];
+  loading: boolean;
+  patchMember: (
+    id: string,
+    patch: Partial<Pick<AdminMember, "reviewStatus" | "ohaVerified" | "reviewerNotes">>,
+  ) => void;
+}) {
+  return (
+    <>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {([
           ["all", "All", counts.total],
@@ -408,6 +542,277 @@ export default function Admin() {
             </div>
           );
         })}
+      </div>
+    </>
+  );
+}
+
+function TeamTab({
+  team,
+  me,
+  authHeaders,
+  onChange,
+  onError,
+}: {
+  team: TeamMember[];
+  me: MeResponse | null;
+  authHeaders: (extra?: HeadersInit) => HeadersInit;
+  onChange: (updated: TeamMember[]) => void;
+  onError: (msg: string | null) => void;
+}) {
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteNotes, setInviteNotes] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [issued, setIssued] = useState<{ email: string; accessCode: string } | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  async function addMember(e: React.FormEvent) {
+    e.preventDefault();
+    onError(null);
+    const email = inviteEmail.trim().toLowerCase();
+    if (!email) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch(`${API_BASE}/admin/team-members`, {
+        method: "POST",
+        headers: authHeaders({ "Content-Type": "application/json" }),
+        body: JSON.stringify({ email, notes: inviteNotes.trim() || null }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: res.statusText }));
+        throw new Error(err.error ?? "Failed to add team member");
+      }
+      const json = (await res.json()) as { member: TeamMember; accessCode: string };
+      onChange([json.member, ...team]);
+      setIssued({ email: json.member.email, accessCode: json.accessCode });
+      setInviteEmail("");
+      setInviteNotes("");
+      setCopied(false);
+    } catch (err) {
+      onError(err instanceof Error ? err.message : "Failed to add team member");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  async function toggleActive(member: TeamMember) {
+    onError(null);
+    try {
+      const res = await fetch(
+        `${API_BASE}/admin/team-members/${encodeURIComponent(member.email)}`,
+        {
+          method: "PATCH",
+          headers: authHeaders({ "Content-Type": "application/json" }),
+          body: JSON.stringify({ active: !member.active }),
+        },
+      );
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: res.statusText }));
+        throw new Error(err.error ?? "Failed to update");
+      }
+      const json = (await res.json()) as { member: TeamMember };
+      onChange(team.map((m) => (m.email === member.email ? json.member : m)));
+    } catch (err) {
+      onError(err instanceof Error ? err.message : "Failed to update");
+    }
+  }
+
+  async function rotateCode(member: TeamMember) {
+    onError(null);
+    if (!confirm(`Generate a new access code for ${member.email}? The previous code will stop working immediately.`)) return;
+    try {
+      const res = await fetch(
+        `${API_BASE}/admin/team-members/${encodeURIComponent(member.email)}/rotate`,
+        { method: "POST", headers: authHeaders() },
+      );
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: res.statusText }));
+        throw new Error(err.error ?? "Failed to rotate code");
+      }
+      const json = (await res.json()) as { member: TeamMember; accessCode: string };
+      onChange(team.map((m) => (m.email === member.email ? json.member : m)));
+      setIssued({ email: json.member.email, accessCode: json.accessCode });
+      setCopied(false);
+    } catch (err) {
+      onError(err instanceof Error ? err.message : "Failed to rotate code");
+    }
+  }
+
+  async function copyCode() {
+    if (!issued) return;
+    try {
+      await navigator.clipboard.writeText(issued.accessCode);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      onError("Could not copy to clipboard. Select the code and copy it manually.");
+    }
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-card border border-border rounded-xl p-5">
+        <div className="flex items-start gap-3 mb-4">
+          <UserPlus className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+          <div>
+            <h2 className="text-lg font-semibold text-foreground">Invite a team member</h2>
+            <p className="text-sm text-muted-foreground mt-0.5">
+              Each team member gets their own personal access code. Share the code through a private
+              channel (Signal, in person, encrypted email). The code is shown only once.
+            </p>
+          </div>
+        </div>
+
+        <form onSubmit={addMember} className="grid md:grid-cols-2 gap-3">
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">
+              Email <span className="text-rose-600">*</span>
+            </label>
+            <input
+              type="email"
+              value={inviteEmail}
+              onChange={(e) => setInviteEmail(e.target.value)}
+              placeholder="teammate@example.org"
+              required
+              maxLength={200}
+              className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-background text-foreground"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">
+              Notes (optional, private)
+            </label>
+            <input
+              type="text"
+              value={inviteNotes}
+              onChange={(e) => setInviteNotes(e.target.value)}
+              placeholder="e.g. board secretary, intake reviewer"
+              maxLength={500}
+              className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-background text-foreground"
+            />
+          </div>
+          <div className="md:col-span-2">
+            <button
+              type="submit"
+              disabled={submitting}
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-60"
+            >
+              <KeyRound className="w-4 h-4" />
+              {submitting ? "Generating…" : "Generate access code"}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {issued && (
+        <div className="bg-amber-50 border-2 border-amber-300 rounded-xl p-5 space-y-3">
+          <div className="flex items-start gap-3">
+            <KeyRound className="w-5 h-5 text-amber-700 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="font-semibold text-amber-900">
+                Share this access code with {issued.email}
+              </h3>
+              <p className="text-sm text-amber-800 mt-1">
+                <strong>This code is shown only once.</strong> Copy it now and send it through a
+                private, secure channel. If you lose it, use "Rotate code" below to generate a new one.
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <code className="flex-1 bg-white border border-amber-300 rounded-lg px-3 py-2 text-sm font-mono text-amber-900 break-all select-all">
+              {issued.accessCode}
+            </code>
+            <button
+              onClick={copyCode}
+              className="inline-flex items-center gap-1.5 bg-amber-600 text-white px-3 py-2 rounded-lg text-sm font-semibold hover:bg-amber-700 transition-colors"
+            >
+              {copied ? <ClipboardCheck className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+              {copied ? "Copied!" : "Copy"}
+            </button>
+            <button
+              onClick={() => setIssued(null)}
+              className="inline-flex items-center gap-1.5 border border-amber-300 bg-white text-amber-900 px-3 py-2 rounded-lg text-sm font-semibold hover:bg-amber-100 transition-colors"
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div>
+        <h2 className="text-lg font-semibold text-foreground mb-3">Current team ({team.length})</h2>
+        <div className="space-y-2">
+          {team.map((m) => {
+            const isMe = me?.email === m.email;
+            const isFounder = m.email === "tmgtyw@gmail.com";
+            return (
+              <div
+                key={m.email}
+                className={`bg-card border rounded-xl p-4 flex items-start justify-between gap-3 flex-wrap ${
+                  m.active ? "border-border" : "border-border opacity-60"
+                }`}
+              >
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <p className="font-medium text-foreground truncate">{m.email}</p>
+                    {isMe && (
+                      <span className="text-xs px-1.5 py-0.5 rounded bg-primary/10 text-primary border border-primary/30">
+                        you
+                      </span>
+                    )}
+                    {isFounder && (
+                      <span className="text-xs px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">
+                        founder
+                      </span>
+                    )}
+                    {!m.active && (
+                      <span className="text-xs px-1.5 py-0.5 rounded bg-rose-50 text-rose-800 border border-rose-200">
+                        revoked
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Added {new Date(m.addedAt).toLocaleDateString()}
+                    {m.addedBy && ` by ${m.addedBy}`}
+                    {m.lastUsedAt
+                      ? ` • last active ${new Date(m.lastUsedAt).toLocaleDateString()}`
+                      : " • never signed in"}
+                  </p>
+                  {m.notes && (
+                    <p className="text-xs text-muted-foreground mt-1 italic">{m.notes}</p>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <button
+                    onClick={() => rotateCode(m)}
+                    className="inline-flex items-center gap-1 text-xs border border-border bg-card text-foreground px-2.5 py-1.5 rounded-lg font-medium hover:bg-muted transition-colors"
+                  >
+                    <KeyRound className="w-3.5 h-3.5" />
+                    Rotate code
+                  </button>
+                  {!isFounder && !isMe && (
+                    <button
+                      onClick={() => toggleActive(m)}
+                      className={`inline-flex items-center gap-1 text-xs px-2.5 py-1.5 rounded-lg font-medium transition-colors ${
+                        m.active
+                          ? "border border-rose-200 bg-rose-50 text-rose-800 hover:bg-rose-100"
+                          : "border border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100"
+                      }`}
+                    >
+                      {m.active ? <ToggleRight className="w-3.5 h-3.5" /> : <ToggleLeft className="w-3.5 h-3.5" />}
+                      {m.active ? "Revoke" : "Reactivate"}
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+          {team.length === 0 && (
+            <div className="bg-card border border-border rounded-xl p-8 text-center text-sm text-muted-foreground">
+              No team members yet. Use the form above to invite the first one.
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
