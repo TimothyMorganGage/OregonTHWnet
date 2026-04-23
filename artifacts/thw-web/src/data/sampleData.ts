@@ -446,146 +446,224 @@ export const HEDIS_MEASURES: HEDISMeasure[] = [
 ];
 
 export const ILOS_MAPPINGS: ILOSMapping[] = [
+  // ----------------------------------------------------------------------
+  // CITED ROWS — values trace back to a published source. Replaced-service
+  // costs use the *median or low-end* of the cited range, not the mean,
+  // because the mean is driven by high-acuity outliers a THW is not
+  // realistically averting.
+  // ----------------------------------------------------------------------
   {
     id: "ilos001",
-    thwService: "CHW Health Risk Assessment (G0019)",
+    thwService: "Community Health Integration, initial 60 min (G0019)",
     thwCPTCode: "G0019",
-    thwCostPerVisit: 85,
-    replacedService: "Emergency Department Visit (low-acuity)",
-    replacedCostPerVisit: 1920,
+    thwCostPerVisit: 77,
+    thwCostCitation: "cms_pfs_2024_chw",
+    replacedService: "Emergency Department visit (treat-and-release, low-acuity)",
+    replacedCostPerVisit: 1082,
+    replacedCostLow: 530,
+    replacedCostHigh: 2100,
+    replacedCostCitation: "kff_ed_visit_2022",
     annualUtilizationPerTHW: 80,
+    utilizationCitation: "not_verified",
     outcomeEquivalence: "superior",
-    outcomeNotes: "THW visits prevent avoidable ED use by addressing SDOH earlier; HEDIS CBP & HBD improve",
+    outcomeNotes: "Penn IMPaCT (Kangovi 2020) reported ~65% reduction in hospital days for CHW-supported patients vs. control over 6 months; ED avoidance is a primary mechanism.",
     hedisCategory: "Chronic Disease Management",
   },
   {
     id: "ilos002",
-    thwService: "Care Coordination per 20 min (G0023)",
+    thwService: "Community Health Integration, subsequent 30 min (G0023)",
     thwCPTCode: "G0023",
-    thwCostPerVisit: 65,
-    replacedService: "Primary Care Care-Coordination Visit",
-    replacedCostPerVisit: 285,
+    thwCostPerVisit: 48,
+    thwCostCitation: "cms_pfs_2024_chw",
+    replacedService: "Primary care follow-up visit (care coordination component)",
+    replacedCostPerVisit: 0,
+    replacedCostCitation: "not_verified",
     annualUtilizationPerTHW: 120,
+    utilizationCitation: "not_verified",
     outcomeEquivalence: "equivalent",
-    outcomeNotes: "THW maintains care plan adherence at lower cost; discharge follow-up HEDIS (FUH) improves",
+    outcomeNotes: "THW care coordination maintains plan adherence between PCP visits. HEDIS Follow-Up After Hospitalization (FUH) improves in published CHW programs.",
     hedisCategory: "Care Coordination",
   },
   {
     id: "ilos003",
-    thwService: "Chronic Care Management (99490)",
+    thwService: "Chronic Care Management, 20 min (99490)",
     thwCPTCode: "99490",
-    thwCostPerVisit: 105,
-    replacedService: "Inpatient Hospitalization (preventable admission)",
-    replacedCostPerVisit: 14200,
+    thwCostPerVisit: 62,
+    thwCostCitation: "cms_pfs_2024_chw",
+    replacedService: "Adult inpatient admission (preventable, all-cause mean)",
+    replacedCostPerVisit: 11700,
+    replacedCostLow: 7800,
+    replacedCostHigh: 15200,
+    replacedCostCitation: "ahrq_hcup_inpatient_2020",
     annualUtilizationPerTHW: 18,
+    utilizationCitation: "not_verified",
     outcomeEquivalence: "superior",
-    outcomeNotes: "Consistent THW chronic disease support reduces preventable inpatient admissions by ~22%",
+    outcomeNotes: "Penn IMPaCT (Kangovi 2020) demonstrated reduced hospital admissions in CHW-supported Medicaid patients. Range shown reflects HCUP all-payer ($11.7K) vs. Medicaid-only ($7.8K) means.",
     hedisCategory: "Chronic Disease Management",
   },
+  // ----------------------------------------------------------------------
+  // PARTIALLY-CITED ROWS — THW cost may be cited; replaced-cost ranges are
+  // approximate; utilization is a workforce assumption.
+  // ----------------------------------------------------------------------
   {
     id: "ilos004",
-    thwService: "Peer Support Services (H0038)",
+    thwService: "Peer Support Services per 15 min (H0038)",
     thwCPTCode: "H0038",
     thwCostPerVisit: 40,
-    replacedService: "Outpatient Mental Health Visit (licensed clinician)",
-    replacedCostPerVisit: 195,
+    thwCostCitation: "nachw_finance_review",
+    replacedService: "Outpatient mental health visit, 45 min (90834, LCSW)",
+    replacedCostPerVisit: 82,
+    replacedCostLow: 82,
+    replacedCostHigh: 175,
+    replacedCostCitation: "cms_pfs_2024_chw",
     annualUtilizationPerTHW: 150,
+    utilizationCitation: "not_verified",
     outcomeEquivalence: "comparable",
-    outcomeNotes: "Peer/THW support addresses mild-moderate MH needs; frees clinician capacity for higher acuity",
+    outcomeNotes: "Peer support addresses mild-to-moderate behavioral health needs and frees licensed-clinician capacity. Range reflects Medicare LCSW rate vs. commercial average. Outcome equivalence for licensed clinical work is not claimed.",
     hedisCategory: "Behavioral Health",
   },
   {
     id: "ilos005",
-    thwService: "Preventive Counseling 30 min (99402)",
-    thwCPTCode: "99402",
-    thwCostPerVisit: 75,
-    replacedService: "Specialist Referral Visit",
-    replacedCostPerVisit: 380,
-    annualUtilizationPerTHW: 60,
-    outcomeEquivalence: "equivalent",
-    outcomeNotes: "Culturally-grounded THW counseling reduces unnecessary specialist referrals; improves SDOH screening",
-    hedisCategory: "Preventive Care",
+    thwService: "30-day readmission prevention (transitional care)",
+    thwCPTCode: "G0023",
+    thwCostPerVisit: 48,
+    thwCostCitation: "cms_pfs_2024_chw",
+    replacedService: "30-day all-cause hospital readmission (avg cost)",
+    replacedCostPerVisit: 14400,
+    replacedCostCitation: "ahrq_hcup_readmission_2019",
+    annualUtilizationPerTHW: 24,
+    utilizationCitation: "not_verified",
+    outcomeEquivalence: "comparable",
+    outcomeNotes: "Transitional CHW visits within 7–14 days of discharge are associated with lower 30-day readmission rates in multiple published programs. Magnitude of effect is program-specific.",
+    hedisCategory: "Care Coordination",
   },
+  // ----------------------------------------------------------------------
+  // NOT-YET-VERIFIED ROWS — kept in the dataset as service-mapping examples,
+  // but every dollar value flagged. Replace before quoting publicly.
+  // ----------------------------------------------------------------------
   {
     id: "ilos006",
     thwService: "Case Management per 15 min (T1016)",
     thwCPTCode: "T1016",
-    thwCostPerVisit: 50,
-    replacedService: "Social Worker Case Management Visit",
-    replacedCostPerVisit: 165,
-    annualUtilizationPerTHW: 200,
-    outcomeEquivalence: "superior",
-    outcomeNotes: "THW navigators outperform traditional SW in community trust and SDOH linkage for underserved populations",
+    thwCostPerVisit: 0,
+    thwCostCitation: "not_verified",
+    replacedService: "Social worker case management visit",
+    replacedCostPerVisit: 0,
+    replacedCostCitation: "not_verified",
+    annualUtilizationPerTHW: 0,
+    utilizationCitation: "not_verified",
+    outcomeEquivalence: "comparable",
+    outcomeNotes: "Service substitution model; OHP T-code reimbursement and SW visit cost not yet sourced.",
     hedisCategory: "Care Coordination",
   },
   {
     id: "ilos007",
     thwService: "Behavioral Health Prevention (H0025)",
     thwCPTCode: "H0025",
-    thwCostPerVisit: 60,
-    replacedService: "Substance Use Disorder Inpatient Detox (per-day share)",
-    replacedCostPerVisit: 1850,
-    annualUtilizationPerTHW: 22,
+    thwCostPerVisit: 0,
+    thwCostCitation: "not_verified",
+    replacedService: "Substance use disorder inpatient detox (per-day share)",
+    replacedCostPerVisit: 0,
+    replacedCostCitation: "not_verified",
+    annualUtilizationPerTHW: 0,
+    utilizationCitation: "not_verified",
     outcomeEquivalence: "comparable",
-    outcomeNotes: "Early THW SUD intervention prevents progression to inpatient detox; HEDIS IET rates increase",
+    outcomeNotes: "Early SUD intervention may prevent progression to inpatient detox. Magnitude not yet sourced for Oregon population.",
     hedisCategory: "Substance Use",
   },
   {
     id: "ilos008",
     thwService: "Targeted Case Management (T1017)",
     thwCPTCode: "T1017",
-    thwCostPerVisit: 50,
-    replacedService: "Skilled Nursing Facility Day (transitional care)",
-    replacedCostPerVisit: 680,
-    annualUtilizationPerTHW: 35,
-    outcomeEquivalence: "equivalent",
-    outcomeNotes: "THW transitional support reduces SNF stays post-discharge while maintaining outcomes",
+    thwCostPerVisit: 0,
+    thwCostCitation: "not_verified",
+    replacedService: "Skilled nursing facility day (transitional care)",
+    replacedCostPerVisit: 0,
+    replacedCostCitation: "not_verified",
+    annualUtilizationPerTHW: 0,
+    utilizationCitation: "not_verified",
+    outcomeEquivalence: "comparable",
+    outcomeNotes: "Transitional case management may reduce SNF length of stay. Oregon-specific savings not yet sourced.",
     hedisCategory: "Care Coordination",
   },
 ];
 
+// ===========================================================================
+// FORECAST_DATA — illustrative projection only.
+// ---------------------------------------------------------------------------
+// The trajectory below is a parametric S-curve anchored at the Penn IMPaCT
+// CHW combined ROI baseline of ~2.47x reported in Kangovi et al. 2020 (Health
+// Affairs). Oregon-specific actuals are NOT yet available; until OHA publishes
+// THW-program-level ROI data and CCO ILOS expenditure data, every row past
+// the most recent historical year should be treated as a planning scenario,
+// not a prediction.
+//
+// Methodology:
+//   - 2024–2025 are "early-stage" rows: high denial rate, ROI well below
+//     IMPaCT baseline because workforce is small and many plans have not
+//     yet recognized THW codes.
+//   - 2026 (current) is the program's anchor year: combined ROI set to ~2.0x,
+//     just below the IMPaCT-published 2.47 baseline.
+//   - 2027–2030 grow toward and slightly above 2.47x on the assumption that
+//     ILOS contracts expand and approval rates rise. The asymptote is held
+//     at ~2.7x — within published CHW-program ROI ranges (1.2x–3.5x across
+//     Findley 2014, Whitley 2006, Kangovi 2020).
+//   - Workforce, claim volume, and recognized-plan counts are operational
+//     planning targets, not empirical predictions.
+//
+// Anyone reading these dashboards should treat the dollar totals as
+// illustrative and the ratios as anchored on cited literature, not as
+// Oregon-validated forecasts.
+// ===========================================================================
 export const FORECAST_DATA: ForecastPoint[] = [
   {
-    year: 2024, denialRate: 41.2, claimVolume: 8420, approvalRate: 58.8, thwRecognitionCount: 18, projectedRevenue: 742000,
+    year: 2024, basis: "illustrative_projection", citation: "kangovi_impact_2020",
+    denialRate: 41.2, claimVolume: 8420, approvalRate: 58.8, thwRecognitionCount: 18, projectedRevenue: 742000,
     ffsRevenue: 436000, ffsCostBasis: 1450000, ffsROI: 0.30, ffsVisitCount: 4952, ffsAvgReimbursement: 88,
-    ilosAvoidedCost: 4640000, ilosCostBasis: 1450000, ilosROI: 3.20, ilosVisitCount: 3468, ilosAvgAvoidance: 1338,
-    combinedROI: 3.50, combinedNetBenefit: 5076000,
+    ilosAvoidedCost: 1305000, ilosCostBasis: 1450000, ilosROI: 0.90, ilosVisitCount: 3468, ilosAvgAvoidance: 376,
+    combinedROI: 1.20, combinedNetBenefit: 291000,
   },
   {
-    year: 2025, denialRate: 34.7, claimVolume: 11380, approvalRate: 65.3, thwRecognitionCount: 24, projectedRevenue: 1124000,
+    year: 2025, basis: "illustrative_projection", citation: "kangovi_impact_2020",
+    denialRate: 34.7, claimVolume: 11380, approvalRate: 65.3, thwRecognitionCount: 24, projectedRevenue: 1124000,
     ffsRevenue: 742000, ffsCostBasis: 1850000, ffsROI: 0.40, ffsVisitCount: 7430, ffsAvgReimbursement: 99,
-    ilosAvoidedCost: 8880000, ilosCostBasis: 1850000, ilosROI: 4.80, ilosVisitCount: 5950, ilosAvgAvoidance: 1493,
-    combinedROI: 5.20, combinedNetBenefit: 9622000,
+    ilosAvoidedCost: 2220000, ilosCostBasis: 1850000, ilosROI: 1.20, ilosVisitCount: 5950, ilosAvgAvoidance: 373,
+    combinedROI: 1.60, combinedNetBenefit: 1112000,
   },
   {
-    year: 2026, denialRate: 27.1, claimVolume: 15200, approvalRate: 72.9, thwRecognitionCount: 31, projectedRevenue: 1680000,
+    year: 2026, basis: "illustrative_projection", citation: "kangovi_impact_2020",
+    denialRate: 27.1, claimVolume: 15200, approvalRate: 72.9, thwRecognitionCount: 31, projectedRevenue: 1680000,
     ffsRevenue: 1224000, ffsCostBasis: 2040000, ffsROI: 0.60, ffsVisitCount: 11086, ffsAvgReimbursement: 110,
-    ilosAvoidedCost: 13056000, ilosCostBasis: 2040000, ilosROI: 6.40, ilosVisitCount: 9114, ilosAvgAvoidance: 1433,
-    combinedROI: 7.00, combinedNetBenefit: 14280000,
+    ilosAvoidedCost: 2856000, ilosCostBasis: 2040000, ilosROI: 1.40, ilosVisitCount: 9114, ilosAvgAvoidance: 313,
+    combinedROI: 2.00, combinedNetBenefit: 2040000,
   },
   {
-    year: 2027, denialRate: 19.8, claimVolume: 19600, approvalRate: 80.2, thwRecognitionCount: 39, projectedRevenue: 2380000,
-    ffsRevenue: 2142000, ffsCostBasis: 2380000, ffsROI: 0.90, ffsVisitCount: 15710, ffsAvgReimbursement: 136,
-    ilosAvoidedCost: 19278000, ilosCostBasis: 2380000, ilosROI: 8.10, ilosVisitCount: 11890, ilosAvgAvoidance: 1621,
-    combinedROI: 9.00, combinedNetBenefit: 21420000,
+    year: 2027, basis: "illustrative_projection", citation: "kangovi_impact_2020",
+    denialRate: 19.8, claimVolume: 19600, approvalRate: 80.2, thwRecognitionCount: 39, projectedRevenue: 2380000,
+    ffsRevenue: 1666000, ffsCostBasis: 2380000, ffsROI: 0.70, ffsVisitCount: 15710, ffsAvgReimbursement: 106,
+    ilosAvoidedCost: 3808000, ilosCostBasis: 2380000, ilosROI: 1.60, ilosVisitCount: 11890, ilosAvgAvoidance: 320,
+    combinedROI: 2.30, combinedNetBenefit: 3094000,
   },
   {
-    year: 2028, denialRate: 12.4, claimVolume: 25100, approvalRate: 87.6, thwRecognitionCount: 48, projectedRevenue: 3290000,
-    ffsRevenue: 4277000, ffsCostBasis: 3290000, ffsROI: 1.30, ffsVisitCount: 21988, ffsAvgReimbursement: 195,
-    ilosAvoidedCost: 33558000, ilosCostBasis: 3290000, ilosROI: 10.20, ilosVisitCount: 16565, ilosAvgAvoidance: 2026,
-    combinedROI: 11.50, combinedNetBenefit: 37835000,
+    year: 2028, basis: "illustrative_projection", citation: "kangovi_impact_2020",
+    denialRate: 12.4, claimVolume: 25100, approvalRate: 87.6, thwRecognitionCount: 48, projectedRevenue: 3290000,
+    ffsRevenue: 2960000, ffsCostBasis: 3290000, ffsROI: 0.90, ffsVisitCount: 21988, ffsAvgReimbursement: 135,
+    ilosAvoidedCost: 5264000, ilosCostBasis: 3290000, ilosROI: 1.60, ilosVisitCount: 16565, ilosAvgAvoidance: 318,
+    combinedROI: 2.50, combinedNetBenefit: 4935000,
   },
   {
-    year: 2029, denialRate: 5.9, claimVolume: 31500, approvalRate: 94.1, thwRecognitionCount: 58, projectedRevenue: 4450000,
-    ffsRevenue: 8010000, ffsCostBasis: 4450000, ffsROI: 1.80, ffsVisitCount: 29655, ffsAvgReimbursement: 270,
-    ilosAvoidedCost: 56960000, ilosCostBasis: 4450000, ilosROI: 12.80, ilosVisitCount: 21945, ilosAvgAvoidance: 2595,
-    combinedROI: 14.60, combinedNetBenefit: 64970000,
+    year: 2029, basis: "illustrative_projection", citation: "kangovi_impact_2020",
+    denialRate: 5.9, claimVolume: 31500, approvalRate: 94.1, thwRecognitionCount: 58, projectedRevenue: 4450000,
+    ffsRevenue: 4005000, ffsCostBasis: 4450000, ffsROI: 0.90, ffsVisitCount: 29655, ffsAvgReimbursement: 135,
+    ilosAvoidedCost: 7565000, ilosCostBasis: 4450000, ilosROI: 1.70, ilosVisitCount: 21945, ilosAvgAvoidance: 345,
+    combinedROI: 2.60, combinedNetBenefit: 7120000,
   },
   {
-    year: 2030, denialRate: 0.8, claimVolume: 38000, approvalRate: 99.2, thwRecognitionCount: 68, projectedRevenue: 5650000,
-    ffsRevenue: 13560000, ffsCostBasis: 5650000, ffsROI: 2.40, ffsVisitCount: 37670, ffsAvgReimbursement: 360,
-    ilosAvoidedCost: 82490000, ilosCostBasis: 5650000, ilosROI: 14.60, ilosVisitCount: 28330, ilosAvgAvoidance: 2912,
-    combinedROI: 17.00, combinedNetBenefit: 96050000,
+    year: 2030, basis: "illustrative_projection", citation: "kangovi_impact_2020",
+    denialRate: 0.8, claimVolume: 38000, approvalRate: 99.2, thwRecognitionCount: 68, projectedRevenue: 5650000,
+    ffsRevenue: 5085000, ffsCostBasis: 5650000, ffsROI: 0.90, ffsVisitCount: 37670, ffsAvgReimbursement: 135,
+    ilosAvoidedCost: 10170000, ilosCostBasis: 5650000, ilosROI: 1.80, ilosVisitCount: 28330, ilosAvgAvoidance: 359,
+    combinedROI: 2.70, combinedNetBenefit: 9605000,
   },
 ];
 

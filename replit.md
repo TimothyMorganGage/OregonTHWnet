@@ -28,6 +28,13 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 
 ## Artifacts
 
+### Cost-savings sourcing (`artifacts/thw-web/src/data/costSavingsSources.ts`)
+- **Citation registry** — every dollar figure on the ROI and Forecast pages must reference a citation key from `ALL_CITATIONS`. Real sources currently registered: Kangovi 2020 IMPaCT (Health Affairs), Findley 2014 (J Asthma), AHRQ HCUP Statistical Brief #261 (inpatient costs) and #248 (readmissions), KFF/Peterson Health Tracker 2022 (ED visit costs), CMS 2024 Physician Fee Schedule (G0019/G0023 CHW codes), Oregon 1115 Medicaid Demonstration Waiver, NACHW 2021 finance review.
+- **`not_verified` citation** — used as a placeholder when a figure cannot be sourced. ILOSMapping rows with `not_verified` cost citations render as service-mapping examples only; per-visit and annual savings are not displayed for them.
+- **Anchor**: combined ROI projections are anchored on the Penn IMPaCT-published 2.47:1 ratio (Kangovi 2020). Year-over-year FORECAST_DATA is a parametric S-curve growing from a denial-heavy startup phase (2024 ~1.2x) toward a steady state slightly above the IMPaCT baseline (2030 ~2.7x). All FORECAST_DATA rows carry `basis: "illustrative_projection"` because Oregon-specific actuals are not yet published.
+- **Methodology block** in `costSavingsSources.ts` explains four ROI approaches: simple ROI (current), NPV (recommended for multi-year), cost-effectiveness analysis with QALYs, scenario analysis with conservative/base/optimistic ranges.
+- **UI surfacing**: `/roi` and `/forecast` carry amber methodology banners; the ROI page renders a `CitationPill` next to every dollar value, a Methodology section, and a full Sources bibliography at the bottom. Hover any citation pill for the full reference + caveats.
+
 ### Demo data governance
 - **All client records are fictional** ("Client A" through "Client L"). Notes describe service categories only — no personal detail. No consent obtained because no real client exists.
 - **Insurance plan names are public; operational specifics are not yet verified.** `denialRate`, `avgProcessingDays`, `approvedCPTCodes`, `contactPhone`, `contactEmail`, and `coverageStartDate` are intentionally omitted on every plan until verified against the plan's published provider manual or directly with the plan. UI renders "Not verified" for missing values.

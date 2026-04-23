@@ -1,5 +1,7 @@
 import { FORECAST_DATA } from "../data/sampleData";
+import { ALL_CITATIONS } from "../data/costSavingsSources";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { Info, BookOpen } from "lucide-react";
 
 function fmt(n: number) {
   if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
@@ -15,7 +17,26 @@ export default function Forecast() {
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-foreground">Econometric Forecast</h1>
-        <p className="text-muted-foreground text-sm mt-0.5">Oregon THW Network — 2024 to 2030 projection</p>
+        <p className="text-muted-foreground text-sm mt-0.5">Oregon THW Network — 2024 to 2030 illustrative projection</p>
+      </div>
+
+      {/* Sourcing disclosure */}
+      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm flex items-start gap-2.5">
+        <Info className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
+        <div className="text-amber-900 space-y-1.5">
+          <p className="font-semibold">Illustrative projection — not Oregon actuals</p>
+          <p>
+            Combined ROI is anchored at the Penn IMPaCT $2.47-per-$1 baseline reported in Kangovi
+            et al. 2020 (Health Affairs). Oregon-specific THW program ROI data has not yet been
+            published by OHA; the year-by-year trajectory below is a parametric S-curve growing
+            from a denial-heavy startup phase toward a steady state slightly above the IMPaCT
+            baseline. Workforce, claim volume, and recognized-plan counts are operational
+            planning targets, not predictions.
+          </p>
+          <p className="font-semibold text-xs uppercase tracking-wide pt-1">
+            Anchor citation: {ALL_CITATIONS.kangovi_impact_2020.short}
+          </p>
+        </div>
       </div>
 
       {/* Summary cards */}
@@ -127,24 +148,59 @@ export default function Forecast() {
         </div>
       </div>
 
-      {/* Assumptions */}
-      <div className="bg-card border border-border rounded-xl p-5">
-        <h2 className="font-bold text-foreground mb-4">Model Assumptions</h2>
-        <ul className="space-y-2">
+      {/* Model Assumptions */}
+      <div className="bg-card border border-border rounded-xl p-5 space-y-3">
+        <div className="flex items-center gap-2">
+          <BookOpen className="w-5 h-5 text-primary" />
+          <h2 className="font-bold text-foreground">Model Assumptions</h2>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          The forecast is a planning model, not a prediction. It rests on these assumptions —
+          each of which the cooperative should pressure-test against Oregon-specific evidence
+          before relying on the projection.
+        </p>
+        <ul className="space-y-2.5 pt-1">
           {[
-            "Annual 15–20% growth in THW-recognizing insurance plans",
-            "Oregon legislative mandates expanding FFS codes through 2027",
-            "Federal CMS THW billing guidance (2025–2026) unlocks national FFS",
-            "ILOS contracts grow from 2 plans (2024) to 38+ plans (2030)",
-            "Combined ROI improves from 3.5x → 17x as approval rates reach ~99%",
-            "ILOS avoidance savings grow as plan scope expands to inpatient & specialty",
+            {
+              text: "Combined ROI asymptotes at ~2.7x by 2030 — within the published range of CHW programs (Kangovi 2020 reports 2.47x; Whitley 2006 reports 2.28x; Findley 2014 reports 1.20x for asthma-only programs).",
+              cite: "Anchored on cited literature",
+            },
+            {
+              text: "Denial rate declines from ~41% (2024) to <1% (2030) as more plans recognize THW codes and credentialing matures. Magnitude of decline is a planning target, not an empirical projection.",
+              cite: "Workforce assumption",
+            },
+            {
+              text: "Plans recognizing THWs grow from ~18 (2024) to ~68 (2030). Depends on Oregon legislative action, CMS guidance, and CCO contracting — all outside the cooperative's direct control.",
+              cite: "Workforce assumption",
+            },
+            {
+              text: "Claim volume scales from ~8.4K (2024) to ~38K (2030). Depends on workforce size, panel intensity, and ILOS contract scope.",
+              cite: "Workforce assumption",
+            },
+            {
+              text: "FFS reimbursement averages anchor on CMS 2024 PFS rates for G0019 and G0023 (≈$77 / ≈$48 respectively). Oregon Medicaid (OHP) and commercial rates may differ and should override these defaults when known.",
+              cite: "CMS 2024 PFS",
+            },
+            {
+              text: "ILOS avoided-cost-per-visit defaults to ~$300–$400 (mix of ED avoidance, transitional care, and chronic disease management). Higher-acuity substitutions (inpatient avoidance, SNF day reduction) would raise this, but require local data to claim.",
+              cite: "AHRQ HCUP, KFF",
+            },
           ].map((item, i) => (
-            <li key={i} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+            <li key={i} className="flex items-start gap-2.5 text-sm text-foreground">
               <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
-              {item}
+              <div>
+                <span>{item.text}</span>
+                <span className="text-xs text-muted-foreground italic ml-2">— {item.cite}</span>
+              </div>
             </li>
           ))}
         </ul>
+        <p className="text-xs text-muted-foreground italic pt-2 border-t border-border">
+          Recommended next step: replace each "workforce assumption" line with an Oregon-validated
+          number sourced from the OHA 2024 THW Program Annual Report and CCO ILOS expenditure
+          filings, then re-run the forecast as a scenario (conservative / base / optimistic) rather
+          than a single point estimate.
+        </p>
       </div>
     </div>
   );

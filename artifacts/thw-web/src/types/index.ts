@@ -120,16 +120,37 @@ export interface ILOSMapping {
   thwService: string;
   thwCPTCode: string;
   thwCostPerVisit: number;
+  // Citation key (from costSavingsSources.ALL_CITATIONS) for thwCostPerVisit.
+  thwCostCitation: string;
   replacedService: string;
   replacedCostPerVisit: number;
+  // Citation key for replacedCostPerVisit.
+  replacedCostCitation: string;
+  // Optional reasonable-range bounds where the source provides them, so the
+  // UI can show "$X (range $A–$B)" instead of a false-precision point estimate.
+  replacedCostLow?: number;
+  replacedCostHigh?: number;
   annualUtilizationPerTHW: number;
+  // Annual utilization is workforce-dependent and rarely sourced; keep
+  // honest about whether the value is cited or a workforce assumption.
+  utilizationCitation: string;
   outcomeEquivalence: "superior" | "equivalent" | "comparable";
   outcomeNotes: string;
   hedisCategory: string;
 }
 
+export type ForecastBasis =
+  | "cited_baseline" // anchored to a published source (e.g. Kangovi 2020)
+  | "workforce_assumption" // depends on local workforce decisions
+  | "illustrative_projection"; // not yet sourced; placeholder trajectory
+
 export interface ForecastPoint {
   year: number;
+  // Honest provenance flag for the whole row.
+  basis: ForecastBasis;
+  // Citation key for the row's benchmark, or "not_verified".
+  citation: string;
+
   denialRate: number;
   claimVolume: number;
   approvalRate: number;
