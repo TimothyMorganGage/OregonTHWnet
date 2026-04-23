@@ -88,9 +88,13 @@ export interface InsurancePlan {
   type: "commercial" | "medicaid" | "medicare" | "marketplace";
   thwCoverage: "full" | "partial" | "none" | "pending";
   coverageStartDate?: string;
-  approvedCPTCodes: string[];
-  denialRate: number;
-  avgProcessingDays: number;
+  // Operational specifics (denial rate, processing days, approved code list,
+  // contact info) are optional — leave them undefined until verified against
+  // the plan's published provider manual or contract. The UI renders
+  // "Not verified" for missing values rather than fabricating numbers.
+  approvedCPTCodes?: string[];
+  denialRate?: number;
+  avgProcessingDays?: number;
   notes: string;
   contactPhone?: string;
   contactEmail?: string;

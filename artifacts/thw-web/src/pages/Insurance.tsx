@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { CheckCircle, Clock, XCircle, AlertCircle, Phone, Mail } from "lucide-react";
+import { CheckCircle, Clock, XCircle, AlertCircle, Phone, Mail, Info } from "lucide-react";
 import { INSURANCE_PLANS } from "../data/sampleData";
+
+const NOT_VERIFIED = (
+  <span className="text-base font-semibold text-muted-foreground italic">Not verified</span>
+);
 
 const COVERAGE_ICON: Record<string, React.ReactNode> = {
   full: <CheckCircle className="w-4 h-4 text-emerald-600" />,
@@ -43,6 +47,15 @@ export default function Insurance() {
       <div>
         <h1 className="text-3xl font-bold text-foreground">Insurance Plans</h1>
         <p className="text-muted-foreground text-sm mt-0.5">{INSURANCE_PLANS.length} plans tracked across Oregon and national</p>
+      </div>
+
+      {/* Demo data disclosure */}
+      <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-start gap-2.5 text-sm">
+        <Info className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
+        <div className="text-amber-900">
+          <span className="font-semibold">Plan names are public; operational details are not yet verified.</span>{" "}
+          Coverage categories (full / partial / pending) reflect general industry knowledge. Denial rates, processing times, approved CPT lists, and contact info should be confirmed against each plan's published provider manual before being relied on.
+        </div>
       </div>
 
       {/* Coverage summary */}
@@ -114,26 +127,36 @@ export default function Insurance() {
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-muted/40 rounded-lg p-3">
                 <p className="text-xs text-muted-foreground">Denial Rate</p>
-                <p className={`text-xl font-bold ${plan.denialRate > 25 ? "text-red-600" : plan.denialRate > 10 ? "text-amber-600" : "text-emerald-600"}`}>
-                  {plan.denialRate}%
-                </p>
+                {plan.denialRate === undefined ? (
+                  NOT_VERIFIED
+                ) : (
+                  <p className={`text-xl font-bold ${plan.denialRate > 25 ? "text-red-600" : plan.denialRate > 10 ? "text-amber-600" : "text-emerald-600"}`}>
+                    {plan.denialRate}%
+                  </p>
+                )}
               </div>
               <div className="bg-muted/40 rounded-lg p-3">
                 <p className="text-xs text-muted-foreground">Avg Processing</p>
-                <p className="text-xl font-bold text-foreground">{plan.avgProcessingDays}d</p>
+                {plan.avgProcessingDays === undefined ? (
+                  NOT_VERIFIED
+                ) : (
+                  <p className="text-xl font-bold text-foreground">{plan.avgProcessingDays}d</p>
+                )}
               </div>
             </div>
 
-            {plan.approvedCPTCodes.length > 0 && (
-              <div>
-                <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wide mb-2">Approved CPT Codes</p>
+            <div>
+              <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wide mb-2">Approved CPT Codes</p>
+              {plan.approvedCPTCodes && plan.approvedCPTCodes.length > 0 ? (
                 <div className="flex flex-wrap gap-1.5">
                   {plan.approvedCPTCodes.map(c => (
                     <span key={c} className="text-xs bg-secondary text-primary px-2 py-0.5 rounded font-mono font-medium border border-border">{c}</span>
                   ))}
                 </div>
-              </div>
-            )}
+              ) : (
+                <p className="text-sm text-muted-foreground italic">Not verified — confirm against the plan's published provider manual.</p>
+              )}
+            </div>
 
             <p className="text-xs text-muted-foreground leading-relaxed">{plan.notes}</p>
 

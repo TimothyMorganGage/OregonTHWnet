@@ -28,6 +28,13 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 
 ## Artifacts
 
+### Demo data governance
+- **All client records are fictional** ("Client A" through "Client L"). Notes describe service categories only — no personal detail. No consent obtained because no real client exists.
+- **Insurance plan names are public; operational specifics are not yet verified.** `denialRate`, `avgProcessingDays`, `approvedCPTCodes`, `contactPhone`, `contactEmail`, and `coverageStartDate` are intentionally omitted on every plan until verified against the plan's published provider manual or directly with the plan. UI renders "Not verified" for missing values.
+- The `InsurancePlan` type makes `denialRate`, `avgProcessingDays`, and `approvedCPTCodes` optional. Every operational field defaults to undefined and only becomes a real number once it has a verifiable source.
+- Amber `Demo data` disclosure banners are pinned to the top of `/claims` and `/insurance`. Do not remove them until real verified data has replaced the placeholders.
+- Source-of-truth comment block lives at the top of `artifacts/thw-web/src/data/sampleData.ts`.
+
 ### Cooperative member backend (`artifacts/api-server` + `lib/db`)
 - **Endpoints (public)**:
   - `POST /api/members` — accepts a membership application (saves to `coop_members`)

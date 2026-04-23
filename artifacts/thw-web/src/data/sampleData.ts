@@ -1,15 +1,30 @@
 import { Claim, InsurancePlan, HEDISMeasure, ForecastPoint, DenialRecord, ILOSMapping } from "../types/index";
 
-// Sample data for demonstration purposes only.
-// Actual THW billing records are confidential. Certified THWs are listed at:
-// https://traditionalhealthworkerregistry.oregon.gov
-// THW types align with ORS 414.025 and OAR 410-180-0305.
+// ============================================================================
+// DEMO DATA — NOT REAL CLIENTS, NOT REAL PLAN POLICIES
+// ============================================================================
+// Every client record below is fictional. Names are anonymized labels
+// ("Client A", "Client B", …). No real person, encounter, or chart is
+// represented. Notes describe service categories only — never personal detail.
+// No consent has been (or could be) obtained because no real client exists.
+//
+// Insurance plan rows name real Oregon and national plans (this is public
+// information). The OPERATIONAL specifics on each plan — denial rates,
+// processing days, approved CPT code lists, contact info — are intentionally
+// left undefined ("Not verified") until they are checked against each plan's
+// published provider manual or directly with the plan. Do not quote any
+// number from these dashboards as authoritative.
+//
+// Certified Oregon THWs are listed at the public registry:
+//   https://traditionalhealthworkerregistry.oregon.gov
+// Worker types align with ORS 414.025 and OAR 410-180-0305.
+// ============================================================================
 
 export const SAMPLE_CLAIMS: Claim[] = [
   {
     id: "c001",
     clientId: "p001",
-    clientName: "Patricia Morales",
+    clientName: "Client A",
     dateOfService: "2026-03-28",
     createdAt: "2026-03-28T14:30:00Z",
     updatedAt: "2026-03-30T09:15:00Z",
@@ -19,7 +34,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     insurancePlan: "OHP Columbia Pacific CCO",
     billedAmount: 135,
     paidAmount: 128,
-    notes: "Initial CHW engagement — housing instability identified, referral to rental assistance",
+    notes: "CHW engagement — SDOH screening and resource referral",
     hedisCategories: ["Preventive Care", "Care Coordination"],
     billingModel: "ilos",
     thwWorkerType: "community_health_worker",
@@ -27,7 +42,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
   {
     id: "c002",
     clientId: "p002",
-    clientName: "Michael Kim",
+    clientName: "Client B",
     dateOfService: "2026-04-01",
     createdAt: "2026-04-01T10:00:00Z",
     updatedAt: "2026-04-01T10:00:00Z",
@@ -36,7 +51,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     zCodes: ["Z59.4", "Z72.3"],
     insurancePlan: "Providence Health Plan Oregon",
     billedAmount: 170,
-    notes: "Health home team session — chronic disease management, food insecurity flagged",
+    notes: "Health home team session — chronic disease care coordination",
     hedisCategories: ["Care Coordination", "Behavioral Health Integration"],
     billingModel: "ffs",
     thwWorkerType: "pws_adult",
@@ -44,7 +59,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
   {
     id: "c003",
     clientId: "p003",
-    clientName: "Darnell Washington",
+    clientName: "Client C",
     dateOfService: "2026-03-25",
     createdAt: "2026-03-25T15:45:00Z",
     updatedAt: "2026-04-02T08:00:00Z",
@@ -54,7 +69,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     insurancePlan: "Regence BlueCross BlueShield Oregon",
     billedAmount: 130,
     denialReason: "Service not covered under current benefit plan",
-    notes: "PSS mental health support session — social isolation and family conflict documented",
+    notes: "PSS mental health support session",
     hedisCategories: ["Behavioral Health Integration"],
     billingModel: "ffs",
     thwWorkerType: "pss_adult_mh",
@@ -62,7 +77,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
   {
     id: "c004",
     clientId: "p004",
-    clientName: "Susan Caldwell",
+    clientName: "Client D",
     dateOfService: "2026-04-03",
     createdAt: "2026-04-03T09:30:00Z",
     updatedAt: "2026-04-03T09:30:00Z",
@@ -71,7 +86,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     zCodes: ["Z56.0", "Z75.3"],
     insurancePlan: "Moda Health Oregon",
     billedAmount: 130,
-    notes: "Navigation session — benefit eligibility counseling, unemployment support referral",
+    notes: "Navigation session — benefit eligibility counseling",
     hedisCategories: ["Care Coordination", "Preventive Care"],
     billingModel: "ffs",
     thwWorkerType: "personal_health_navigator",
@@ -79,7 +94,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
   {
     id: "c005",
     clientId: "p005",
-    clientName: "Derek Patterson",
+    clientName: "Client E",
     dateOfService: "2026-03-15",
     createdAt: "2026-03-15T11:00:00Z",
     updatedAt: "2026-04-01T16:00:00Z",
@@ -89,8 +104,8 @@ export const SAMPLE_CLAIMS: Claim[] = [
     insurancePlan: "Kaiser Permanente Northwest",
     billedAmount: 145,
     denialReason: "Medical necessity not established",
-    appealNotes: "Submitted documentation of SDOH factors, PSS certification (CRM specialization), and post-incarceration recovery plan",
-    notes: "PSS (Certified Recovery Mentor) session — post-incarceration reintegration support, recovery plan established",
+    appealNotes: "Submitted documentation of SDOH factors and PSS-CRM scope of practice",
+    notes: "PSS-CRM session — recovery support and care planning",
     hedisCategories: ["Substance Use Disorder Treatment", "Transitions of Care"],
     billingModel: "ilos",
     thwWorkerType: "pss_crm",
@@ -98,7 +113,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
   {
     id: "c006",
     clientId: "p006",
-    clientName: "Franklin Suppah",
+    clientName: "Client F",
     dateOfService: "2026-04-04",
     createdAt: "2026-04-04T13:00:00Z",
     updatedAt: "2026-04-04T13:00:00Z",
@@ -108,7 +123,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     insurancePlan: "OHP PacificSource Community Solutions",
     billedAmount: 200,
     paidAmount: 196,
-    notes: "TTHW outreach — Confederated Tribes of Warm Springs member, culturally grounded care coordination and traditional healing integration",
+    notes: "TTHW outreach — culturally grounded care coordination",
     hedisCategories: ["Preventive Care", "Care Coordination"],
     billingModel: "ilos",
     thwWorkerType: "tribal_thw",
@@ -116,7 +131,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
   {
     id: "c007",
     clientId: "p007",
-    clientName: "Destiny Johnson",
+    clientName: "Client G",
     dateOfService: "2026-04-02",
     createdAt: "2026-04-02T09:00:00Z",
     updatedAt: "2026-04-02T09:00:00Z",
@@ -126,7 +141,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     insurancePlan: "OHP Columbia Pacific CCO",
     billedAmount: 120,
     paidAmount: 120,
-    notes: "Birth doula prenatal visit — labor support planning, birth plan development, first-time parent",
+    notes: "Birth doula prenatal visit — labor support planning",
     hedisCategories: ["Prenatal Care", "Maternal Health Equity"],
     billingModel: "ilos",
     thwWorkerType: "birth_doula",
@@ -134,7 +149,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
   {
     id: "c008",
     clientId: "p008",
-    clientName: "Alejandra Rios",
+    clientName: "Client H",
     dateOfService: "2026-04-05",
     createdAt: "2026-04-05T14:00:00Z",
     updatedAt: "2026-04-05T14:00:00Z",
@@ -143,7 +158,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     zCodes: ["Z63.8", "Z63.4"],
     insurancePlan: "OHP PacificSource Community Solutions",
     billedAmount: 110,
-    notes: "FSS session — family reunification support, DHS navigation, parenting skill building for caregiver of child with MH history",
+    notes: "FSS session — family support and DHS navigation",
     hedisCategories: ["Behavioral Health Integration", "Care Coordination"],
     billingModel: "ffs",
     thwWorkerType: "family_support_specialist",
@@ -151,7 +166,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
   {
     id: "c009",
     clientId: "p009",
-    clientName: "Jordan Williams",
+    clientName: "Client I",
     dateOfService: "2026-04-06",
     createdAt: "2026-04-06T11:00:00Z",
     updatedAt: "2026-04-06T11:00:00Z",
@@ -161,7 +176,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     insurancePlan: "UnitedHealthcare Community Plan",
     billedAmount: 115,
     paidAmount: 112,
-    notes: "YSS session — TAY client aged out of foster care, housing stability planning, school re-enrollment support",
+    notes: "YSS session — TAY transitional support",
     hedisCategories: ["Adolescent Well-Care", "Behavioral Health Integration"],
     billingModel: "ffs",
     thwWorkerType: "youth_support_specialist",
@@ -169,7 +184,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
   {
     id: "c010",
     clientId: "p010",
-    clientName: "Kezia Okonkwo",
+    clientName: "Client J",
     dateOfService: "2026-04-07",
     createdAt: "2026-04-07T10:30:00Z",
     updatedAt: "2026-04-07T10:30:00Z",
@@ -178,7 +193,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     zCodes: ["Z39.1", "Z39.2"],
     insurancePlan: "OHP Columbia Pacific CCO",
     billedAmount: 125,
-    notes: "Birth doula postpartum visit — newborn care education, breastfeeding support, postpartum mood screening at 2 weeks",
+    notes: "Birth doula postpartum visit — newborn care education and mood screening",
     hedisCategories: ["Postpartum Care", "Maternal Health Equity"],
     billingModel: "ilos",
     thwWorkerType: "birth_doula",
@@ -186,7 +201,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
   {
     id: "c011",
     clientId: "p011",
-    clientName: "Robert Christiansen",
+    clientName: "Client K",
     dateOfService: "2026-04-08",
     createdAt: "2026-04-08T09:00:00Z",
     updatedAt: "2026-04-08T09:00:00Z",
@@ -195,7 +210,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
     zCodes: ["Z74.2", "Z75.3"],
     insurancePlan: "Kaiser Permanente Northwest",
     billedAmount: 100,
-    notes: "PHN care coordination — advance care planning support, hospice benefit navigation for terminally ill patient",
+    notes: "PHN care coordination — advance care planning",
     hedisCategories: ["Care Coordination", "Transitions of Care"],
     billingModel: "ffs",
     thwWorkerType: "personal_health_navigator",
@@ -203,7 +218,7 @@ export const SAMPLE_CLAIMS: Claim[] = [
   {
     id: "c012",
     clientId: "p012",
-    clientName: "Yolanda Cruz",
+    clientName: "Client L",
     dateOfService: "2026-04-09",
     createdAt: "2026-04-09T13:00:00Z",
     updatedAt: "2026-04-09T13:00:00Z",
@@ -213,12 +228,22 @@ export const SAMPLE_CLAIMS: Claim[] = [
     insurancePlan: "OHP PacificSource Community Solutions",
     billedAmount: 90,
     paidAmount: 90,
-    notes: "CHW outreach — language access support (Spanish), reproductive health education, community resource navigation",
+    notes: "CHW outreach — language access and resource navigation",
     hedisCategories: ["Preventive Care", "Social Determinants of Health"],
     billingModel: "ffs",
     thwWorkerType: "community_health_worker",
   },
 ];
+
+// Plan names are public fact. Coverage CATEGORY (Medicaid CCOs commonly cover
+// THW services as required by Oregon law; commercial plans commonly do not or
+// have limited coverage) is a defensible generalization. Operational
+// specifics — denial rate, avg processing days, approved CPT code list, and
+// contact info — are intentionally omitted until verified against each plan's
+// published provider manual or directly with the plan. The Insurance page
+// renders "Not verified" wherever values are missing.
+const UNVERIFIED_NOTE =
+  "Operational details (denial rate, processing time, approved CPT codes, contact info) not yet verified. Confirm against this plan's published provider manual or directly with the plan before relying on these dashboards.";
 
 export const INSURANCE_PLANS: InsurancePlan[] = [
   {
@@ -227,13 +252,7 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     state: "Oregon",
     type: "medicaid",
     thwCoverage: "full",
-    coverageStartDate: "2020-01-01",
-    approvedCPTCodes: ["G0019", "G0023", "T1015", "T1016", "T1017", "99401", "99402"],
-    denialRate: 4,
-    avgProcessingDays: 14,
-    notes: "Full THW coverage under Oregon CCO model. Early adopter. ILOS contracts active.",
-    contactPhone: "503-555-0101",
-    contactEmail: "providers@columbiacco.org",
+    notes: UNVERIFIED_NOTE,
     supportsILOS: true,
   },
   {
@@ -242,12 +261,7 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     state: "Oregon",
     type: "medicaid",
     thwCoverage: "full",
-    coverageStartDate: "2021-03-01",
-    approvedCPTCodes: ["G0019", "G0023", "T1016", "T1017", "99401"],
-    denialRate: 6,
-    avgProcessingDays: 18,
-    notes: "Full coverage. Requires pre-authorization for chronic disease codes. ILOS available for ED diversion.",
-    contactPhone: "541-555-0202",
+    notes: UNVERIFIED_NOTE,
     supportsILOS: true,
   },
   {
@@ -256,12 +270,7 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     state: "Oregon",
     type: "commercial",
     thwCoverage: "partial",
-    coverageStartDate: "2023-07-01",
-    approvedCPTCodes: ["G0019", "T1016", "99401", "99402"],
-    denialRate: 18,
-    avgProcessingDays: 28,
-    notes: "Partial coverage. FFS only — ILOS policy under development.",
-    contactPhone: "503-555-0303",
+    notes: UNVERIFIED_NOTE,
     supportsILOS: false,
   },
   {
@@ -270,12 +279,7 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     state: "Oregon",
     type: "commercial",
     thwCoverage: "partial",
-    coverageStartDate: "2024-01-01",
-    approvedCPTCodes: ["99401", "99402", "99490"],
-    denialRate: 27,
-    avgProcessingDays: 35,
-    notes: "Limited THW coverage. FFS only. Behavioral health codes frequently denied.",
-    contactPhone: "503-555-0404",
+    notes: UNVERIFIED_NOTE,
     supportsILOS: false,
   },
   {
@@ -284,11 +288,7 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     state: "Oregon",
     type: "commercial",
     thwCoverage: "partial",
-    coverageStartDate: "2023-01-01",
-    approvedCPTCodes: ["G0019", "G0023", "99401"],
-    denialRate: 15,
-    avgProcessingDays: 21,
-    notes: "Covers foundational CHW codes. ILOS pilot program launching Q3 2026.",
+    notes: UNVERIFIED_NOTE,
     supportsILOS: false,
   },
   {
@@ -297,11 +297,7 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     state: "Oregon",
     type: "commercial",
     thwCoverage: "partial",
-    coverageStartDate: "2024-06-01",
-    approvedCPTCodes: ["G0019", "99401", "99402"],
-    denialRate: 22,
-    avgProcessingDays: 30,
-    notes: "Early stage THW coverage. Advocacy ongoing for expanded codes and ILOS contracts.",
+    notes: UNVERIFIED_NOTE,
     supportsILOS: false,
   },
   {
@@ -310,10 +306,7 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     state: "National",
     type: "commercial",
     thwCoverage: "pending",
-    approvedCPTCodes: [],
-    denialRate: 38,
-    avgProcessingDays: 45,
-    notes: "THW coverage policy under review. Expected decision Q3 2026.",
+    notes: UNVERIFIED_NOTE,
     supportsILOS: false,
   },
   {
@@ -322,11 +315,7 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     state: "National",
     type: "medicaid",
     thwCoverage: "partial",
-    coverageStartDate: "2022-10-01",
-    approvedCPTCodes: ["G0019", "G0023", "T1016"],
-    denialRate: 21,
-    avgProcessingDays: 32,
-    notes: "Covers core CHW codes in select markets. Oregon-specific ILOS contract pending.",
+    notes: UNVERIFIED_NOTE,
     supportsILOS: false,
   },
   {
@@ -334,11 +323,8 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     name: "Centene/Health Net (National)",
     state: "National",
     type: "medicaid",
-    thwCoverage: "none",
-    approvedCPTCodes: [],
-    denialRate: 52,
-    avgProcessingDays: 40,
-    notes: "No current THW coverage policy. Advocacy contact established.",
+    thwCoverage: "pending",
+    notes: UNVERIFIED_NOTE,
     supportsILOS: false,
   },
   {
@@ -347,10 +333,7 @@ export const INSURANCE_PLANS: InsurancePlan[] = [
     state: "National",
     type: "commercial",
     thwCoverage: "pending",
-    approvedCPTCodes: [],
-    denialRate: 31,
-    avgProcessingDays: 38,
-    notes: "National policy development underway. ILOS framework being evaluated.",
+    notes: UNVERIFIED_NOTE,
     supportsILOS: false,
   },
 ];
@@ -608,27 +591,27 @@ export const FORECAST_DATA: ForecastPoint[] = [
 
 export const DENIAL_RECORDS: DenialRecord[] = [
   {
-    id: "d001", claimId: "c003", clientName: "Darnell Washington",
+    id: "d001", claimId: "c003", clientName: "Client C",
     insurancePlan: "Regence BlueCross BlueShield Oregon", denialDate: "2026-03-30",
     denialReason: "Service not covered under current benefit plan",
     cptCodes: ["96152", "H0038"], billedAmount: 130, appealDeadline: "2026-04-29", status: "open",
   },
   {
-    id: "d002", claimId: "c005", clientName: "Derek Patterson",
+    id: "d002", claimId: "c005", clientName: "Client E",
     insurancePlan: "Kaiser Permanente Northwest", denialDate: "2026-03-22",
     denialReason: "Medical necessity not established",
     cptCodes: ["T1015", "T1017"], billedAmount: 145, appealDeadline: "2026-04-21", status: "appealing",
-    appealNotes: "Submitted clinical documentation, PSS (CRM) certification, and post-incarceration SDOH factors",
+    appealNotes: "Submitted clinical documentation and PSS-CRM scope of practice",
   },
   {
-    id: "d003", claimId: "c007", clientName: "Destiny Johnson",
+    id: "d003", claimId: "c007", clientName: "Client G",
     insurancePlan: "Moda Health Oregon", denialDate: "2026-02-15",
     denialReason: "Billing provider not credentialed",
     cptCodes: ["G0023", "T1016"], billedAmount: 115, appealDeadline: "2026-03-16", status: "won",
     appealNotes: "Credentialing documentation submitted. Claim reprocessed and paid in full.",
   },
   {
-    id: "d004", claimId: "c008", clientName: "Alejandra Rios",
+    id: "d004", claimId: "c008", clientName: "Client H",
     insurancePlan: "Aetna (National)", denialDate: "2026-01-28",
     denialReason: "THW services not a covered benefit",
     cptCodes: ["G0019", "G0023"], billedAmount: 150, appealDeadline: "2026-02-27", status: "lost",

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, Info } from "lucide-react";
 import { SAMPLE_CLAIMS } from "../data/sampleData";
 import { THW_WORKER_TYPES, THW_WORKER_TYPE_LABELS } from "../data/thwWorkerTypes";
 import { Claim, ClaimStatus } from "../types/index";
@@ -166,6 +166,15 @@ export default function Claims() {
         <div>
           <h1 className="text-3xl font-bold text-foreground">Claims</h1>
           <p className="text-muted-foreground text-sm mt-0.5">{SAMPLE_CLAIMS.length} total claims</p>
+        </div>
+      </div>
+
+      {/* Demo data disclosure */}
+      <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-start gap-2.5 text-sm">
+        <Info className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
+        <div className="text-amber-900">
+          <span className="font-semibold">Demo data — no real client information.</span>{" "}
+          The records below are fabricated examples ("Client A" through "Client L"). No real person, encounter, or chart is represented, and no consent has been obtained.
         </div>
       </div>
 
