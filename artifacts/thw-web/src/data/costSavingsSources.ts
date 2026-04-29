@@ -137,6 +137,58 @@ export const NACHW_FINANCE_REVIEW: CostSavingsCitation = {
   caveats: "Aggregated across diverse program models; local cost structures vary.",
 };
 
+export const CDC_LIFE_EXPECTANCY_2021: CostSavingsCitation = {
+  id: "cdc_life_expectancy_2021",
+  category: "government",
+  short: "CDC NCHS Life Expectancy 2021",
+  full: 'Arias E, Tejada-Vera B, Kochanek KD, Ahmad FB. "Provisional Life Expectancy Estimates for 2021." NVSS Vital Statistics Rapid Release Report No. 23. National Center for Health Statistics, Hyattsville, MD, August 2022.',
+  url: "https://www.cdc.gov/nchs/data/vsrr/vsrr023.pdf",
+  year: 2022,
+  keyFinding:
+    "US life expectancy at birth, 2021: American Indian/Alaska Native ~65.2 yrs; Black ~70.8 yrs; White ~76.4 yrs; Hispanic ~77.7 yrs; Asian ~83.5 yrs. AI/AN — White gap ≈ 11.2 yrs; Black — White gap ≈ 5.6 yrs.",
+  caveats:
+    "National figures, not Oregon-specific. 2021 reflects pandemic-era declines; pre-pandemic gaps were narrower. Oregon SHIP data should be substituted for state-specific work.",
+};
+
+export const OHA_SHIP_2024: CostSavingsCitation = {
+  id: "oha_ship_2024",
+  category: "government",
+  short: "OHA State Health Improvement Plan",
+  full: 'Oregon Health Authority. "Healthier Together Oregon: 2020–2024 State Health Improvement Plan." Public Health Division. Documents priority populations, leading causes of disparity, and statewide equity targets.',
+  url: "https://www.oregon.gov/oha/PH/ABOUT/Pages/HealthierTogetherOregon.aspx",
+  year: 2020,
+  keyFinding:
+    "Identifies five priority populations for Oregon health equity work: communities of color; tribal communities; immigrants/refugees; people with disabilities; LGBTQ2SIA+ Oregonians. Names institutional racism, adverse childhood experiences, behavioral health, economic drivers, and access to equitable preventive care as the five priority drivers.",
+  caveats:
+    "The SHIP names disparity drivers; population-level magnitudes by race/ethnicity for Oregon should be pulled from the most recent OHA disparity report rather than estimated.",
+};
+
+export const KFF_OREGON_COVERAGE: CostSavingsCitation = {
+  id: "kff_oregon_coverage",
+  category: "policy_brief",
+  short: "KFF State Health Facts — Oregon",
+  full: 'Kaiser Family Foundation. "Health Insurance Coverage of the Total Population — Oregon." State Health Facts dataset, drawing on US Census Bureau ACS estimates.',
+  url: "https://www.kff.org/state-category/health-coverage-uninsured/",
+  year: 2023,
+  keyFinding:
+    "Oregon coverage distribution (approx., 2022 ACS): Medicaid ~30% (~1.4M); employer-sponsored ~43% (~1.8M); individual market ~6%; Medicare ~17%; uninsured ~5%. Roughly 50–55% of Oregonians are covered by commercial (employer or individual) plans.",
+  caveats:
+    "Coverage shares shift with policy changes (e.g. PHE unwinding). Verify current numbers against the latest OHA Health Insurance Coverage Survey before quoting.",
+};
+
+export const OHA_THW_REGISTRY: CostSavingsCitation = {
+  id: "oha_thw_registry",
+  category: "government",
+  short: "OHA THW Program Annual Report",
+  full: 'Oregon Health Authority Office of Equity and Inclusion, Traditional Health Worker Program. Annual reports describe certification, registry size, and CCO integration of the five THW types (Community Health Worker, Peer Wellness Specialist, Peer Support Specialist, Personal Health Navigator, Doula).',
+  url: "https://www.oregon.gov/oha/OEI/Pages/THW-Program.aspx",
+  year: 2024,
+  keyFinding:
+    "OHA maintains the THW registry and publishes program updates including certified workforce counts and CCO contracting status. Active billing rate vs. registry size should be pulled from the most recent annual report.",
+  caveats:
+    "Registry size and active workforce are different numbers. Active = currently employed and billing in the past 12 months. Use OHA's published active count, not the registry size, when modeling capacity.",
+};
+
 export const NOT_VERIFIED_CITATION: CostSavingsCitation = {
   id: "not_verified",
   category: "not_verified",
@@ -155,6 +207,10 @@ export const ALL_CITATIONS: Record<string, CostSavingsCitation> = {
   [CMS_PFS_2024_CHW.id]: CMS_PFS_2024_CHW,
   [OHA_1115_WAIVER.id]: OHA_1115_WAIVER,
   [NACHW_FINANCE_REVIEW.id]: NACHW_FINANCE_REVIEW,
+  [CDC_LIFE_EXPECTANCY_2021.id]: CDC_LIFE_EXPECTANCY_2021,
+  [OHA_SHIP_2024.id]: OHA_SHIP_2024,
+  [KFF_OREGON_COVERAGE.id]: KFF_OREGON_COVERAGE,
+  [OHA_THW_REGISTRY.id]: OHA_THW_REGISTRY,
   [NOT_VERIFIED_CITATION.id]: NOT_VERIFIED_CITATION,
 };
 

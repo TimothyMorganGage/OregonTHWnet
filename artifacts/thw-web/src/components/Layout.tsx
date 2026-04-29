@@ -11,6 +11,7 @@ import {
   HeartHandshake,
   MessagesSquare,
   Share2,
+  Target,
   Menu,
   X,
 } from "lucide-react";
@@ -24,6 +25,7 @@ const NAV_ITEMS = [
   { to: "/hedis", label: "HEDIS Measures", icon: Activity },
   { to: "/forecast", label: "Forecast", icon: TrendingUp },
   { to: "/roi", label: "ROI Analysis", icon: BarChart3 },
+  { to: "/equity-2030", label: "Equity 2030", icon: Target },
   { to: "/insurance", label: "Insurance Plans", icon: Shield },
   { to: "/denials", label: "Denial Management", icon: AlertTriangle },
   { to: "/join", label: "Join the Co-op", icon: HeartHandshake },

@@ -35,6 +35,18 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 - **Methodology block** in `costSavingsSources.ts` explains four ROI approaches: simple ROI (current), NPV (recommended for multi-year), cost-effectiveness analysis with QALYs, scenario analysis with conservative/base/optimistic ranges.
 - **UI surfacing**: `/roi` and `/forecast` carry amber methodology banners; the ROI page renders a `CitationPill` next to every dollar value, a Methodology section, and a full Sources bibliography at the bottom. Hover any citation pill for the full reference + caveats.
 
+### Equity 2030 page (`artifacts/thw-web/src/pages/Equity2030.tsx`)
+- **Question answered**: what denial-rate trajectory by payer segment (Medicaid / Commercial / Medicare Advantage) has to be true for the THW workforce to reach disparity-closing density by 2030.
+- **Frame**: planning model with explicit conditional logic ("what would have to be true"), not a prediction. Banner makes this explicit.
+- **Inputs**:
+  - IMPaCT density target (1 CHW : ~250 high-need patients) — Kangovi 2020
+  - Workforce sustainability threshold (≥75% of billed visits must pay) — NACHW 2021
+  - Oregon coverage distribution (~30% Medicaid, ~50% commercial, ~17% Medicare) — KFF
+  - Disparity baseline: CDC NCHS Life Expectancy 2021 (national) + OHA SHIP (Oregon priority populations); Oregon-specific gap magnitudes flagged "Citation needed"
+- **Lever table** rates each lever as `underway` / `needs advocacy` / `blocked` and names who controls it (OHA, CCOs, legislature, DCBS Insurance Commissioner, ERISA employers, CMS).
+- **Honest shortfall section** lists what the model does NOT claim (achievability of trajectory, sufficiency of workforce alone, transferability of IMPaCT density to rural/tribal Oregon, separation of denial-rate from reimbursement-rate).
+- New citations registered in `costSavingsSources.ts`: `cdc_life_expectancy_2021`, `oha_ship_2024`, `kff_oregon_coverage`, `oha_thw_registry`. Wired into nav as `/equity-2030` with Target icon.
+
 ### Demo data governance
 - **All client records are fictional** ("Client A" through "Client L"). Notes describe service categories only — no personal detail. No consent obtained because no real client exists.
 - **Insurance plan names are public; operational specifics are not yet verified.** `denialRate`, `avgProcessingDays`, `approvedCPTCodes`, `contactPhone`, `contactEmail`, and `coverageStartDate` are intentionally omitted on every plan until verified against the plan's published provider manual or directly with the plan. UI renders "Not verified" for missing values.

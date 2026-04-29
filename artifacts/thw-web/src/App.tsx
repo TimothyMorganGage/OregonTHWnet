@@ -10,6 +10,7 @@ import Claims from "@/pages/Claims";
 import HEDISPage from "@/pages/HEDIS";
 import Forecast from "@/pages/Forecast";
 import ROI from "@/pages/ROI";
+import Equity2030 from "@/pages/Equity2030";
 import Insurance from "@/pages/Insurance";
 import Denials from "@/pages/Denials";
 import Join from "@/pages/Join";
@@ -32,6 +33,7 @@ function Router() {
         <Route path="/hedis" component={HEDISPage} />
         <Route path="/forecast" component={Forecast} />
         <Route path="/roi" component={ROI} />
+        <Route path="/equity-2030" component={Equity2030} />
         <Route path="/insurance" component={Insurance} />
         <Route path="/denials" component={Denials} />
         <Route path="/join" component={Join} />
