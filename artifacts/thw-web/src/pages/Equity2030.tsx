@@ -211,15 +211,15 @@ export default function Equity2030() {
         <div className="grid md:grid-cols-3 gap-4">
           <DisparityCard
             metric="Life expectancy gap"
-            current="~11 years"
-            currentNote="AI/AN vs. White (US, 2021)"
+            current="~8.3 years"
+            currentNote="AI/AN vs. White (US, 2023 — narrowed from 11.2 yr in 2021 as pandemic effects receded)"
             target="≤ 3 years"
             citation="cdc_life_expectancy_2021"
           />
           <DisparityCard
             metric="Life expectancy gap"
-            current="~5.6 years"
-            currentNote="Black vs. White (US, 2021)"
+            current="~4.4 years"
+            currentNote="Black vs. White (US, 2023 — narrowed from 5.6 yr in 2021)"
             target="≤ 1 year"
             citation="cdc_life_expectancy_2021"
           />

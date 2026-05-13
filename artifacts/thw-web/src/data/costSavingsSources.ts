@@ -64,26 +64,27 @@ export const FINDLEY_ASTHMA_2014: CostSavingsCitation = {
 export const AHRQ_HCUP_INPATIENT_2020: CostSavingsCitation = {
   id: "ahrq_hcup_inpatient_2020",
   category: "government",
-  short: "AHRQ HCUP Statistical Brief #261 (2020)",
-  full: 'Liang L, Moore B, Soni A. "National Inpatient Hospital Costs: The Most Expensive Conditions by Payer, 2017." HCUP Statistical Brief #261. Agency for Healthcare Research and Quality, Rockville, MD, 2020.',
-  url: "https://www.hcup-us.ahrq.gov/reports/statbriefs/sb261-Most-Expensive-Hospital-Conditions-2017.jsp",
-  year: 2020,
+  short: "AHRQ HCUP Statistical Brief #316 (Feb 2026)",
+  full: 'Liang L. "National Inpatient Hospital Costs: The Most Expensive Conditions by Payer, 2022." HCUP Statistical Brief #316. Agency for Healthcare Research and Quality, Rockville, MD, February 2026.',
+  url: "https://hcup-us.ahrq.gov/reports/statbriefs/sb316-most-expensive-conditions-by-payer-2022.pdf",
+  year: 2026,
   keyFinding:
-    "Mean cost per adult inpatient stay (US, 2017): approximately $11,700. Range varies widely by condition ($4,500–$45,000+). Mean cost per Medicaid inpatient stay: approximately $7,800.",
+    "2022 NIS data: aggregate hospital costs for 32.9 million inpatient stays totaled $548.5 billion (mean ≈ $16,670 per stay). Top 5 most expensive conditions: septicemia, liveborn (newborn) infants, heart failure, acute MI, COVID-19 — accounting for ~47% of aggregate hospital costs across the top 20.",
   caveats:
-    "2017 dollars; not adjusted for medical inflation. Costs (what hospitals incur) differ from charges (what hospitals bill) and from payments (what plans pay).",
+    "2022 dollars; mean is heavily skewed by septicemia and other high-acuity conditions. Costs (what hospitals incur) differ from charges (what hospitals bill) and from payments (what plans pay). Replaces SB #261 (2020, 2017 data).",
 };
 
 export const AHRQ_HCUP_READMISSION_2019: CostSavingsCitation = {
   id: "ahrq_hcup_readmission_2019",
   category: "government",
-  short: "AHRQ HCUP Statistical Brief #248 (2019)",
-  full: 'Bailey MK, Weiss AJ, Barrett ML, Jiang HJ. "Characteristics of 30-Day All-Cause Hospital Readmissions, 2010–2016." HCUP Statistical Brief #248. AHRQ, 2019.',
-  url: "https://www.hcup-us.ahrq.gov/reports/statbriefs/sb248-Hospital-Readmissions-2010-2016.jsp",
-  year: 2019,
+  short: "AHRQ HCUP Statistical Brief #304 (Sept 2023)",
+  full: 'Jiang HJ, Hensche M. "Characteristics of 30-Day All-Cause Hospital Readmissions, 2016–2020." HCUP Statistical Brief #304. AHRQ, September 2023.',
+  url: "https://hcup-us.ahrq.gov/reports/statbriefs/sb304-readmissions-2016-2020.jsp",
+  year: 2023,
   keyFinding:
-    "Average cost of a 30-day all-cause hospital readmission (US, 2016): approximately $14,400 across all payers. Medicaid 30-day readmission rate: ~14.6%.",
-  caveats: "2016 dollars. Cost not adjusted for inflation.",
+    "30-day all-cause readmission cost ranges roughly $14,000–$16,000 per readmission across payers (2020 data). Medicare has the highest payer-category readmission rate overall (≈17.0 per 100 index stays in 2020), followed by Medicaid (≈13.6 per 100); Medicaid is highest only in specific age strata called out in the brief.",
+  caveats:
+    "2020 dollars. Brief covers 2016–2020 trend, including pandemic-era hospital utilization shifts. Replaces SB #248 (2019, 2010–2016 data); the cost figure for the 2024 ILOS dashboard should be re-verified against this newer brief before quoting.",
 };
 
 export const KFF_ED_VISIT_2022: CostSavingsCitation = {
@@ -102,14 +103,14 @@ export const KFF_ED_VISIT_2022: CostSavingsCitation = {
 export const CMS_PFS_2024_CHW: CostSavingsCitation = {
   id: "cms_pfs_2024_chw",
   category: "government",
-  short: "CMS 2024 Physician Fee Schedule, CHW codes",
-  full: 'Centers for Medicare & Medicaid Services. "Calendar Year 2024 Physician Fee Schedule Final Rule," CMS-1784-F. New billing codes G0019, G0022, G0023, G0024 for Community Health Integration Services.',
-  url: "https://www.cms.gov/medicare/payment/fee-schedules/physician",
-  year: 2024,
+  short: "CMS CY 2026 Physician Fee Schedule, CHI codes",
+  full: 'Centers for Medicare & Medicaid Services. "Calendar Year 2026 Medicare Physician Fee Schedule Final Rule," CMS-1832-F, issued October 31, 2025; effective January 1, 2026. Continues G0019/G0022/G0023/G0024 Community Health Integration codes; revised G0019 descriptor and replaced "social determinants of health" terminology with "upstream drivers of health."',
+  url: "https://www.cms.gov/newsroom/fact-sheets/calendar-year-cy-2026-medicare-physician-fee-schedule-final-rule-cms-1832-f",
+  year: 2026,
   keyFinding:
-    "Medicare national non-facility payment rates (2024): G0019 (Community Health Integration, initial 60 min) ≈ $77; G0023 (CHI subsequent, each 30 min) ≈ $48. Rates vary by geographic locality.",
+    "Medicare CHI (Community Health Integration) codes G0019 (initial 60 min) and G0023 (subsequent 30 min) remain reimbursable in 2026. CY 2024 national non-facility rates were ≈ $77 (G0019) / ≈ $48 (G0023); 2026 rates should be pulled from the CMS PFS Look-Up Tool for the relevant Oregon locality before quoting in claims work.",
   caveats:
-    "Medicare-only rate; Medicaid and commercial reimbursement rates are set independently. Oregon's Medicaid (OHP) fee schedule should be the reference for Oregon claims.",
+    "Medicare-only rate; Medicaid (OHP) and commercial reimbursement are set independently. The CY 2026 final rule changed the G0019 descriptor — confirm scope-of-service language matches before billing.",
 };
 
 export const OHA_1115_WAIVER: CostSavingsCitation = {
@@ -128,39 +129,40 @@ export const OHA_1115_WAIVER: CostSavingsCitation = {
 export const NACHW_FINANCE_REVIEW: CostSavingsCitation = {
   id: "nachw_finance_review",
   category: "policy_brief",
-  short: "NACHW CHW Finance Literature Review (2021)",
-  full: 'National Association of Community Health Workers. "Community Health Worker Financing Mechanisms in Medicaid: A National Landscape Review." 2021.',
-  url: "https://nachw.org/",
-  year: 2021,
+  short: "Milbank CHW Medicaid Reimbursement Update (Nov 2025)",
+  full: 'Milbank Memorial Fund. "Medicaid Reimbursement for Community Health Worker Services: Model State Plan Amendment & Other Guidance, November 2025 Update." Published November 20, 2025. Updates the earlier NACHW (2021) finance landscape review with the current state-by-state CHW Medicaid coverage and payment policies.',
+  url: "https://www.milbank.org/publications/medicaid-reimbursement-for-community-health-worker-services-model-state-plan-amendment-other-guidance-november-2025-update/",
+  year: 2025,
   keyFinding:
-    "Fully-loaded cost per CHW visit (including supervision, training, overhead, and benefits) in published US programs ranges from approximately $50 to $110, with most programs in the $60–$85 range.",
-  caveats: "Aggregated across diverse program models; local cost structures vary.",
+    "More than half of state Medicaid programs have now implemented some form of CHW/P/CHR coverage and payment policy, up from a minority in 2021. Fully-loaded cost per CHW visit in published US programs continues to range approximately $50–$110, with the modal program at $60–$85; reimbursement rate parity (vs. Medicare PFS for G0019/G0023) remains the binding workforce-sustainability question.",
+  caveats:
+    "Aggregated across diverse program models; local cost structures vary. The Milbank update supersedes the 2021 NACHW landscape as the current authoritative reference for CHW Medicaid finance policy.",
 };
 
 export const CDC_LIFE_EXPECTANCY_2021: CostSavingsCitation = {
   id: "cdc_life_expectancy_2021",
   category: "government",
-  short: "CDC NCHS Life Expectancy 2021",
-  full: 'Arias E, Tejada-Vera B, Kochanek KD, Ahmad FB. "Provisional Life Expectancy Estimates for 2021." NVSS Vital Statistics Rapid Release Report No. 23. National Center for Health Statistics, Hyattsville, MD, August 2022.',
-  url: "https://www.cdc.gov/nchs/data/vsrr/vsrr023.pdf",
-  year: 2022,
+  short: "CDC NCHS US Life Tables 2023",
+  full: 'Arias E, Xu J, Kochanek K. "United States Life Tables, 2023." National Vital Statistics Reports, Vol. 74, No. 6. National Center for Health Statistics, Hyattsville, MD, July 15, 2025.',
+  url: "https://www.cdc.gov/nchs/data/nvsr/nvsr74/nvsr74-06.pdf",
+  year: 2025,
   keyFinding:
-    "US life expectancy at birth, 2021: American Indian/Alaska Native ~65.2 yrs; Black ~70.8 yrs; White ~76.4 yrs; Hispanic ~77.7 yrs; Asian ~83.5 yrs. AI/AN — White gap ≈ 11.2 yrs; Black — White gap ≈ 5.6 yrs.",
+    "US life expectancy at birth, 2023: overall 78.4 yrs (up 0.9 yr from 2022). By race/ethnicity: AI/AN non-Hispanic 70.1 yrs (+2.3 yr); Black non-Hispanic 74.0 yrs (+1.2); White non-Hispanic 78.4 yrs (+0.9); Hispanic 81.3 yrs (+1.3); Asian non-Hispanic 85.2 yrs (+0.8). AI/AN–White gap ≈ 8.3 yrs; Black–White gap ≈ 4.4 yrs — both narrower than the 2021 pandemic-peak gaps but still substantial.",
   caveats:
-    "National figures, not Oregon-specific. 2021 reflects pandemic-era declines; pre-pandemic gaps were narrower. Oregon SHIP data should be substituted for state-specific work.",
+    "National figures, not Oregon-specific. 2023 reflects post-pandemic recovery; gaps remain larger than the 2014–2019 baseline. Replaces 2021 provisional report (NVSS Rapid Release No. 23). Oregon SHIP / state vital statistics should be substituted for state-specific work.",
 };
 
 export const OHA_SHIP_2024: CostSavingsCitation = {
   id: "oha_ship_2024",
   category: "government",
-  short: "OHA State Health Improvement Plan",
-  full: 'Oregon Health Authority. "Healthier Together Oregon: 2020–2024 State Health Improvement Plan." Public Health Division. Documents priority populations, leading causes of disparity, and statewide equity targets.',
-  url: "https://www.oregon.gov/oha/PH/ABOUT/Pages/HealthierTogetherOregon.aspx",
-  year: 2020,
+  short: "OHA State Health Improvement Plan 2025–2029",
+  full: 'Oregon Health Authority Public Health Division. "Oregon State Health Improvement Plan 2025–2029." Published March 10, 2026. Aligns with OHA\'s 2024–2027 Strategic Plan and the 2030 goal of eliminating health inequities. Replaces "Healthier Together Oregon" (2020–2024 SHIP).',
+  url: "https://sharedsystems.dhsoha.state.or.us/DHSForms/Served/le-1194924a_25.pdf",
+  year: 2026,
   keyFinding:
-    "Identifies five priority populations for Oregon health equity work: communities of color; tribal communities; immigrants/refugees; people with disabilities; LGBTQ2SIA+ Oregonians. Names institutional racism, adverse childhood experiences, behavioral health, economic drivers, and access to equitable preventive care as the five priority drivers.",
+    "The 2025–2029 SHIP is the current statewide roadmap. It maintains the equity priority-population framing (communities of color; tribal communities; immigrants/refugees; people with disabilities; LGBTQ2SIA+ Oregonians) and is explicitly aligned with the 2030 zero-disparity target. Specific outcome metrics, baselines, and measurement strategies should be pulled from the published SHIP document.",
   caveats:
-    "The SHIP names disparity drivers; population-level magnitudes by race/ethnicity for Oregon should be pulled from the most recent OHA disparity report rather than estimated.",
+    "The SHIP names disparity drivers and outcome targets; population-level magnitudes by race/ethnicity for Oregon should be pulled from the SHIP measurement framework or the most recent OHA disparity report rather than estimated.",
 };
 
 export const KFF_OREGON_COVERAGE: CostSavingsCitation = {
