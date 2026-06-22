@@ -12,3 +12,9 @@ id = "EN5E6z_kMZjns76eZsH0R"
 uri = "file://artifacts/thw-platform/assets/images/hedis-bg.png"
 type = "image"
 title = "hedis dashboard bg"
+
+[[generated]]
+id = "SGZ2sD1_THVATkUaScOjk"
+uri = "file://artifacts/thw-justice-deck/public/community-health-worker.png"
+type = "image"
+title = "generated_image"

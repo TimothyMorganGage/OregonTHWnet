@@ -1,0 +1,31 @@
+kind = "slides"
+previewPath = "/thw-justice-deck/"
+title = "THW Network — Disability & Economic Justice"
+version = "1.0.0"
+id = "artifacts/thw-justice-deck"
+router = "path"
+
+[[integratedSkills]]
+name = "slides"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/thw-justice-deck/" ]
+localPort = 19294
+
+[services.development]
+run = "pnpm --filter @workspace/thw-justice-deck run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/thw-justice-deck", "run", "build" ]
+publicDir = "artifacts/thw-justice-deck/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19294"
+BASE_PATH = "/thw-justice-deck/"

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "title",
+    "position": 1,
+    "filepath": "src/pages/slides/TitleSlide.tsx",
+    "title": "Building Disability & Economic Justice",
+    "description": "Title slide introducing the Oregon THW Network platform and its justice mission toward 2030.",
+    "speakerNotes": "Welcome. This is the Oregon THW Network — a cooperative-owned platform that turns Traditional Health Worker care into both disability justice and economic justice for every Oregonian. Today I'll walk through what it does, how the open co-op works, and what a 2030 statewide mandate could mean."
+  },
+  {
+    "id": "platform",
+    "position": 2,
+    "filepath": "src/pages/slides/Platform.tsx",
+    "title": "What the platform does",
+    "description": "Overview of the four core capabilities: claims and coding, coverage and denials, forecasting, and sourced numbers.",
+    "speakerNotes": "The platform does four things. It tracks claims across 15 Oregon CPT codes — including the CMS CY2026 codes G0019 and G0023 — plus 25 Z codes for social-needs documentation. It manages insurance coverage, denials, and appeals in one place. It forecasts ROI and HEDIS outcomes toward zero denials by 2030. And critically, every dollar figure is tied to a named, dated public source."
+  },
+  {
+    "id": "vulnerable-justice",
+    "position": 3,
+    "filepath": "src/pages/slides/VulnerableJustice.tsx",
+    "title": "Justice for vulnerable Oregonians",
+    "description": "How THWs reach underserved communities and reduce avoidable hospital use, with the AHRQ inpatient cost figure.",
+    "speakerNotes": "THWs reach people the medical system misses — disabled, low-income, rural, tribal, and immigrant Oregonians. They address the housing, food, and transport drivers behind avoidable hospital use. AHRQ data puts an avoidable inpatient stay at roughly $16,670. Closing denial gaps means that care actually reaches the people who qualify for it."
+  },
+  {
+    "id": "economic-justice",
+    "position": 4,
+    "filepath": "src/pages/slides/EconomicJustice.tsx",
+    "title": "Justice for healthy Oregonians",
+    "description": "The economic case: the Penn IMPaCT 2.47:1 return and shared benefits for the whole risk pool.",
+    "speakerNotes": "This isn't only for the vulnerable — it benefits everyone. Penn's IMPaCT model, published by Kangovi in 2020 in Health Affairs, found a 2.47-to-1 return for every dollar invested in community health work. Fewer avoidable admissions ease premiums and public spending across the whole risk pool, and a sustainable THW workforce keeps care local while creating living-wage jobs."
+  },
+  {
+    "id": "open-cooperative",
+    "position": 5,
+    "filepath": "src/pages/slides/OpenCooperative.tsx",
+    "title": "An open cooperative",
+    "description": "The platform is owned by the workers it serves, with Replit Auth registration, a public forum, and a remixable codebase.",
+    "speakerNotes": "The platform is owned by the workers it serves. Members register and sign in through Replit Auth — no gatekeepers, no paywall. A public member forum and join flow keep decisions and access transparent. And any other state or tribal nation can remix the whole platform for their own jurisdiction."
+  },
+  {
+    "id": "creative-commons",
+    "position": 6,
+    "filepath": "src/pages/slides/CreativeCommons.tsx",
+    "title": "Creative Commons accountability",
+    "description": "Open licensing makes the platform shared public infrastructure and enforces honest, sourced claims.",
+    "speakerNotes": "Open licensing turns this into shared public infrastructure — and keeps it honest. Methods and code are public, so anyone can inspect, fork, and improve them. Every dollar figure cites a named, dated public source. And demo data is clearly labeled fictional until verified — anything not yet proven simply reads 'Not verified.'"
+  },
+  {
+    "id": "mandate",
+    "position": 7,
+    "filepath": "src/pages/slides/Mandate.tsx",
+    "title": "The 2030 mandate",
+    "description": "The impact of requiring all private insurers in Oregon to cover THW claims, using the KFF coverage mix.",
+    "speakerNotes": "Here's the big lever. Today Medicaid — about 30% of Oregonians — covers THW care. But roughly 50% are on commercial plans, and about 17% on Medicare. That commercial half is the coverage gap. A statewide mandate requiring all private insurers to cover THW claims would extend this care to the segment that drives the disparity gap. Coverage mix is from KFF."
+  },
+  {
+    "id": "what-would-have-to-be-true",
+    "position": 8,
+    "filepath": "src/pages/slides/WhatWouldHaveToBeTrue.tsx",
+    "title": "What would have to be true",
+    "description": "The conditional planning model: density, payment, and denial-rate conditions, plus an honest necessary-not-sufficient caveat.",
+    "speakerNotes": "I want to be honest about 2030 — it's a conditional plan, not a prediction. Reaching disparity-closing density requires three things: density near 1 THW per 250 high-need patients, the IMPaCT benchmark; at least 75% of billed visits actually getting paid, per Milbank's November 2025 finance update; and commercial and Medicare Advantage denial rates falling toward parity. And these are necessary, not sufficient — the workforce alone can't close every gap, and IMPaCT density may not transfer cleanly to rural or tribal Oregon."
+  },
+  {
+    "id": "closing",
+    "position": 9,
+    "filepath": "src/pages/slides/Closing.tsx",
+    "title": "Join, remix, advance the work",
+    "description": "Closing call to action: join as a member, remix the platform, or help close the disparity gap by 2030.",
+    "speakerNotes": "Three ways forward: become a member, fork the platform for your state or tribal nation, or help close the disparity gap by 2030. Reach out at tmgtyw@gmail.com. Thank you."
+  }
+]

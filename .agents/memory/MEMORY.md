@@ -1,0 +1,1 @@
+- [THW platform auth model](thw-platform-auth.md) — the co-op platform does NOT use Replit Auth; membership is an open application + access-code admin. Don't claim Replit Auth in copy/decks.
