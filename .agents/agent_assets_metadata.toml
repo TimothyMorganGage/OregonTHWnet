@@ -23,3 +23,9 @@ id = "xkAkqpr1kB7U191iF2IlP"
 uri = "file://.local/outputs/THW-Network---Disability---Economic-Justice.pdf"
 type = "pdf"
 title = "THW Network — Disability & Economic Justice (PDF)"
+
+[[outputs]]
+id = "RfYA1oFHUcPiSABSwEYlH"
+uri = "file://.local/outputs/THW-Network---Disability---Economic-Justice.pptx"
+type = "slides"
+title = "THW Network — Disability & Economic Justice (PPTX)"
