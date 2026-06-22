@@ -1,5 +1,4 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "Vztn1nf6NJheErl-PZ-90"
@@ -18,3 +17,9 @@ id = "SGZ2sD1_THVATkUaScOjk"
 uri = "file://artifacts/thw-justice-deck/public/community-health-worker.png"
 type = "image"
 title = "generated_image"
+
+[[outputs]]
+id = "xkAkqpr1kB7U191iF2IlP"
+uri = "file://.local/outputs/THW-Network---Disability---Economic-Justice.pdf"
+type = "pdf"
+title = "THW Network — Disability & Economic Justice (PDF)"
