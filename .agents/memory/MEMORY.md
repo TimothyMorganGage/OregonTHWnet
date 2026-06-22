@@ -1,1 +1,2 @@
-- [THW platform auth model](thw-platform-auth.md) — the co-op platform does NOT use Replit Auth; membership is an open application + access-code admin. Don't claim Replit Auth in copy/decks.
+- [THW platform auth model](thw-platform-auth.md) — member registration IS gated behind Replit Auth (OIDC, replitAuth.ts); admin is a separate access-code model (auth.ts). Decks may say Replit Auth; UI buttons may not.
+- [Express params string|string[]](express-params-types.md) — @types/express-serve-static-core 5.1.1 types req.params values as string|string[]; coerce with String() before .toLowerCase()/eq().

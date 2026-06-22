@@ -25,7 +25,7 @@ export interface CoopMember {
 const API_BASE = "/api";
 
 async function fetchMembers(): Promise<CoopMember[]> {
-  const res = await fetch(`${API_BASE}/members`);
+  const res = await fetch(`${API_BASE}/members`, { credentials: "include" });
   if (!res.ok) throw new Error(`Failed to load members (${res.status})`);
   const json = (await res.json()) as { members: CoopMember[] };
   return json.members;
@@ -34,6 +34,7 @@ async function fetchMembers(): Promise<CoopMember[]> {
 async function postMember(input: Omit<CoopMember, "id" | "joinedAt" | "reviewStatus" | "ohaVerified">): Promise<CoopMember> {
   const res = await fetch(`${API_BASE}/members`, {
     method: "POST",
+    credentials: "include",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
   });

@@ -56,6 +56,13 @@ router.get("/members", async (_req, res) => {
 });
 
 router.post("/members", async (req, res) => {
+  // Registration is gated behind Replit Auth: applicants must sign in before
+  // they can submit a cooperative membership application. The authenticated
+  // identity (and verified email) is attached to the record server-side.
+  if (!req.isAuthenticated()) {
+    res.status(401).json({ error: "Please sign in to apply for cooperative membership" });
+    return;
+  }
   const parsed = memberApplicationSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid application", details: parsed.error.flatten() });
@@ -66,11 +73,23 @@ router.post("/members", async (req, res) => {
     res.status(400).json({ error: "Cooperative membership consent is required" });
     return;
   }
+  // Registration must be tied to a verified identity. Reject if the
+  // authenticated session has no verified email rather than silently
+  // falling back to the free-text form value — otherwise "verified
+  // identity" would not be strictly true.
+  const verifiedEmail = req.user.email;
+  if (!verifiedEmail) {
+    res.status(403).json({
+      error: "Your signed-in account has no verified email, so the application cannot be submitted.",
+    });
+    return;
+  }
   try {
     const [inserted] = await db
       .insert(membersTable)
       .values({
         id: newId(),
+        userId: req.user.id,
         fullName: data.fullName,
         thwType: data.thwType,
         certificationStatus: data.certificationStatus,
@@ -78,7 +97,7 @@ router.post("/members", async (req, res) => {
         county: data.county,
         languages: data.languages,
         populationsServed: data.populationsServed,
-        email: data.email,
+        email: verifiedEmail,
         phone: data.phone ?? null,
         organization: data.organization ?? null,
         consentDataSharing: data.consentDataSharing,
@@ -150,7 +169,7 @@ router.patch("/admin/members/:id", requireAdmin, async (req, res) => {
     const [updated] = await db
       .update(membersTable)
       .set(updates)
-      .where(eq(membersTable.id, req.params.id))
+      .where(eq(membersTable.id, String(req.params.id)))
       .returning();
     if (!updated) {
       res.status(404).json({ error: "Member not found" });

@@ -3,6 +3,10 @@ import { z } from "zod/v4";
 
 export const membersTable = pgTable("coop_members", {
   id: text("id").primaryKey(),
+  // Replit Auth user id (claims.sub) of the signed-in applicant. Registration
+  // is gated behind Replit Auth, so every new application carries the verified
+  // identity of the authenticated user who submitted it.
+  userId: text("user_id"),
   fullName: text("full_name").notNull(),
   thwType: text("thw_type").notNull(),
   certificationStatus: text("certification_status").notNull(),

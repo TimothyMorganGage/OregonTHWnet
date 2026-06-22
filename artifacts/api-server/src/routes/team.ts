@@ -108,7 +108,7 @@ router.patch("/admin/team-members/:email", requireAdmin, async (req, res) => {
   // Express already decodes route params once. Calling decodeURIComponent
   // again would double-decode (e.g. "test%25user@example.com" would throw)
   // so we just normalize to lowercase here.
-  const target = req.params.email.toLowerCase();
+  const target = String(req.params.email).toLowerCase();
   // Guardrail: no self-deactivation by the founder. Otherwise a stray click
   // could lock the cooperative out of its own admin permanently.
   if (target === FOUNDER && parsed.data.active === false) {
@@ -162,7 +162,7 @@ router.patch("/admin/team-members/:email", requireAdmin, async (req, res) => {
 // code has been compromised or a team member has lost theirs. The previous
 // code is invalidated immediately.
 router.post("/admin/team-members/:email/rotate", requireAdmin, async (req, res) => {
-  const target = req.params.email.toLowerCase();
+  const target = String(req.params.email).toLowerCase();
   const accessCode = generateAccessCode();
   try {
     const [updated] = await db

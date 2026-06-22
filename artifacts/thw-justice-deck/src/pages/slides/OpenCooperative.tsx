@@ -21,8 +21,8 @@ export default function OpenCooperative() {
           <div className="flex items-start gap-[1.8vw]">
             <div className="mt-[1.6vh] w-[2.2vw] h-[0.45vh] bg-primary shrink-0" />
             <p className="text-[3vw] leading-[1.25] text-muted max-w-[76vw]">
-              Anyone can apply to join through an open membership flow — no
-              gatekeepers, no paywall
+              Anyone can apply to join — registration runs through Replit Auth,
+              so every application comes from a verified identity, no paywall
             </p>
           </div>
           <div className="flex items-start gap-[1.8vw]">

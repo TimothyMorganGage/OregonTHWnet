@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Users,
   TrendingUp,
@@ -9,7 +9,9 @@ import {
   Sparkles,
   ArrowRight,
   Mail,
+  LogIn,
 } from "lucide-react";
+import { useAuth } from "@workspace/replit-auth-web";
 import { THW_WORKER_TYPES, ADVOCACY_EXPANSION_ROLES, groupedWorkerTypes } from "../data/thwWorkerTypes";
 import { useMembers, type CoopMember } from "../hooks/useMembers";
 
@@ -228,9 +230,22 @@ function MemberCard({ member }: { member: CoopMember }) {
 
 export default function Join() {
   const { members, addMember } = useMembers();
+  const { user, isAuthenticated, isLoading: authLoading, login, logout } = useAuth();
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [submittedMember, setSubmittedMember] = useState<CoopMember | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Once signed in, prefill name + verified email from the authenticated
+  // identity. The server attaches the verified email regardless, but
+  // prefilling keeps the form consistent with what will be saved.
+  useEffect(() => {
+    if (!user) return;
+    setForm((prev) => ({
+      ...prev,
+      email: prev.email || user.email || "",
+      fullName: prev.fullName || [user.firstName, user.lastName].filter(Boolean).join(" "),
+    }));
+  }, [user]);
 
   const stats = useMemo(() => {
     const counties = new Set(members.map((m) => m.county));
@@ -437,7 +452,52 @@ export default function Join() {
           Open to all certified, in-progress, and prospective Traditional Health Workers in Oregon.
         </p>
 
-        <form onSubmit={handleSubmit} className="mt-6 space-y-6">
+        {authLoading ? (
+          <p className="mt-6 text-sm text-muted-foreground">Checking your sign-in status…</p>
+        ) : !isAuthenticated ? (
+          <div className="mt-6 rounded-xl border border-primary/30 bg-primary/5 p-6">
+            <div className="flex items-start gap-3">
+              <LogIn className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold text-foreground">
+                  Sign in to apply for cooperative membership
+                </p>
+                <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
+                  Cooperative registration is secured through your verified account. Sign in to
+                  begin your application — your verified email is attached to your membership
+                  record automatically, so the organizer always knows applications come from a
+                  real, authenticated person.
+                </p>
+                <button
+                  type="button"
+                  onClick={login}
+                  className="mt-4 inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors"
+                >
+                  <LogIn className="w-4 h-4" />
+                  Log in to continue
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="mt-6 flex items-center justify-between flex-wrap gap-2 rounded-lg border border-border bg-secondary/50 px-4 py-2.5">
+              <p className="text-sm text-foreground">
+                Signed in as{" "}
+                <span className="font-semibold">
+                  {user?.email ??
+                    ([user?.firstName, user?.lastName].filter(Boolean).join(" ") || "your account")}
+                </span>
+              </p>
+              <button
+                type="button"
+                onClick={logout}
+                className="text-xs font-medium text-muted-foreground hover:text-foreground underline"
+              >
+                Log out
+              </button>
+            </div>
+            <form onSubmit={handleSubmit} className="mt-4 space-y-6">
           {/* Identity */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
@@ -694,7 +754,9 @@ export default function Join() {
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
-        </form>
+            </form>
+          </>
+        )}
       </div>
 
       {/* Member directory */}
