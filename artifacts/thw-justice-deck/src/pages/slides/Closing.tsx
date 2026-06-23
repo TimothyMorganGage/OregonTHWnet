@@ -8,20 +8,28 @@ export default function Closing() {
         OREGON THW NETWORK
       </div>
 
-      <div className="absolute top-[10vh] bottom-[9vh] left-[8vw] right-[8vw] flex flex-col justify-center">
+      <div className="absolute top-[18vh] bottom-[9vh] left-[8vw] right-[8vw] flex flex-col justify-center">
         <h2 className="text-[6vw] font-extrabold leading-[1.05] tracking-tight text-white max-w-[80vw]">
           Join, remix, advance the work
         </h2>
-        <div className="mt-[5vh] flex items-start gap-[2.5vw]">
+        <div className="mt-[4vh] flex items-start gap-[2.5vw]">
           <div className="mt-[2vh] w-[5vw] h-[0.55vh] bg-white shrink-0" />
           <p className="text-[2.8vw] font-normal leading-[1.45] text-white/85 max-w-[64vw]">
             Become a member, fork the platform for your state or tribal nation, or
             help close the disparity gap by 2030.
           </p>
         </div>
-        <p className="mt-[6vh] text-[3vw] font-semibold text-white">
-          tmgtyw@gmail.com
-        </p>
+        <div className="mt-[4.5vh] flex flex-col gap-[1.6vh]">
+          <a
+            href="https://hedis-econometric-optimizer.replit.app/oregon-thw-network/"
+            target="_blank"
+            rel="noreferrer"
+            className="text-[2.2vw] font-semibold text-white underline decoration-white/40 underline-offset-[0.5vh] hover:decoration-white"
+          >
+            hedis-econometric-optimizer.replit.app/oregon-thw-network
+          </a>
+          <p className="text-[2.2vw] font-medium text-white/80">tmgtyw@gmail.com</p>
+        </div>
       </div>
 
       <div className="absolute bottom-0 left-0 w-screen h-[9vh] flex items-center justify-between px-[8vw] border-t border-white/20">
