@@ -15,8 +15,8 @@ export default function Closing() {
         <div className="mt-[4vh] flex items-start gap-[2.5vw]">
           <div className="mt-[2vh] w-[5vw] h-[0.55vh] bg-white shrink-0" />
           <p className="text-[2.8vw] font-normal leading-[1.45] text-white/85 max-w-[64vw]">
-            Become a member, fork the platform for your state or tribal nation, or
-            help close the disparity gap by 2030.
+            Become a member, fork the platform for your state or tribal nation, and
+            help close the coverage gap by 2030.
           </p>
         </div>
         <div className="mt-[4.5vh] flex flex-col gap-[1.6vh]">
