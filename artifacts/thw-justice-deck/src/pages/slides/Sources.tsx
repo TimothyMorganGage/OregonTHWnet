@@ -9,25 +9,25 @@ const SOURCES: { cite: string; detail: string; url: string; link: string }[] = [
     cite: "AHRQ HCUP Statistical Brief #316 (Feb 2026)",
     detail: "Inpatient costs by payer, 2022 — the ~$16,670 stay.",
     url: "https://hcup-us.ahrq.gov/reports/statbriefs/sb316-most-expensive-conditions-by-payer-2022.pdf",
-    link: "hcup-us.ahrq.gov",
+    link: "hcup-us.ahrq.gov/reports/statbriefs/sb316",
   },
   {
     cite: "KFF State Health Facts — Oregon",
     detail: "Oregon coverage mix (US Census ACS estimates).",
-    url: "https://www.kff.org/state-category/health-coverage-uninsured/",
-    link: "kff.org",
+    url: "https://www.kff.org/state-health-policy-data/state-indicator/total-population/",
+    link: "kff.org/state-indicator/total-population",
   },
   {
     cite: "Milbank Memorial Fund (Nov 2025)",
     detail: "CHW Medicaid reimbursement — the ≥75%-paid threshold.",
     url: "https://www.milbank.org/publications/medicaid-reimbursement-for-community-health-worker-services-model-state-plan-amendment-other-guidance-november-2025-update/",
-    link: "milbank.org",
+    link: "milbank.org/publications/…2025-update",
   },
   {
     cite: "CMS CY 2026 Physician Fee Schedule (CMS-1832-F)",
     detail: "G0019 / G0023 Community Health Integration codes.",
     url: "https://www.cms.gov/newsroom/fact-sheets/calendar-year-cy-2026-medicare-physician-fee-schedule-final-rule-cms-1832-f",
-    link: "cms.gov",
+    link: "cms.gov/newsroom/fact-sheets/…cms-1832-f",
   },
 ];
 
