@@ -70,5 +70,13 @@
     "title": "Join, remix, advance the work",
     "description": "Closing call to action: join as a member, remix the platform, or help close the disparity gap by 2030.",
     "speakerNotes": "Three ways forward: become a member, fork the platform for your state or tribal nation, or help close the disparity gap by 2030. Reach out at tmgtyw@gmail.com. Thank you."
+  },
+  {
+    "id": "sources",
+    "position": 10,
+    "filepath": "src/pages/slides/Sources.tsx",
+    "title": "Sources & citations",
+    "description": "Full bibliography of the named, dated public sources cited throughout the deck.",
+    "speakerNotes": "Every claim in this deck is tied to a named, dated public source. The Penn IMPaCT ROI and density benchmark come from Kangovi et al. 2020 in Health Affairs. The avoidable inpatient cost is from AHRQ HCUP Statistical Brief #316. The Oregon coverage mix is from KFF State Health Facts. The 75%-paid sustainability threshold is from the Milbank Memorial Fund's November 2025 CHW reimbursement update. And the THW billing codes — G0019 and G0023 — are from the CMS CY 2026 Physician Fee Schedule final rule."
   }
 ]
