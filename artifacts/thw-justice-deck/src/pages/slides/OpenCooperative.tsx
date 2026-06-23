@@ -12,29 +12,29 @@ export default function OpenCooperative() {
         </h2>
       </div>
 
-      <div className="absolute left-[8vw] right-[8vw] top-[27vh] bottom-[10vh]">
-        <p className="text-[3.1vw] font-semibold leading-[1.25] text-text max-w-[80vw]">
+      <div className="absolute left-[8vw] right-[8vw] top-[25vh] bottom-[10vh]">
+        <p className="text-[3.1vw] font-semibold leading-[1.25] text-text max-w-[60vw]">
           The platform is owned by the workers it serves — open to join, built in
           the open.
         </p>
-        <div className="mt-[2.5vh] flex flex-col gap-[2.4vh]">
+        <div className="mt-[2vh] flex flex-col gap-[1.8vh]">
           <div className="flex items-start gap-[1.8vw]">
             <div className="mt-[1.6vh] w-[2.2vw] h-[0.45vh] bg-primary shrink-0" />
-            <p className="text-[3vw] leading-[1.25] text-muted max-w-[76vw]">
+            <p className="text-[3vw] leading-[1.25] text-muted max-w-[56vw]">
               Anyone can apply to join — registration runs through Replit Auth,
               so every application comes from a verified identity, no paywall
             </p>
           </div>
           <div className="flex items-start gap-[1.8vw]">
             <div className="mt-[1.6vh] w-[2.2vw] h-[0.45vh] bg-primary shrink-0" />
-            <p className="text-[3vw] leading-[1.25] text-muted max-w-[76vw]">
+            <p className="text-[3vw] leading-[1.25] text-muted max-w-[56vw]">
               A public member forum and join flow keep decisions and access
               transparent
             </p>
           </div>
           <div className="flex items-start gap-[1.8vw]">
             <div className="mt-[1.6vh] w-[2.2vw] h-[0.45vh] bg-primary shrink-0" />
-            <p className="text-[3vw] leading-[1.25] text-muted max-w-[76vw]">
+            <p className="text-[3vw] leading-[1.25] text-muted max-w-[56vw]">
               Any state or tribal nation can remix the platform for their own
               jurisdiction
             </p>

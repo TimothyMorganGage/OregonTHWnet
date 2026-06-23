@@ -8,7 +8,7 @@ export default function TitleSlide() {
         OREGON THW NETWORK
       </div>
 
-      <div className="absolute top-1/2 -translate-y-1/2 left-[8vw] right-[8vw] z-10">
+      <div className="absolute top-[9vh] bottom-[9vh] left-[8vw] right-[8vw] z-10 flex flex-col justify-center">
         <h1 className="text-[6.6vw] font-extrabold leading-[1.04] tracking-tight text-text max-w-[78vw]">
           Building Disability &amp; Economic Justice
         </h1>

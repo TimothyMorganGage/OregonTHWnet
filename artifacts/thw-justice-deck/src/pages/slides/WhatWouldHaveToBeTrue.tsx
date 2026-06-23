@@ -12,32 +12,32 @@ export default function WhatWouldHaveToBeTrue() {
         </h2>
       </div>
 
-      <div className="absolute left-[8vw] right-[8vw] top-[27vh] bottom-[10vh]">
-        <p className="text-[3vw] font-semibold leading-[1.25] text-text max-w-[84vw]">
+      <div className="absolute left-[8vw] right-[8vw] top-[22vh] bottom-[10vh]">
+        <p className="text-[3vw] font-semibold leading-[1.2] text-text max-w-[64vw]">
           2030 is a conditional plan, not a prediction. It requires:
         </p>
-        <div className="mt-[3vh] flex flex-col gap-[2.4vh]">
+        <div className="mt-[2vh] flex flex-col gap-[1.8vh]">
           <div className="flex items-start gap-[1.8vw]">
             <div className="mt-[1.6vh] w-[2.2vw] h-[0.45vh] bg-primary shrink-0" />
-            <p className="text-[3vw] leading-[1.25] text-muted max-w-[80vw]">
+            <p className="text-[3vw] leading-[1.2] text-muted max-w-[64vw]">
               ~1 THW per 250 high-need patients (IMPaCT)
             </p>
           </div>
           <div className="flex items-start gap-[1.8vw]">
             <div className="mt-[1.6vh] w-[2.2vw] h-[0.45vh] bg-primary shrink-0" />
-            <p className="text-[3vw] leading-[1.25] text-muted max-w-[80vw]">
+            <p className="text-[3vw] leading-[1.2] text-muted max-w-[64vw]">
               ≥75% of billed visits actually paid (Milbank 2025)
             </p>
           </div>
           <div className="flex items-start gap-[1.8vw]">
             <div className="mt-[1.6vh] w-[2.2vw] h-[0.45vh] bg-primary shrink-0" />
-            <p className="text-[3vw] leading-[1.25] text-muted max-w-[80vw]">
+            <p className="text-[3vw] leading-[1.2] text-muted max-w-[64vw]">
               Commercial &amp; Medicare Advantage denials nearing parity
             </p>
           </div>
         </div>
 
-        <p className="mt-[3.5vh] text-[2.8vw] leading-[1.3] text-text/80 max-w-[84vw] border-l-[0.4vw] border-primary pl-[2vw]">
+        <p className="mt-[1.5vh] text-[2.8vw] leading-[1.25] text-text/80 max-w-[64vw] border-l-[0.4vw] border-primary pl-[2vw]">
           Necessary, not sufficient: the workforce alone can&apos;t close every
           gap, and IMPaCT density may not transfer to rural or tribal Oregon.
         </p>

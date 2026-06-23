@@ -13,7 +13,7 @@ export default function Mandate() {
       </div>
 
       <div className="absolute left-[8vw] right-[8vw] top-[27vh] bottom-[10vh]">
-        <p className="text-[3.1vw] font-semibold leading-[1.25] text-text max-w-[82vw]">
+        <p className="text-[3.1vw] font-semibold leading-[1.25] text-text max-w-[60vw]">
           What if every private insurer in Oregon had to cover THW claims — not
           just Medicaid?
         </p>
@@ -45,7 +45,7 @@ export default function Mandate() {
           </div>
         </div>
 
-        <p className="mt-[3vh] text-[2.8vw] leading-[1.3] text-muted max-w-[84vw]">
+        <p className="mt-[3vh] text-[2.8vw] leading-[1.3] text-muted max-w-[60vw]">
           A mandate would extend care to the ~50% on commercial plans — the
           segment driving the disparity gap. Coverage mix: KFF.
         </p>

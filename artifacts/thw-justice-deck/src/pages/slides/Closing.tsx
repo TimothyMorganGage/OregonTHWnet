@@ -8,7 +8,7 @@ export default function Closing() {
         OREGON THW NETWORK
       </div>
 
-      <div className="absolute top-1/2 -translate-y-1/2 left-[8vw] right-[8vw]">
+      <div className="absolute top-[10vh] bottom-[9vh] left-[8vw] right-[8vw] flex flex-col justify-center">
         <h2 className="text-[6vw] font-extrabold leading-[1.05] tracking-tight text-white max-w-[80vw]">
           Join, remix, advance the work
         </h2>

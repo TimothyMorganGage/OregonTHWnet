@@ -28,13 +28,13 @@ export default function EconomicJustice() {
         <div className="flex-1 flex flex-col gap-[3.5vh]">
           <div className="flex items-start gap-[1.8vw]">
             <div className="mt-[1.6vh] w-[2.2vw] h-[0.45vh] bg-primary shrink-0" />
-            <p className="text-[3vw] leading-[1.28] text-muted">
+            <p className="text-[3vw] leading-[1.28] text-muted max-w-[33vw]">
               Fewer avoidable admissions ease premiums across the whole risk pool
             </p>
           </div>
           <div className="flex items-start gap-[1.8vw]">
             <div className="mt-[1.6vh] w-[2.2vw] h-[0.45vh] bg-primary shrink-0" />
-            <p className="text-[3vw] leading-[1.28] text-muted">
+            <p className="text-[3vw] leading-[1.28] text-muted max-w-[33vw]">
               A sustainable workforce keeps care local and creates living-wage jobs
             </p>
           </div>

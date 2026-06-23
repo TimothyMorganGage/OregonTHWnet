@@ -1,2 +1,3 @@
 - [THW platform auth model](thw-platform-auth.md) — member registration IS gated behind Replit Auth (OIDC, replitAuth.ts); admin is a separate access-code model (auth.ts). Decks may say Replit Auth; UI buttons may not.
 - [Express params string|string[]](express-params-types.md) — @types/express-serve-static-core 5.1.1 types req.params values as string|string[]; coerce with String() before .toLowerCase()/eq().
+- [Slides PPTX text-overflow](slides-pptx-overflow.md) — exported slide text clips off-slide because converter uses wrap="none" + oversized boxes; fix by constraining text widths and verifying x+cx/y+cy bounds.
