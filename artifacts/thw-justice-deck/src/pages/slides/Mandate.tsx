@@ -3,7 +3,7 @@ export default function Mandate() {
     <div className="relative w-screen h-screen overflow-hidden bg-bg font-body">
       <div className="absolute -top-[18vh] -left-[8vw] w-[40vw] h-[40vw] rounded-full border-[0.25vw] border-primary/12" />
 
-      <div className="absolute inset-x-0 top-0 bottom-[9vh] flex flex-col px-[8vw] pt-[7.5vh] pb-[3vh]">
+      <div className="absolute inset-x-0 top-0 bottom-[9vh] flex flex-col px-[8vw] pt-[6.5vh] pb-[3vh]">
         <header className="shrink-0">
           <div className="text-[2.2vw] font-bold tracking-[0.18em] text-primary">
             07 / THE 2030 MANDATE
@@ -13,14 +13,14 @@ export default function Mandate() {
           </h2>
         </header>
 
-        <div className="flex-1 flex flex-col justify-center gap-[2.6vh]">
-          <p className="text-[3.1vw] font-semibold leading-[1.25] text-text max-w-[64vw]">
+        <div className="flex-1 flex flex-col justify-center gap-[2vh]">
+          <p className="text-[3.1vw] font-semibold leading-[1.2] text-text max-w-[64vw]">
             What if every private insurer in Oregon had to cover THW claims — not
             just Medicaid?
           </p>
 
           <div className="grid grid-cols-3 gap-[2.6vw]">
-            <div className="bg-panel rounded-[1.2vw] px-[2.2vw] py-[2.2vh]">
+            <div className="bg-panel rounded-[1.2vw] px-[2.2vw] py-[1.8vh]">
               <div className="text-[5vw] font-extrabold leading-none text-primary">
                 ~30%
               </div>
@@ -28,7 +28,7 @@ export default function Mandate() {
                 Medicaid — covered today
               </p>
             </div>
-            <div className="bg-panel rounded-[1.2vw] px-[2.2vw] py-[2.2vh]">
+            <div className="bg-panel rounded-[1.2vw] px-[2.2vw] py-[1.8vh]">
               <div className="text-[5vw] font-extrabold leading-none text-primary">
                 ~50%
               </div>
@@ -36,7 +36,7 @@ export default function Mandate() {
                 Commercial — the coverage gap
               </p>
             </div>
-            <div className="bg-panel rounded-[1.2vw] px-[2.2vw] py-[2.2vh]">
+            <div className="bg-panel rounded-[1.2vw] px-[2.2vw] py-[1.8vh]">
               <div className="text-[5vw] font-extrabold leading-none text-primary">
                 ~17%
               </div>
@@ -46,9 +46,9 @@ export default function Mandate() {
             </div>
           </div>
 
-          <p className="text-[2.5vw] leading-[1.3] text-muted max-w-[64vw]">
-            A mandate would extend care to the ~50% on commercial plans — the
-            segment driving the disparity gap. Coverage mix: KFF.
+          <p className="text-[2.4vw] leading-[1.28] text-muted max-w-[64vw]">
+            A mandate extends care to the ~50% on commercial plans — the segment
+            driving Oregon's disparity gap. Coverage mix: KFF.
           </p>
         </div>
       </div>
