@@ -3,41 +3,39 @@ export default function CreativeCommons() {
     <div className="relative w-screen h-screen overflow-hidden bg-bg font-body">
       <div className="absolute -bottom-[20vh] -right-[10vw] w-[42vw] h-[42vw] rounded-full border-[0.25vw] border-primary/12" />
 
-      <div className="absolute top-[8vh] left-[8vw] right-[8vw]">
-        <div className="text-[2.2vw] font-bold tracking-[0.18em] text-primary">
-          06 / ACCOUNTABILITY
-        </div>
-        <h2 className="mt-[1.6vh] text-[4.8vw] font-extrabold leading-[1.05] tracking-tight text-text max-w-[60vw]">
-          Creative Commons accountability
-        </h2>
-      </div>
+      <div className="absolute inset-x-0 top-0 bottom-[9vh] flex flex-col px-[8vw] pt-[7.5vh] pb-[3vh]">
+        <header className="shrink-0">
+          <div className="text-[2.2vw] font-bold tracking-[0.18em] text-primary">
+            06 / ACCOUNTABILITY
+          </div>
+          <h2 className="mt-[1.2vh] text-[4.2vw] font-extrabold leading-[1.04] tracking-tight text-text max-w-[80vw]">
+            Creative Commons accountability
+          </h2>
+        </header>
 
-      <div className="absolute left-[8vw] right-[8vw] top-[24vh] bottom-[10vh]">
-        <p className="text-[3.1vw] font-semibold leading-[1.2] text-text max-w-[64vw]">
-          Open licensing turns the platform into shared public infrastructure —
-          and keeps it honest.
-        </p>
-        <div className="mt-[2vh] flex flex-col gap-[1.8vh]">
-          <div className="flex items-start gap-[1.8vw]">
-            <div className="mt-[1.6vh] w-[2.2vw] h-[0.45vh] bg-primary shrink-0" />
-            <p className="text-[3vw] leading-[1.2] text-muted max-w-[64vw]">
-              Methods and code are public, so anyone can inspect, fork, and
-              improve them
-            </p>
-          </div>
-          <div className="flex items-start gap-[1.8vw]">
-            <div className="mt-[1.6vh] w-[2.2vw] h-[0.45vh] bg-primary shrink-0" />
-            <p className="text-[3vw] leading-[1.2] text-muted max-w-[64vw]">
-              Every dollar figure cites a named, dated public source — no
-              unverifiable claims
-            </p>
-          </div>
-          <div className="flex items-start gap-[1.8vw]">
-            <div className="mt-[1.6vh] w-[2.2vw] h-[0.45vh] bg-primary shrink-0" />
-            <p className="text-[3vw] leading-[1.2] text-muted max-w-[64vw]">
-              Demo data is labeled fictional until verified — what isn&apos;t
-              proven says &ldquo;Not verified&rdquo;
-            </p>
+        <div className="flex-1 flex flex-col justify-center gap-[3vh]">
+          <p className="text-[3.1vw] font-semibold leading-[1.3] text-text max-w-[64vw]">
+            Open licensing makes it public infrastructure — and keeps it honest.
+          </p>
+          <div className="flex flex-col gap-[2.8vh]">
+            <div className="flex items-start gap-[1.8vw]">
+              <div className="mt-[1.3vh] w-[2.2vw] h-[0.45vh] bg-primary shrink-0" />
+              <p className="text-[3vw] leading-[1.3] text-muted max-w-[62vw]">
+                Methods and code are fully public
+              </p>
+            </div>
+            <div className="flex items-start gap-[1.8vw]">
+              <div className="mt-[1.3vh] w-[2.2vw] h-[0.45vh] bg-primary shrink-0" />
+              <p className="text-[3vw] leading-[1.3] text-muted max-w-[62vw]">
+                Every dollar figure cites a dated source
+              </p>
+            </div>
+            <div className="flex items-start gap-[1.8vw]">
+              <div className="mt-[1.3vh] w-[2.2vw] h-[0.45vh] bg-primary shrink-0" />
+              <p className="text-[3vw] leading-[1.3] text-muted max-w-[62vw]">
+                Demo data is flagged fictional until verified
+              </p>
+            </div>
           </div>
         </div>
       </div>

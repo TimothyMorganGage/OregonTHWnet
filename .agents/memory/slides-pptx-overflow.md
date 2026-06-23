@@ -34,3 +34,17 @@ persists upstream, so new copy or new slides can reintroduce overflow.
 code_execution writes to `.local/outputs/<slug>.pptx`. Exports DO reflect source
 edits (confirmed via a 4-byte sentinel test); occasional byte-identical sizes after
 a position-only change are coincidence, not stale caching — re-extract to confirm.
+
+**Layout pattern (avoid the export-fix-breaks-screen trap):** fixing export width by
+hardcoding absolute content blocks at `top-[Xvh]` is fragile — it desyncs from the
+header and clips content behind the footer on-screen. Robust content-slide template:
+a single `absolute inset-x-0 top-0 bottom-[9vh] flex flex-col px-[8vw] pt-[7.5vh]
+pb-[3vh]` container → `<header className="shrink-0">` (eyebrow + h2) →
+`<div className="flex-1 flex flex-col justify-center gap-…">` body. The `bottom-[9vh]`
+must match the footer `h-[9vh]`. **Why:** keeps header/body/footer in one flow so they
+never collide, and bounds the content above the footer automatically.
+**Density is the real height lever, not spacing.** Three 2-line bullets + a 2-line lead
++ a 2-line heading already busts the height budget at the 3vw floor. Per visual_qa the
+remedy is fewer LINES (terser/punchy bullet copy, ≤6 lines/slide), NOT shrinking font
+below 3vw nor endlessly tightening gaps. Verify each slide at 1280×720 (proportional
+to 1920×1080) — bottom clipping there = clipping on export.
