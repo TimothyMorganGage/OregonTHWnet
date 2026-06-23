@@ -14,9 +14,9 @@ export default function Closing() {
         </h2>
         <div className="mt-[4vh] flex items-start gap-[2.5vw]">
           <div className="mt-[2vh] w-[5vw] h-[0.55vh] bg-white shrink-0" />
-          <p className="text-[2.8vw] font-normal leading-[1.45] text-white/85 max-w-[64vw]">
-            Become a member, fork the platform for your state or tribal nation, and
-            help close the coverage gap by 2030.
+          <p className="text-[2.8vw] font-normal leading-[1.4] text-white/85 max-w-[64vw]">
+            Join the Oregon THW Network to close the coverage gap — and feel free
+            to fork the app for your state and/or tribal nation!
           </p>
         </div>
         <div className="mt-[4.5vh] flex flex-col gap-[1.6vh]">
