@@ -1,3 +1,5 @@
+const base = import.meta.env.BASE_URL;
+
 export default function Closing() {
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-primary font-body">
@@ -8,8 +10,17 @@ export default function Closing() {
         OREGON THW NETWORK
       </div>
 
+      <div className="absolute top-[8vh] right-[8vw] w-[15vw] h-[15vw] rounded-full bg-white/95 flex items-center justify-center shadow-[0_0_2vw_rgba(0,0,0,0.15)]">
+        <img
+          src={`${base}freelancers-union-badge.png`}
+          crossOrigin="anonymous"
+          alt="Proud member of Freelancers Union"
+          className="w-[13vw] h-[13vw] object-contain"
+        />
+      </div>
+
       <div className="absolute top-[18vh] bottom-[9vh] left-[8vw] right-[8vw] flex flex-col justify-center">
-        <h2 className="text-[6vw] font-extrabold leading-[1.05] tracking-tight text-white max-w-[80vw]">
+        <h2 className="text-[6vw] font-extrabold leading-[1.05] tracking-tight text-white max-w-[66vw]">
           Join, remix, advance the work
         </h2>
         <div className="mt-[4vh] flex items-start gap-[2.5vw]">
